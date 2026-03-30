@@ -5,7 +5,7 @@ package darwin_GameKit
 
 import UI "vendor:darwin/UIKit"
 
-UI_ViewController :: UI.ViewController
 UI_Image :: UI.Image
 UI_NavigationController :: UI.NavigationController
+UI_ViewController :: UI.ViewController
 UI_Window :: UI.Window

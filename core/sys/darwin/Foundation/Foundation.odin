@@ -18,7 +18,7 @@ IMP           :: rawptr
 Protocol      :: distinct id
 instancetype  :: intrinsics.objc_instancetype
 
-@(export, require)
+@(export)
 foreign import lib {
 	"system:Foundation.framework",
 }
@@ -80,6 +80,16 @@ array_next :: proc( it: ^Array_Iterator($T) ) -> (val: ^T, idx: int, cond: bool)
 STR :: #force_inline proc "contextless" ( #const s: cstring ) -> ^String {
 	return auto_cast CF.STR(s)
 }
+
+DataWritingOptions_FileProtectionMask :: transmute(DataWritingOptions)cffi.ulong(4026531840)
+ActivityOptions_UserInitiated :: transmute(ActivityOptions)cffi.ulonglong(16777215)
+ActivityOptions_UserInitiatedAllowingIdleSystemSleep :: transmute(ActivityOptions)cffi.ulonglong(15728639)
+ActivityOptions_Background :: transmute(ActivityOptions)cffi.ulonglong(255)
+ActivityOptions_LatencyCritical :: transmute(ActivityOptions)cffi.ulonglong(1095216660480)
+ActivityOptions_UserInteractive :: transmute(ActivityOptions)cffi.ulonglong(1095233437695)
+ByteCountFormatterUnits_UseYBOrHigher :: transmute(ByteCountFormatterUnits)cffi.ulong(65280)
+ByteCountFormatterUnits_UseAll :: transmute(ByteCountFormatterUnits)cffi.ulong(65535)
+when ODIN_PLATFORM_SUBTARGET == .Default { XMLNodeOptions_PreserveAll :: transmute(XMLNodeOptions)cffi.ulong(4293918750) }
 
 
 
@@ -3399,20 +3409,46 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 	UserAppleScriptTaskCompletionHandler :: ^Objc_Block(proc "c" ( result: ^AppleEventDescriptor, error: ^Error ))
 	UserAutomatorTaskCompletionHandler :: ^Objc_Block(proc "c" ( result: id, error: ^Error ))
 }
-
-xpc_session_create_flags_t :: enum cffi.ulonglong {
-	NONE            = 0,
-	INACTIVE        = 1,
-	MACH_PRIVILEGED = 2,
+StringEnumerationOptions_ByWords :: StringEnumerationOptions { .ByParagraphs, .ByComposedCharacterSequences, }
+StringEnumerationOptions_ByCaretPositions :: StringEnumerationOptions { .ByParagraphs, .BySentences, }
+StringEnumerationOptions_ByDeletionClusters :: StringEnumerationOptions { .ByComposedCharacterSequences, .BySentences, }
+DataWritingOptions_FileProtectionCompleteUnlessOpen :: DataWritingOptions { .FileProtectionNone, .FileProtectionComplete, }
+DataWritingOptions_FileProtectionCompleteWhenUserInactive :: DataWritingOptions { .FileProtectionNone, .FileProtectionCompleteUntilFirstUserAuthentication, }
+ISO8601DateFormatOptions_WithFullDate :: ISO8601DateFormatOptions { .WithYear, .WithMonth, .WithDay, .WithDashSeparatorInDate, }
+ISO8601DateFormatOptions_WithFullTime :: ISO8601DateFormatOptions { .WithTime, .WithTimeZone, .WithColonSeparatorInTime, .WithColonSeparatorInTimeZone, }
+ISO8601DateFormatOptions_WithInternetDateTime :: ISO8601DateFormatOptions { .WithYear, .WithMonth, .WithDay, .WithTime, .WithTimeZone, .WithDashSeparatorInDate, .WithColonSeparatorInTime, .WithColonSeparatorInTimeZone, }
+PointerFunctionsOptions_MallocMemory :: PointerFunctionsOptions { .ZeroingWeakMemory, .OpaqueMemory, }
+PointerFunctionsOptions_WeakMemory :: PointerFunctionsOptions { .ZeroingWeakMemory, .MachVirtualMemory, }
+PointerFunctionsOptions_CStringPersonality :: PointerFunctionsOptions { .OpaquePersonality, .ObjectPointerPersonality, }
+PointerFunctionsOptions_IntegerPersonality :: PointerFunctionsOptions { .OpaquePersonality, .StructPersonality, }
+when ODIN_PLATFORM_SUBTARGET == .Default {
+	AlignmentOptions_AlignAllEdgesInward :: AlignmentOptions { .AlignMinXInward, .AlignMinYInward, .AlignMaxXInward, .AlignMaxYInward, }
+	AlignmentOptions_AlignAllEdgesOutward :: AlignmentOptions { .AlignMinXOutward, .AlignMinYOutward, .AlignMaxXOutward, .AlignMaxYOutward, }
+	AlignmentOptions_AlignAllEdgesNearest :: AlignmentOptions { .AlignMinXNearest, .AlignMinYNearest, .AlignMaxXNearest, .AlignMaxYNearest, }
+}
+DateComponentsFormatterZeroFormattingBehavior_DropAll :: DateComponentsFormatterZeroFormattingBehavior { .DropLeading, .DropMiddle, .DropTrailing, }
+when ODIN_PLATFORM_SUBTARGET == .Default {
+	XMLNodeOptions_PreserveEmptyElements :: XMLNodeOptions { .ExpandEmptyElement, .CompactEmptyElement, }
+	XMLNodeOptions_PreserveQuotes :: XMLNodeOptions { .UseSingleQuotes, .UseDoubleQuotes, }
+	AppleEventSendOptions_WaitForReply :: AppleEventSendOptions { .NoReply, .QueueReply, }
+	AppleEventSendOptions_AlwaysInteract :: AppleEventSendOptions { .NeverInteract, .CanInteract, }
+	AppleEventSendOptions_DefaultOptions :: AppleEventSendOptions { .NoReply, .QueueReply, .CanInteract, }
 }
 
-xpc_listener_create_flag_t :: enum cffi.ulonglong {
+xpc_session_create_flag :: enum cffi.ulonglong {
+	INACTIVE        = 0,
+	MACH_PRIVILEGED = 1,
+}
+
+xpc_session_create_flags_t :: bit_set[xpc_session_create_flag; cffi.ulonglong]
+
+xpc_listener_create_flag :: enum cffi.ulonglong {
 	INACTIVE         = 0,
 	FORCE_MACH       = 1,
 	FORCE_XPCSERVICE = 2,
 }
-xpc_listener_create_flags_t :: bit_set[xpc_listener_create_flag_t; cffi.ulonglong]
-xpc_listener_create_flags_t_NONE :: xpc_listener_create_flags_t{}
+
+xpc_listener_create_flags_t :: bit_set[xpc_listener_create_flag; cffi.ulonglong]
 
 ComparisonResult :: enum cffi.long {
 	OrderedAscending  = -1,
@@ -3424,12 +3460,14 @@ EnumerationOption :: enum cffi.ulong {
 	Concurrent = 0,
 	Reverse    = 1,
 }
+
 EnumerationOptions :: bit_set[EnumerationOption; cffi.ulong]
 
 SortOption :: enum cffi.ulong {
 	Concurrent = 0,
 	Stable     = 4,
 }
+
 SortOptions :: bit_set[SortOption; cffi.ulong]
 
 QualityOfService :: enum cffi.long {
@@ -3450,6 +3488,7 @@ OrderedCollectionDifferenceCalculationOption :: enum cffi.ulong {
 	OmitRemovedObjects  = 1,
 	InferMoves          = 2,
 }
+
 OrderedCollectionDifferenceCalculationOptions :: bit_set[OrderedCollectionDifferenceCalculationOption; cffi.ulong]
 
 BinarySearchingOption :: enum cffi.ulong {
@@ -3457,6 +3496,7 @@ BinarySearchingOption :: enum cffi.ulong {
 	LastEqual      = 9,
 	InsertionIndex = 10,
 }
+
 BinarySearchingOptions :: bit_set[BinarySearchingOption; cffi.ulong]
 
 ItemProviderRepresentationVisibility :: enum cffi.long {
@@ -3469,6 +3509,7 @@ ItemProviderRepresentationVisibility :: enum cffi.long {
 ItemProviderFileOption :: enum cffi.long {
 	OpenInPlace = 0,
 }
+
 ItemProviderFileOptions :: bit_set[ItemProviderFileOption; cffi.long]
 
 ItemProviderErrorCode :: enum cffi.long {
@@ -3489,35 +3530,26 @@ StringCompareOption :: enum cffi.ulong {
 	ForcedOrderingSearch       = 9,
 	RegularExpressionSearch    = 10,
 }
+
 StringCompareOptions :: bit_set[StringCompareOption; cffi.ulong]
 
 StringEncodingConversionOption :: enum cffi.ulong {
 	AllowLossy             = 0,
 	ExternalRepresentation = 1,
 }
+
 StringEncodingConversionOptions :: bit_set[StringEncodingConversionOption; cffi.ulong]
 
 StringEnumerationOption :: enum cffi.ulong {
-	Reverse              = 8,
-	SubstringNotRequired = 9,
-	Localized            = 10,
-	_Bit0                = 0,
-	_Bit1                = 1,
-	_Bit2                = 2,
-	_Bit3                = 3,
-	_Bit4                = 4,
-	_Bit5                = 5,
-	_Bit6                = 6,
-	_Bit7                = 7,
+	ByParagraphs                 = 0,
+	ByComposedCharacterSequences = 1,
+	BySentences                  = 2,
+	Reverse                      = 8,
+	SubstringNotRequired         = 9,
+	Localized                    = 10,
 }
+
 StringEnumerationOptions :: bit_set[StringEnumerationOption; cffi.ulong]
-StringEnumerationOptions_ByLines :: StringEnumerationOptions{}
-StringEnumerationOptions_ByParagraphs :: StringEnumerationOptions{._Bit0}
-StringEnumerationOptions_ByComposedCharacterSequences :: StringEnumerationOptions{._Bit1}
-StringEnumerationOptions_ByWords :: StringEnumerationOptions{._Bit0, ._Bit1}
-StringEnumerationOptions_BySentences :: StringEnumerationOptions{._Bit2}
-StringEnumerationOptions_ByCaretPositions :: StringEnumerationOptions{._Bit0, ._Bit2}
-StringEnumerationOptions_ByDeletionClusters :: StringEnumerationOptions{._Bit1, ._Bit2}
 
 CalendarUnitFlag :: enum cffi.ulong {
 	Era                           = 1,
@@ -3556,18 +3588,20 @@ CalendarUnitFlag :: enum cffi.ulong {
 	CalendarUnit                  = 20,
 	TimeZoneCalendarUnit          = 21,
 }
+
 CalendarUnit :: bit_set[CalendarUnitFlag; cffi.ulong]
 
 CalendarOption :: enum cffi.ulong {
-	WrapComponents                          = 0,
-	MatchStrictly                           = 1,
-	SearchBackwards                         = 2,
+	WrapComponents                   = 0,
+	MatchStrictly                    = 1,
+	SearchBackwards                  = 2,
 	MatchPreviousTimePreservingSmallerUnits = 8,
-	MatchNextTimePreservingSmallerUnits     = 9,
-	MatchNextTime                           = 10,
-	MatchFirst                              = 12,
-	MatchLast                               = 13,
+	MatchNextTimePreservingSmallerUnits = 9,
+	MatchNextTime                    = 10,
+	MatchFirst                       = 12,
+	MatchLast                        = 13,
 }
+
 CalendarOptions :: bit_set[CalendarOption; cffi.ulong]
 
 DecodingFailurePolicy :: enum cffi.long {
@@ -3583,29 +3617,25 @@ DataReadingOption :: enum cffi.ulong {
 	MappedRead   = 0,
 	UncachedRead = 1,
 }
+
 DataReadingOptions :: bit_set[DataReadingOption; cffi.ulong]
 
 DataWritingOption :: enum cffi.ulong {
-	Atomic             = 0,
-	WithoutOverwriting = 1,
-	AtomicWrite        = 0,
-	_Bit28             = 28,
-	_Bit29             = 29,
-	_Bit30             = 30,
-	_Bit31             = 31,
+	Atomic                           = 0,
+	WithoutOverwriting               = 1,
+	FileProtectionNone               = 28,
+	FileProtectionComplete           = 29,
+	FileProtectionCompleteUntilFirstUserAuthentication = 30,
+	AtomicWrite                      = 0,
 }
+
 DataWritingOptions :: bit_set[DataWritingOption; cffi.ulong]
-DataWritingOptions_FileProtectionNone :: DataWritingOptions{._Bit28}
-DataWritingOptions_FileProtectionComplete :: DataWritingOptions{._Bit29}
-DataWritingOptions_FileProtectionCompleteUnlessOpen :: DataWritingOptions{._Bit28, ._Bit29}
-DataWritingOptions_FileProtectionCompleteUntilFirstUserAuthentication :: DataWritingOptions{._Bit30}
-DataWritingOptions_FileProtectionCompleteWhenUserInactive :: DataWritingOptions{._Bit28, ._Bit30}
-DataWritingOptions_FileProtectionMask :: DataWritingOptions{._Bit28, ._Bit29, ._Bit30, ._Bit31}
 
 DataSearchOption :: enum cffi.ulong {
 	Backwards = 0,
 	Anchored  = 1,
 }
+
 DataSearchOptions :: bit_set[DataSearchOption; cffi.ulong]
 
 DataBase64EncodingOption :: enum cffi.ulong {
@@ -3614,11 +3644,13 @@ DataBase64EncodingOption :: enum cffi.ulong {
 	EndLineWithCarriageReturn = 4,
 	EndLineWithLineFeed       = 5,
 }
+
 DataBase64EncodingOptions :: bit_set[DataBase64EncodingOption; cffi.ulong]
 
 DataBase64DecodingOption :: enum cffi.ulong {
 	IgnoreUnknownCharacters = 0,
 }
+
 DataBase64DecodingOptions :: bit_set[DataBase64DecodingOption; cffi.ulong]
 
 DataCompressionAlgorithm :: enum cffi.long {
@@ -3632,6 +3664,7 @@ AttributedStringEnumerationOption :: enum cffi.ulong {
 	Reverse                          = 1,
 	LongestEffectiveRangeNotRequired = 20,
 }
+
 AttributedStringEnumerationOptions :: bit_set[AttributedStringEnumerationOption; cffi.ulong]
 
 InlinePresentationIntentFlag :: enum cffi.ulong {
@@ -3644,6 +3677,7 @@ InlinePresentationIntentFlag :: enum cffi.ulong {
 	InlineHTML         = 8,
 	BlockHTML          = 9,
 }
+
 InlinePresentationIntent :: bit_set[InlinePresentationIntentFlag; cffi.ulong]
 
 AttributedStringMarkdownParsingFailurePolicy :: enum cffi.long {
@@ -3659,8 +3693,9 @@ AttributedStringMarkdownInterpretedSyntax :: enum cffi.long {
 
 AttributedStringFormattingOption :: enum cffi.ulong {
 	InsertArgumentAttributesWithoutMerging = 0,
-	ApplyReplacementIndexAttribute         = 1,
+	ApplyReplacementIndexAttribute   = 1,
 }
+
 AttributedStringFormattingOptions :: bit_set[AttributedStringFormattingOption; cffi.ulong]
 
 PresentationIntentKind :: enum cffi.long {
@@ -3729,22 +3764,20 @@ DateIntervalFormatterStyle :: enum cffi.ulong {
 }
 
 ISO8601DateFormatOption :: enum cffi.ulong {
-	Year                     = 0,
-	Month                    = 1,
-	WeekOfYear               = 2,
-	Day                      = 4,
-	Time                     = 5,
-	TimeZone                 = 6,
-	SpaceBetweenDateAndTime  = 7,
-	DashSeparatorInDate      = 8,
-	ColonSeparatorInTime     = 9,
-	ColonSeparatorInTimeZone = 10,
-	FractionalSeconds        = 11,
+	WithYear                     = 0,
+	WithMonth                    = 1,
+	WithWeekOfYear               = 2,
+	WithDay                      = 4,
+	WithTime                     = 5,
+	WithTimeZone                 = 6,
+	WithSpaceBetweenDateAndTime  = 7,
+	WithDashSeparatorInDate      = 8,
+	WithColonSeparatorInTime     = 9,
+	WithColonSeparatorInTimeZone = 10,
+	WithFractionalSeconds        = 11,
 }
+
 ISO8601DateFormatOptions :: bit_set[ISO8601DateFormatOption; cffi.ulong]
-ISO8601DateFormatOptions_FullDate :: ISO8601DateFormatOptions{.Year, .Month, .Day, .DashSeparatorInDate}
-ISO8601DateFormatOptions_FullTime :: ISO8601DateFormatOptions{.Time, .TimeZone, .ColonSeparatorInTime, .ColonSeparatorInTimeZone}
-ISO8601DateFormatOptions_InternetDateTime :: ISO8601DateFormatOptions{.Year, .Month, .Day, .Time, .TimeZone, .DashSeparatorInDate, .ColonSeparatorInTime, .ColonSeparatorInTimeZone}
 
 MassFormatterUnit :: enum cffi.long {
 	Gram     = 11,
@@ -3828,6 +3861,7 @@ MeasurementFormatterUnitOption :: enum cffi.ulong {
 	NaturalScale           = 1,
 	TemperatureWithoutUnit = 2,
 }
+
 MeasurementFormatterUnitOptions :: bit_set[MeasurementFormatterUnitOption; cffi.ulong]
 
 PersonNameComponentsFormatterStyle :: enum cffi.long {
@@ -3841,6 +3875,7 @@ PersonNameComponentsFormatterStyle :: enum cffi.long {
 PersonNameComponentsFormatterOption :: enum cffi.ulong {
 	Phonetic = 1,
 }
+
 PersonNameComponentsFormatterOptions :: bit_set[PersonNameComponentsFormatterOption; cffi.ulong]
 
 RelativeDateTimeFormatterStyle :: enum cffi.long {
@@ -3900,14 +3935,14 @@ SearchPathDirectory :: enum cffi.ulong {
 	TrashDirectory                = 102,
 }
 
-SearchPathDomainMaskFlag :: enum cffi.ulong {
+SearchPathDomainFlag :: enum cffi.ulong {
 	UserDomainMask    = 0,
 	LocalDomainMask   = 1,
 	NetworkDomainMask = 2,
 	SystemDomainMask  = 3,
 }
 
-SearchPathDomainMask :: bit_set[SearchPathDomainMaskFlag; cffi.ulong]
+SearchPathDomainMask :: bit_set[SearchPathDomainFlag; cffi.ulong]
 
 when ODIN_PLATFORM_SUBTARGET == .Default {
 	URLHandleStatus :: enum cffi.ulong {
@@ -3926,6 +3961,7 @@ URLBookmarkCreationOption :: enum cffi.ulong {
 	SecurityScopeAllowOnlyReadAccess = 12,
 	WithoutImplicitSecurityScope     = 29,
 }
+
 URLBookmarkCreationOptions :: bit_set[URLBookmarkCreationOption; cffi.ulong]
 
 URLBookmarkResolutionOption :: enum cffi.ulong {
@@ -3934,12 +3970,14 @@ URLBookmarkResolutionOption :: enum cffi.ulong {
 	WithSecurityScope             = 10,
 	WithoutImplicitStartAccessing = 15,
 }
+
 URLBookmarkResolutionOptions :: bit_set[URLBookmarkResolutionOption; cffi.ulong]
 
 VolumeEnumerationOption :: enum cffi.ulong {
 	SkipHiddenVolumes        = 1,
 	ProduceFileReferenceURLs = 2,
 }
+
 VolumeEnumerationOptions :: bit_set[VolumeEnumerationOption; cffi.ulong]
 
 DirectoryEnumerationOption :: enum cffi.ulong {
@@ -3949,12 +3987,14 @@ DirectoryEnumerationOption :: enum cffi.ulong {
 	IncludesDirectoriesPostOrder = 3,
 	ProducesRelativePathURLs     = 4,
 }
+
 DirectoryEnumerationOptions :: bit_set[DirectoryEnumerationOption; cffi.ulong]
 
 FileManagerItemReplacementOption :: enum cffi.ulong {
 	UsingNewMetadataOnly      = 0,
 	WithoutDeletingBackupItem = 1,
 }
+
 FileManagerItemReplacementOptions :: bit_set[FileManagerItemReplacementOption; cffi.ulong]
 
 URLRelationship :: enum cffi.long {
@@ -3967,12 +4007,15 @@ FileManagerUnmountOption :: enum cffi.ulong {
 	AllPartitionsAndEjectDisk = 0,
 	WithoutUI                 = 1,
 }
+
 FileManagerUnmountOptions :: bit_set[FileManagerUnmountOption; cffi.ulong]
 
-FileManagerSupportedSyncControls :: enum cffi.ulong {
-	PauseSync            = 1,
-	FailUploadOnConflict = 2,
+FileManagerSupportedSyncControl :: enum cffi.ulong {
+	PauseSync            = 0,
+	FailUploadOnConflict = 1,
 }
+
+FileManagerSupportedSyncControls :: bit_set[FileManagerSupportedSyncControl; cffi.ulong]
 
 FileManagerResumeSyncBehavior :: enum cffi.long {
 	PreserveLocalChanges          = 0,
@@ -3986,37 +4029,16 @@ FileManagerUploadLocalVersionConflictPolicy :: enum cffi.long {
 }
 
 PointerFunctionsOption :: enum cffi.ulong {
-	CopyIn = 16,
-	_Bit0  = 0,
-	_Bit1  = 1,
-	_Bit2  = 2,
-	_Bit3  = 3,
-	_Bit4  = 4,
-	_Bit5  = 5,
-	_Bit6  = 6,
-	_Bit7  = 7,
-	_Bit8  = 8,
-	_Bit9  = 9,
-	_Bit10 = 10,
-	_Bit11 = 11,
-	_Bit12 = 12,
-	_Bit13 = 13,
-	_Bit14 = 14,
-	_Bit15 = 15,
+	ZeroingWeakMemory        = 0,
+	OpaqueMemory             = 1,
+	MachVirtualMemory        = 2,
+	OpaquePersonality        = 8,
+	ObjectPointerPersonality = 9,
+	StructPersonality        = 10,
+	CopyIn                   = 16,
 }
+
 PointerFunctionsOptions :: bit_set[PointerFunctionsOption; cffi.ulong]
-PointerFunctionsOptions_StrongMemory :: PointerFunctionsOptions{}
-PointerFunctionsOptions_ZeroingWeakMemory :: PointerFunctionsOptions{._Bit0}
-PointerFunctionsOptions_OpaqueMemory :: PointerFunctionsOptions{._Bit1}
-PointerFunctionsOptions_MallocMemory :: PointerFunctionsOptions{._Bit0, ._Bit1}
-PointerFunctionsOptions_MachVirtualMemory :: PointerFunctionsOptions{._Bit2}
-PointerFunctionsOptions_WeakMemory :: PointerFunctionsOptions{._Bit0, ._Bit2}
-PointerFunctionsOptions_ObjectPersonality :: PointerFunctionsOptions{}
-PointerFunctionsOptions_OpaquePersonality :: PointerFunctionsOptions{._Bit8}
-PointerFunctionsOptions_ObjectPointerPersonality :: PointerFunctionsOptions{._Bit9}
-PointerFunctionsOptions_CStringPersonality :: PointerFunctionsOptions{._Bit8, ._Bit9}
-PointerFunctionsOptions_StructPersonality :: PointerFunctionsOptions{._Bit10}
-PointerFunctionsOptions_IntegerPersonality :: PointerFunctionsOptions{._Bit8, ._Bit10}
 
 HTTPCookieAcceptPolicy :: enum cffi.ulong {
 	Always                     = 0,
@@ -4032,6 +4054,7 @@ JSONReadingOption :: enum cffi.ulong {
 	TopLevelDictionaryAssumed = 4,
 	AllowFragments            = 2,
 }
+
 JSONReadingOptions :: bit_set[JSONReadingOption; cffi.ulong]
 
 JSONWritingOption :: enum cffi.ulong {
@@ -4040,6 +4063,7 @@ JSONWritingOption :: enum cffi.ulong {
 	FragmentsAllowed       = 2,
 	WithoutEscapingSlashes = 3,
 }
+
 JSONWritingOptions :: bit_set[JSONWritingOption; cffi.ulong]
 
 KeyValueObservingOption :: enum cffi.ulong {
@@ -4048,6 +4072,7 @@ KeyValueObservingOption :: enum cffi.ulong {
 	Initial = 2,
 	Prior   = 3,
 }
+
 KeyValueObservingOptions :: bit_set[KeyValueObservingOption; cffi.ulong]
 
 KeyValueChange :: enum cffi.ulong {
@@ -4110,10 +4135,8 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		AlignHeightNearest = 21,
 		AlignRectFlipped   = 63,
 	}
+
 	AlignmentOptions :: bit_set[AlignmentOption; cffi.ulonglong]
-	AlignmentOptions_AlignAllEdgesInward :: AlignmentOptions{.AlignMinXInward, .AlignMinYInward, .AlignMaxXInward, .AlignMaxYInward}
-	AlignmentOptions_AlignAllEdgesOutward :: AlignmentOptions{.AlignMinXOutward, .AlignMinYOutward, .AlignMaxXOutward, .AlignMaxYOutward}
-	AlignmentOptions_AlignAllEdgesNearest :: AlignmentOptions{.AlignMinXNearest, .AlignMinYNearest, .AlignMaxXNearest, .AlignMaxYNearest}
 }
 
 GrammaticalGender :: enum cffi.long {
@@ -4201,11 +4224,12 @@ PostingStyle :: enum cffi.ulong {
 	PostNow      = 3,
 }
 
-NotificationCoalescing :: enum cffi.ulong {
-	NoCoalescing = 0,
-	OnName       = 1,
-	OnSender     = 2,
+NotificationCoalescingFlag :: enum cffi.ulong {
+	OnName   = 0,
+	OnSender = 1,
 }
+
+NotificationCoalescing :: bit_set[NotificationCoalescingFlag; cffi.ulong]
 
 OperationQueuePriority :: enum cffi.long {
 	VeryLow  = -8,
@@ -4219,8 +4243,8 @@ MachPortOption :: enum cffi.ulong {
 	DeallocateSendRight    = 0,
 	DeallocateReceiveRight = 1,
 }
+
 MachPortOptions :: bit_set[MachPortOption; cffi.ulong]
-MachPortOptions_DeallocateNone :: MachPortOptions{}
 
 ActivityOption :: enum cffi.ulonglong {
 	IdleDisplaySleepDisabled     = 40,
@@ -4230,12 +4254,8 @@ ActivityOption :: enum cffi.ulonglong {
 	AnimationTrackingEnabled     = 45,
 	TrackingEnabled              = 46,
 }
+
 ActivityOptions :: bit_set[ActivityOption; cffi.ulonglong]
-ActivityOptions_UserInitiated :: transmute(ActivityOptions)cffi.ulonglong(0xffffff)
-ActivityOptions_UserInitiatedAllowingIdleSystemSleep :: transmute(ActivityOptions)cffi.ulonglong(0xefffff)
-ActivityOptions_Background :: transmute(ActivityOptions)cffi.ulonglong(0xff)
-ActivityOptions_LatencyCritical :: transmute(ActivityOptions)cffi.ulonglong(0xff00000000)
-ActivityOptions_UserInteractive :: transmute(ActivityOptions)cffi.ulonglong(0xff00ffffff)
 
 ProcessInfoThermalState :: enum cffi.long {
 	Nominal  = 0,
@@ -4259,6 +4279,7 @@ TextCheckingTypeFlag :: enum cffi.ulonglong {
 	PhoneNumber        = 11,
 	TransitInformation = 12,
 }
+
 TextCheckingType :: bit_set[TextCheckingTypeFlag; cffi.ulonglong]
 
 RegularExpressionOption :: enum cffi.ulong {
@@ -4270,6 +4291,7 @@ RegularExpressionOption :: enum cffi.ulong {
 	UseUnixLineSeparators      = 5,
 	UseUnicodeWordBoundaries   = 6,
 }
+
 RegularExpressionOptions :: bit_set[RegularExpressionOption; cffi.ulong]
 
 MatchingOption :: enum cffi.ulong {
@@ -4279,6 +4301,7 @@ MatchingOption :: enum cffi.ulong {
 	WithTransparentBounds  = 3,
 	WithoutAnchoringBounds = 4,
 }
+
 MatchingOptions :: bit_set[MatchingOption; cffi.ulong]
 
 MatchingFlag :: enum cffi.ulong {
@@ -4309,8 +4332,8 @@ StreamEventFlag :: enum cffi.ulong {
 	ErrorOccurred     = 3,
 	EndEncountered    = 4,
 }
+
 StreamEvent :: bit_set[StreamEventFlag; cffi.ulong]
-StreamEvent_None :: StreamEvent{}
 
 TimeZoneNameStyle :: enum cffi.long {
 	Standard            = 0,
@@ -4474,21 +4497,21 @@ XMLParserError :: enum cffi.long {
 XPCConnectionOption :: enum cffi.ulong {
 	Privileged = 12,
 }
+
 XPCConnectionOptions :: bit_set[XPCConnectionOption; cffi.ulong]
 
-ByteCountFormatterUnits :: enum cffi.ulong {
-	UseDefault    = 0,
-	UseBytes      = 1,
-	UseKB         = 2,
-	UseMB         = 4,
-	UseGB         = 8,
-	UseTB         = 16,
-	UsePB         = 32,
-	UseEB         = 64,
-	UseZB         = 128,
-	UseYBOrHigher = 65280,
-	UseAll        = 65535,
+ByteCountFormatterUnit :: enum cffi.ulong {
+	UseBytes = 0,
+	UseKB    = 1,
+	UseMB    = 2,
+	UseGB    = 3,
+	UseTB    = 4,
+	UsePB    = 5,
+	UseEB    = 6,
+	UseZB    = 7,
 }
+
+ByteCountFormatterUnits :: bit_set[ByteCountFormatterUnit; cffi.ulong]
 
 ByteCountFormatterCountStyle :: enum cffi.long {
 	File    = 0,
@@ -4498,10 +4521,11 @@ ByteCountFormatterCountStyle :: enum cffi.long {
 }
 
 ComparisonPredicateOption :: enum cffi.ulong {
-	CaseInsensitivePredicateOption      = 0,
-	DiacriticInsensitivePredicateOption = 1,
-	NormalizedPredicateOption           = 2,
+	CaseInsensitive      = 0,
+	DiacriticInsensitive = 1,
+	Normalized           = 2,
 }
+
 ComparisonPredicateOptions :: bit_set[ComparisonPredicateOption; cffi.ulong]
 
 ComparisonPredicateModifier :: enum cffi.ulong {
@@ -4549,9 +4573,8 @@ DateComponentsFormatterZeroFormattingBehaviorFlag :: enum cffi.ulong {
 	DropTrailing = 3,
 	Pad          = 16,
 }
+
 DateComponentsFormatterZeroFormattingBehavior :: bit_set[DateComponentsFormatterZeroFormattingBehaviorFlag; cffi.ulong]
-DateComponentsFormatterZeroFormattingBehavior_None :: DateComponentsFormatterZeroFormattingBehavior{}
-DateComponentsFormatterZeroFormattingBehavior_DropAll :: DateComponentsFormatterZeroFormattingBehavior{.DropLeading, .DropMiddle, .DropTrailing}
 
 ExpressionType :: enum cffi.ulong {
 	ConstantValueExpressionType   = 0,
@@ -4575,6 +4598,7 @@ FileCoordinatorReadingOption :: enum cffi.ulong {
 	ImmediatelyAvailableMetadataOnly = 2,
 	ForUploading                     = 3,
 }
+
 FileCoordinatorReadingOptions :: bit_set[FileCoordinatorReadingOption; cffi.ulong]
 
 FileCoordinatorWritingOption :: enum cffi.ulong {
@@ -4584,28 +4608,33 @@ FileCoordinatorWritingOption :: enum cffi.ulong {
 	ForReplacing                   = 3,
 	ContentIndependentMetadataOnly = 4,
 }
+
 FileCoordinatorWritingOptions :: bit_set[FileCoordinatorWritingOption; cffi.ulong]
 
 FileVersionAddingOption :: enum cffi.ulong {
 	ByMoving = 0,
 }
+
 FileVersionAddingOptions :: bit_set[FileVersionAddingOption; cffi.ulong]
 
 FileVersionReplacingOption :: enum cffi.ulong {
 	ByMoving = 0,
 }
+
 FileVersionReplacingOptions :: bit_set[FileVersionReplacingOption; cffi.ulong]
 
 FileWrapperReadingOption :: enum cffi.ulong {
 	Immediate      = 0,
 	WithoutMapping = 1,
 }
+
 FileWrapperReadingOptions :: bit_set[FileWrapperReadingOption; cffi.ulong]
 
 FileWrapperWritingOption :: enum cffi.ulong {
 	Atomic           = 0,
 	WithNameUpdating = 1,
 }
+
 FileWrapperWritingOptions :: bit_set[FileWrapperWritingOption; cffi.ulong]
 
 LinguisticTaggerUnit :: enum cffi.long {
@@ -4622,6 +4651,7 @@ LinguisticTaggerOption :: enum cffi.ulong {
 	OmitOther       = 3,
 	JoinNames       = 4,
 }
+
 LinguisticTaggerOptions :: bit_set[LinguisticTaggerOption; cffi.ulong]
 
 NetServicesError :: enum cffi.long {
@@ -4640,6 +4670,7 @@ NetServiceOption :: enum cffi.ulong {
 	NoAutoRename         = 0,
 	ListenForConnections = 1,
 }
+
 NetServiceOptions :: bit_set[NetServiceOption; cffi.ulong]
 
 URLSessionTaskState :: enum cffi.long {
@@ -4729,6 +4760,7 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		DeliverImmediately = 0,
 		PostToAllSessions  = 1,
 	}
+
 	DistributedNotificationOptions :: bit_set[DistributedNotificationOption; cffi.ulong]
 
 	TaskTerminationReason :: enum cffi.long {
@@ -4737,36 +4769,33 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 	}
 
 	XMLNodeOption :: enum cffi.ulong {
-		IsCDATA                               = 0,
-		ExpandEmptyElement                    = 1,
-		CompactEmptyElement                   = 2,
-		UseSingleQuotes                       = 3,
-		UseDoubleQuotes                       = 4,
-		NeverEscapeContents                   = 5,
-		DocumentTidyHTML                      = 9,
-		DocumentTidyXML                       = 10,
-		DocumentValidate                      = 13,
-		LoadExternalEntitiesAlways            = 14,
-		LoadExternalEntitiesSameOriginOnly    = 15,
-		LoadExternalEntitiesNever             = 19,
-		DocumentXInclude                      = 16,
-		PrettyPrint                           = 17,
+		IsCDATA                          = 0,
+		ExpandEmptyElement               = 1,
+		CompactEmptyElement              = 2,
+		UseSingleQuotes                  = 3,
+		UseDoubleQuotes                  = 4,
+		NeverEscapeContents              = 5,
+		DocumentTidyHTML                 = 9,
+		DocumentTidyXML                  = 10,
+		DocumentValidate                 = 13,
+		LoadExternalEntitiesAlways       = 14,
+		LoadExternalEntitiesSameOriginOnly = 15,
+		LoadExternalEntitiesNever        = 19,
+		DocumentXInclude                 = 16,
+		PrettyPrint                      = 17,
 		DocumentIncludeContentTypeDeclaration = 18,
-		PreserveNamespaceOrder                = 20,
-		PreserveAttributeOrder                = 21,
-		PreserveEntities                      = 22,
-		PreservePrefixes                      = 23,
-		PreserveCDATA                         = 24,
-		PreserveWhitespace                    = 25,
-		PreserveDTD                           = 26,
-		PreserveCharacterReferences           = 27,
-		PromoteSignificantWhitespace          = 28,
+		PreserveNamespaceOrder           = 20,
+		PreserveAttributeOrder           = 21,
+		PreserveEntities                 = 22,
+		PreservePrefixes                 = 23,
+		PreserveCDATA                    = 24,
+		PreserveWhitespace               = 25,
+		PreserveDTD                      = 26,
+		PreserveCharacterReferences      = 27,
+		PromoteSignificantWhitespace     = 28,
 	}
+
 	XMLNodeOptions :: bit_set[XMLNodeOption; cffi.ulong]
-	XMLNodeOptions_None :: XMLNodeOptions{}
-	XMLNodeOptions_PreserveEmptyElements :: XMLNodeOptions{.ExpandEmptyElement, .CompactEmptyElement}
-	XMLNodeOptions_PreserveQuotes :: XMLNodeOptions{.UseSingleQuotes, .UseDoubleQuotes}
-	XMLNodeOptions_PreserveAll :: transmute(XMLNodeOptions)cffi.ulong(0xfff0001e)
 
 	XMLNodeKind :: enum cffi.ulong {
 		InvalidKind               = 0,
@@ -4777,7 +4806,7 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		ProcessingInstructionKind = 5,
 		CommentKind               = 6,
 		TextKind                  = 7,
-		DTDKind                   = 8,
+		NSXMLDTDKind              = 8,
 		EntityDeclarationKind     = 9,
 		AttributeDeclarationKind  = 10,
 		ElementDeclarationKind    = 11,
@@ -4815,23 +4844,17 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 	}
 
 	AppleEventSendOption :: enum cffi.ulong {
+		NoReply        = 0,
+		QueueReply     = 1,
+		NeverInteract  = 4,
+		CanInteract    = 5,
 		CanSwitchLayer = 6,
 		DontRecord     = 12,
 		DontExecute    = 13,
 		DontAnnotate   = 16,
-		_Bit0          = 0,
-		_Bit1          = 1,
-		_Bit4          = 4,
-		_Bit5          = 5,
 	}
+
 	AppleEventSendOptions :: bit_set[AppleEventSendOption; cffi.ulong]
-	AppleEventSendOptions_NoReply :: AppleEventSendOptions{._Bit0}
-	AppleEventSendOptions_QueueReply :: AppleEventSendOptions{._Bit1}
-	AppleEventSendOptions_WaitForReply :: AppleEventSendOptions{._Bit0, ._Bit1}
-	AppleEventSendOptions_NeverInteract :: AppleEventSendOptions{._Bit4}
-	AppleEventSendOptions_CanInteract :: AppleEventSendOptions{._Bit5}
-	AppleEventSendOptions_AlwaysInteract :: AppleEventSendOptions{._Bit4, ._Bit5}
-	AppleEventSendOptions_DefaultOptions :: AppleEventSendOptions{._Bit0, ._Bit1, ._Bit5}
 
 	InsertionPosition :: enum cffi.ulong {
 		After     = 0,

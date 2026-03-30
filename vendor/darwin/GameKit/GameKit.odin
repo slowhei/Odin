@@ -145,6 +145,7 @@ MeshGraphTriangulationModeFlag :: enum cffi.ulong {
 	Centers       = 1,
 	EdgeMidpoints = 2,
 }
+
 MeshGraphTriangulationMode :: bit_set[MeshGraphTriangulationModeFlag; cffi.ulong]
 
 RTreeSplitStrategy :: enum cffi.long {

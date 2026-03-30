@@ -77,6 +77,12 @@ foreign lib {
 
 	@(objc_type=BarAppearance, objc_selector="setShadowImage:", objc_name="setShadowImage")
 	BarAppearance_setShadowImage :: proc(self: ^BarAppearance, shadowImage: ^Image) ---
+
+	@(objc_type=BarAppearance, objc_selector="overrideUserInterfaceStyle", objc_name="overrideUserInterfaceStyle")
+	BarAppearance_overrideUserInterfaceStyle :: proc(self: ^BarAppearance) -> UserInterfaceStyle ---
+
+	@(objc_type=BarAppearance, objc_selector="setOverrideUserInterfaceStyle:", objc_name="setOverrideUserInterfaceStyle")
+	BarAppearance_setOverrideUserInterfaceStyle :: proc(self: ^BarAppearance, overrideUserInterfaceStyle: UserInterfaceStyle) ---
 }
 
 
@@ -270,6 +276,18 @@ foreign lib {
 
 	@(objc_type=BarButtonItem, objc_selector="setSymbolAnimationEnabled:", objc_name="setSymbolAnimationEnabled")
 	BarButtonItem_setSymbolAnimationEnabled :: proc(self: ^BarButtonItem, symbolAnimationEnabled: bool) ---
+
+	@(objc_type=BarButtonItem, objc_selector="visibilityPriority", objc_name="visibilityPriority")
+	BarButtonItem_visibilityPriority :: proc(self: ^BarButtonItem) -> BarButtonItemVisibilityPriority ---
+
+	@(objc_type=BarButtonItem, objc_selector="setVisibilityPriority:", objc_name="setVisibilityPriority")
+	BarButtonItem_setVisibilityPriority :: proc(self: ^BarButtonItem, visibilityPriority: BarButtonItemVisibilityPriority) ---
+
+	@(objc_type=BarButtonItem, objc_selector="isPaddingRemoved", objc_name="isPaddingRemoved")
+	BarButtonItem_isPaddingRemoved :: proc(self: ^BarButtonItem) -> bool ---
+
+	@(objc_type=BarButtonItem, objc_selector="setPaddingRemoved:", objc_name="setPaddingRemoved")
+	BarButtonItem_setPaddingRemoved :: proc(self: ^BarButtonItem, paddingRemoved: bool) ---
 
 	@(objc_type=BarButtonItem, objc_selector="menuRepresentation", objc_name="menuRepresentation")
 	BarButtonItem_menuRepresentation :: proc(self: ^BarButtonItem) -> ^MenuElement ---
@@ -665,6 +683,35 @@ foreign lib {
 
 	@(objc_type=BarItem, objc_selector="setTag:", objc_name="setTag")
 	BarItem_setTag :: proc(self: ^BarItem, tag: NS.Integer) ---
+}
+
+
+@(objc_class="UIBarMinimization", objc_superclass=NS.Object)
+BarMinimization :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+	using _: NS.SecureCoding,
+}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=BarMinimization, objc_selector="minimizationBehavior", objc_name="minimizationBehavior")
+	BarMinimization_minimizationBehavior :: proc(self: ^BarMinimization) -> BarMinimizationBehavior ---
+
+	@(objc_type=BarMinimization, objc_selector="setMinimizationBehavior:", objc_name="setMinimizationBehavior")
+	BarMinimization_setMinimizationBehavior :: proc(self: ^BarMinimization, minimizationBehavior: BarMinimizationBehavior) ---
+
+	@(objc_type=BarMinimization, objc_selector="safeAreaAdjustment", objc_name="safeAreaAdjustment")
+	BarMinimization_safeAreaAdjustment :: proc(self: ^BarMinimization) -> BarMinimizationSafeAreaAdjustment ---
+
+	@(objc_type=BarMinimization, objc_selector="setSafeAreaAdjustment:", objc_name="setSafeAreaAdjustment")
+	BarMinimization_setSafeAreaAdjustment :: proc(self: ^BarMinimization, safeAreaAdjustment: BarMinimizationSafeAreaAdjustment) ---
+
+	@(objc_type=BarMinimization, objc_selector="restorationBehavior", objc_name="restorationBehavior")
+	BarMinimization_restorationBehavior :: proc(self: ^BarMinimization) -> BarMinimizationRestorationBehavior ---
+
+	@(objc_type=BarMinimization, objc_selector="setRestorationBehavior:", objc_name="setRestorationBehavior")
+	BarMinimization_setRestorationBehavior :: proc(self: ^BarMinimization, restorationBehavior: BarMinimizationRestorationBehavior) ---
 }
 
 

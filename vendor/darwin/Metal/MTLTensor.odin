@@ -12,11 +12,17 @@ Tensor :: struct {
 }
 
 foreign lib {
-	@(objc_type=Tensor, objc_selector="replaceSliceOrigin:sliceDimensions:withBytes:strides:", objc_name="replaceSliceOrigin")
-	Tensor_replaceSliceOrigin :: proc(self: ^Tensor, sliceOrigin: ^TensorExtents, sliceDimensions: ^TensorExtents, bytes: rawptr, strides: ^TensorExtents) ---
+	@(objc_type=Tensor, objc_selector="replaceSliceOrigin:sliceDimensions:withBytes:strides:", objc_name="replaceSliceOrigin_sliceDimensions_withBytes_strides")
+	Tensor_replaceSliceOrigin_sliceDimensions_withBytes_strides :: proc(self: ^Tensor, sliceOrigin: ^TensorExtents, sliceDimensions: ^TensorExtents, bytes: rawptr, strides: ^TensorExtents) ---
 
-	@(objc_type=Tensor, objc_selector="getBytes:strides:fromSliceOrigin:sliceDimensions:", objc_name="getBytes")
-	Tensor_getBytes :: proc(self: ^Tensor, bytes: rawptr, strides: ^TensorExtents, sliceOrigin: ^TensorExtents, sliceDimensions: ^TensorExtents) ---
+	@(objc_type=Tensor, objc_selector="getBytes:strides:fromSliceOrigin:sliceDimensions:", objc_name="getBytes_strides_fromSliceOrigin_sliceDimensions")
+	Tensor_getBytes_strides_fromSliceOrigin_sliceDimensions :: proc(self: ^Tensor, bytes: rawptr, strides: ^TensorExtents, sliceOrigin: ^TensorExtents, sliceDimensions: ^TensorExtents) ---
+
+	@(objc_type=Tensor, objc_selector="getBytes:strides:fromSliceOrigin:sliceDimensions:plane:", objc_name="getBytes_strides_fromSliceOrigin_sliceDimensions_plane")
+	Tensor_getBytes_strides_fromSliceOrigin_sliceDimensions_plane :: proc(self: ^Tensor, bytes: rawptr, strides: ^TensorExtents, sliceOrigin: ^TensorExtents, sliceDimensions: ^TensorExtents, plane: TensorPlaneType) ---
+
+	@(objc_type=Tensor, objc_selector="replaceSliceOrigin:sliceDimensions:plane:withBytes:strides:", objc_name="replaceSliceOrigin_sliceDimensions_plane_withBytes_strides")
+	Tensor_replaceSliceOrigin_sliceDimensions_plane_withBytes_strides :: proc(self: ^Tensor, sliceOrigin: ^TensorExtents, sliceDimensions: ^TensorExtents, plane: TensorPlaneType, bytes: rawptr, strides: ^TensorExtents) ---
 
 	@(objc_type=Tensor, objc_selector="gpuResourceID", objc_name="gpuResourceID")
 	Tensor_gpuResourceID :: proc(self: ^Tensor) -> ResourceID ---
@@ -38,6 +44,23 @@ foreign lib {
 
 	@(objc_type=Tensor, objc_selector="usage", objc_name="usage")
 	Tensor_usage :: proc(self: ^Tensor) -> TensorUsage ---
+
+	@(objc_type=Tensor, objc_selector="auxiliaryPlanes", objc_name="auxiliaryPlanes")
+	Tensor_auxiliaryPlanes :: proc(self: ^Tensor) -> ^NS.Array ---
+}
+
+
+
+@(objc_type=Tensor, objc_name="getBytes")
+Tensor_getBytes :: proc {
+	Tensor_getBytes_strides_fromSliceOrigin_sliceDimensions,
+	Tensor_getBytes_strides_fromSliceOrigin_sliceDimensions_plane,
+}
+
+@(objc_type=Tensor, objc_name="replaceSliceOrigin")
+Tensor_replaceSliceOrigin :: proc {
+	Tensor_replaceSliceOrigin_sliceDimensions_withBytes_strides,
+	Tensor_replaceSliceOrigin_sliceDimensions_plane_withBytes_strides,
 }
 
 
@@ -72,6 +95,12 @@ foreign lib {
 	@(objc_type=TensorDescriptor, objc_selector="setUsage:", objc_name="setUsage")
 	TensorDescriptor_setUsage :: proc(self: ^TensorDescriptor, usage: TensorUsage) ---
 
+	@(objc_type=TensorDescriptor, objc_selector="auxiliaryPlanes", objc_name="auxiliaryPlanes")
+	TensorDescriptor_auxiliaryPlanes :: proc(self: ^TensorDescriptor) -> ^TensorAuxiliaryPlaneDescriptorMap ---
+
+	@(objc_type=TensorDescriptor, objc_selector="setAuxiliaryPlanes:", objc_name="setAuxiliaryPlanes")
+	TensorDescriptor_setAuxiliaryPlanes :: proc(self: ^TensorDescriptor, auxiliaryPlanes: ^TensorAuxiliaryPlaneDescriptorMap) ---
+
 	@(objc_type=TensorDescriptor, objc_selector="resourceOptions", objc_name="resourceOptions")
 	TensorDescriptor_resourceOptions :: proc(self: ^TensorDescriptor) -> ResourceOptions ---
 
@@ -98,6 +127,84 @@ foreign lib {
 }
 
 
+@(objc_class="MTLTensorAuxiliaryPlane")
+TensorAuxiliaryPlane :: struct {
+	using _: intrinsics.objc_object,
+	using _: NS.ObjectProtocol,
+}
+
+foreign lib {
+	@(objc_type=TensorAuxiliaryPlane, objc_selector="dataType", objc_name="dataType")
+	TensorAuxiliaryPlane_dataType :: proc(self: ^TensorAuxiliaryPlane) -> TensorDataType ---
+
+	@(objc_type=TensorAuxiliaryPlane, objc_selector="blockFactors", objc_name="blockFactors")
+	TensorAuxiliaryPlane_blockFactors :: proc(self: ^TensorAuxiliaryPlane) -> ^TensorExtents ---
+
+	@(objc_type=TensorAuxiliaryPlane, objc_selector="buffer", objc_name="buffer")
+	TensorAuxiliaryPlane_buffer :: proc(self: ^TensorAuxiliaryPlane) -> ^Buffer ---
+
+	@(objc_type=TensorAuxiliaryPlane, objc_selector="bufferOffset", objc_name="bufferOffset")
+	TensorAuxiliaryPlane_bufferOffset :: proc(self: ^TensorAuxiliaryPlane) -> NS.UInteger ---
+
+	@(objc_type=TensorAuxiliaryPlane, objc_selector="planeType", objc_name="planeType")
+	TensorAuxiliaryPlane_planeType :: proc(self: ^TensorAuxiliaryPlane) -> TensorPlaneType ---
+}
+
+
+@(objc_class="MTLTensorAuxiliaryPlaneDescriptor", objc_superclass=NS.Object)
+TensorAuxiliaryPlaneDescriptor :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+}
+
+foreign lib {
+	@(objc_type=TensorAuxiliaryPlaneDescriptor, objc_selector="dataType", objc_name="dataType")
+	TensorAuxiliaryPlaneDescriptor_dataType :: proc(self: ^TensorAuxiliaryPlaneDescriptor) -> TensorDataType ---
+
+	@(objc_type=TensorAuxiliaryPlaneDescriptor, objc_selector="setDataType:", objc_name="setDataType")
+	TensorAuxiliaryPlaneDescriptor_setDataType :: proc(self: ^TensorAuxiliaryPlaneDescriptor, dataType: TensorDataType) ---
+
+	@(objc_type=TensorAuxiliaryPlaneDescriptor, objc_selector="blockFactors", objc_name="blockFactors")
+	TensorAuxiliaryPlaneDescriptor_blockFactors :: proc(self: ^TensorAuxiliaryPlaneDescriptor) -> ^TensorExtents ---
+
+	@(objc_type=TensorAuxiliaryPlaneDescriptor, objc_selector="setBlockFactors:", objc_name="setBlockFactors")
+	TensorAuxiliaryPlaneDescriptor_setBlockFactors :: proc(self: ^TensorAuxiliaryPlaneDescriptor, blockFactors: ^TensorExtents) ---
+}
+
+
+@(objc_class="MTLTensorAuxiliaryPlaneDescriptorMap", objc_superclass=NS.Object)
+TensorAuxiliaryPlaneDescriptorMap :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+}
+
+foreign lib {
+	@(objc_type=TensorAuxiliaryPlaneDescriptorMap, objc_selector="setDescriptor:forPlane:", objc_name="setDescriptor")
+	TensorAuxiliaryPlaneDescriptorMap_setDescriptor :: proc(self: ^TensorAuxiliaryPlaneDescriptorMap, descriptor: ^TensorAuxiliaryPlaneDescriptor, plane: TensorPlaneType) ---
+
+	@(objc_type=TensorAuxiliaryPlaneDescriptorMap, objc_selector="descriptorForPlane:", objc_name="descriptorForPlane")
+	TensorAuxiliaryPlaneDescriptorMap_descriptorForPlane :: proc(self: ^TensorAuxiliaryPlaneDescriptorMap, plane: TensorPlaneType) -> ^TensorAuxiliaryPlaneDescriptor ---
+
+	@(objc_type=TensorAuxiliaryPlaneDescriptorMap, objc_selector="reset", objc_name="reset")
+	TensorAuxiliaryPlaneDescriptorMap_reset :: proc(self: ^TensorAuxiliaryPlaneDescriptorMap) ---
+}
+
+
+@(objc_class="MTLTensorAuxiliaryPlaneType", objc_superclass=NS.Object)
+TensorAuxiliaryPlaneType :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=TensorAuxiliaryPlaneType, objc_selector="dataType", objc_name="dataType")
+	TensorAuxiliaryPlaneType_dataType :: proc(self: ^TensorAuxiliaryPlaneType) -> TensorDataType ---
+
+	@(objc_type=TensorAuxiliaryPlaneType, objc_selector="blockFactors", objc_name="blockFactors")
+	TensorAuxiliaryPlaneType_blockFactors :: proc(self: ^TensorAuxiliaryPlaneType) -> ^TensorExtents ---
+
+	@(objc_type=TensorAuxiliaryPlaneType, objc_selector="planeType", objc_name="planeType")
+	TensorAuxiliaryPlaneType_planeType :: proc(self: ^TensorAuxiliaryPlaneType) -> TensorPlaneType ---
+}
+
+
 @(objc_class="MTLTensorBinding")
 TensorBinding :: struct {
 	using _: intrinsics.objc_object,
@@ -113,11 +220,38 @@ foreign lib {
 
 	@(objc_type=TensorBinding, objc_selector="dimensions", objc_name="dimensions")
 	TensorBinding_dimensions :: proc(self: ^TensorBinding) -> ^TensorExtents ---
+
+	@(objc_type=TensorBinding, objc_selector="auxiliaryPlanes", objc_name="auxiliaryPlanes")
+	TensorBinding_auxiliaryPlanes :: proc(self: ^TensorBinding) -> ^NS.Array ---
+}
+
+
+@(objc_class="MTLTensorBufferAttachments", objc_superclass=NS.Object)
+TensorBufferAttachments :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+}
+
+foreign lib {
+	@(objc_type=TensorBufferAttachments, objc_selector="setBuffer:offset:forPlane:", objc_name="setBuffer")
+	TensorBufferAttachments_setBuffer :: proc(self: ^TensorBufferAttachments, buffer: ^Buffer, offset: NS.UInteger, plane: TensorPlaneType) ---
+
+	@(objc_type=TensorBufferAttachments, objc_selector="bufferForPlane:", objc_name="bufferForPlane")
+	TensorBufferAttachments_bufferForPlane :: proc(self: ^TensorBufferAttachments, plane: TensorPlaneType) -> ^Buffer ---
+
+	@(objc_type=TensorBufferAttachments, objc_selector="offsetForPlane:", objc_name="offsetForPlane")
+	TensorBufferAttachments_offsetForPlane :: proc(self: ^TensorBufferAttachments, plane: TensorPlaneType) -> NS.UInteger ---
+
+	@(objc_type=TensorBufferAttachments, objc_selector="reset", objc_name="reset")
+	TensorBufferAttachments_reset :: proc(self: ^TensorBufferAttachments) ---
 }
 
 
 @(objc_class="MTLTensorExtents", objc_superclass=NS.Object)
-TensorExtents :: struct { using _: NS.Object}
+TensorExtents :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+}
 
 foreign lib {
 	@(objc_type=TensorExtents, objc_selector="initWithRank:values:", objc_name="initWithRank")
@@ -143,6 +277,9 @@ foreign lib {
 
 	@(objc_type=TensorReferenceType, objc_selector="dimensions", objc_name="dimensions")
 	TensorReferenceType_dimensions :: proc(self: ^TensorReferenceType) -> ^TensorExtents ---
+
+	@(objc_type=TensorReferenceType, objc_selector="auxiliaryPlanes", objc_name="auxiliaryPlanes")
+	TensorReferenceType_auxiliaryPlanes :: proc(self: ^TensorReferenceType) -> ^NS.Array ---
 
 	@(objc_type=TensorReferenceType, objc_selector="access", objc_name="access")
 	TensorReferenceType_access :: proc(self: ^TensorReferenceType) -> BindingAccess ---

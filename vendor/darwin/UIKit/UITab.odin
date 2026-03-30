@@ -41,6 +41,12 @@ foreign lib {
 	@(objc_type=Tab, objc_selector="setImage:", objc_name="setImage")
 	Tab_setImage :: proc(self: ^Tab, image: ^Image) ---
 
+	@(objc_type=Tab, objc_selector="selectedImage", objc_name="selectedImage")
+	Tab_selectedImage :: proc(self: ^Tab) -> ^Image ---
+
+	@(objc_type=Tab, objc_selector="setSelectedImage:", objc_name="setSelectedImage")
+	Tab_setSelectedImage :: proc(self: ^Tab, selectedImage: ^Image) ---
+
 	@(objc_type=Tab, objc_selector="subtitle", objc_name="subtitle")
 	Tab_subtitle :: proc(self: ^Tab) -> ^NS.String ---
 
@@ -107,6 +113,9 @@ SearchTab :: struct { using _: Tab}
 foreign lib {
 	@(objc_type=SearchTab, objc_selector="initWithViewControllerProvider:", objc_name="initWithViewControllerProvider")
 	SearchTab_initWithViewControllerProvider :: proc(self: ^SearchTab, viewControllerProvider: ^Objc_Block(proc "c" ( _0: ^Tab ) -> ^ViewController)) -> instancetype ---
+
+	@(objc_type=SearchTab, objc_selector="identifier", objc_name="identifier", objc_is_class_method=true)
+	SearchTab_identifier :: proc() -> ^NS.String ---
 
 	@(objc_type=SearchTab, objc_selector="automaticallyActivatesSearch", objc_name="automaticallyActivatesSearch")
 	SearchTab_automaticallyActivatesSearch :: proc(self: ^SearchTab) -> bool ---
@@ -357,11 +366,17 @@ TabBarController :: struct {
 
 @(default_calling_convention="c")
 foreign lib {
+	@(objc_type=TabBarController, objc_selector="setProminentTabIdentifier:animated:", objc_name="setProminentTabIdentifier_animated")
+	TabBarController_setProminentTabIdentifier_animated :: proc(self: ^TabBarController, identifier: ^NS.String, animated: bool) ---
+
 	@(objc_type=TabBarController, objc_selector="setTabs:animated:", objc_name="setTabs_animated")
 	TabBarController_setTabs_animated :: proc(self: ^TabBarController, tabs: ^NS.Array, animated: bool) ---
 
 	@(objc_type=TabBarController, objc_selector="tabForIdentifier:", objc_name="tabForIdentifier")
 	TabBarController_tabForIdentifier :: proc(self: ^TabBarController, identifier: ^NS.String) -> ^Tab ---
+
+	@(objc_type=TabBarController, objc_selector="performBatchUpdates:", objc_name="performBatchUpdates")
+	TabBarController_performBatchUpdates :: proc(self: ^TabBarController, updates: ^Objc_Block(proc "c" ())) ---
 
 	@(objc_type=TabBarController, objc_selector="initWithTabs:", objc_name="initWithTabs")
 	TabBarController_initWithTabs :: proc(self: ^TabBarController, tabs: ^NS.Array) -> instancetype ---
@@ -401,6 +416,12 @@ foreign lib {
 
 	@(objc_type=TabBarController, objc_selector="setCompactTabIdentifiers:", objc_name="setCompactTabIdentifiers")
 	TabBarController_setCompactTabIdentifiers :: proc(self: ^TabBarController, compactTabIdentifiers: ^NS.Array) ---
+
+	@(objc_type=TabBarController, objc_selector="prominentTabIdentifier", objc_name="prominentTabIdentifier")
+	TabBarController_prominentTabIdentifier :: proc(self: ^TabBarController) -> ^NS.String ---
+
+	@(objc_type=TabBarController, objc_selector="setProminentTabIdentifier:", objc_name="setProminentTabIdentifier_")
+	TabBarController_setProminentTabIdentifier_ :: proc(self: ^TabBarController, prominentTabIdentifier: ^NS.String) ---
 
 	@(objc_type=TabBarController, objc_selector="selectedTab", objc_name="selectedTab")
 	TabBarController_selectedTab :: proc(self: ^TabBarController) -> ^Tab ---
@@ -464,6 +485,12 @@ foreign lib {
 
 	@(objc_type=TabBarController, objc_selector="tabBar", objc_name="tabBar")
 	TabBarController_tabBar :: proc(self: ^TabBarController) -> ^TabBar ---
+}
+
+@(objc_type=TabBarController, objc_name="setProminentTabIdentifier")
+TabBarController_setProminentTabIdentifier :: proc {
+	TabBarController_setProminentTabIdentifier_animated,
+	TabBarController_setProminentTabIdentifier_,
 }
 
 @(objc_type=TabBarController, objc_name="setTabs")
@@ -578,6 +605,15 @@ foreign lib {
 	@(objc_type=TabBarControllerSidebar, objc_selector="setDelegate:", objc_name="setDelegate")
 	TabBarControllerSidebar_setDelegate :: proc(self: ^TabBarControllerSidebar, delegate: ^TabBarControllerSidebarDelegate) ---
 
+	@(objc_type=TabBarControllerSidebar, objc_selector="isAvailable", objc_name="isAvailable")
+	TabBarControllerSidebar_isAvailable :: proc(self: ^TabBarControllerSidebar) -> bool ---
+
+	@(objc_type=TabBarControllerSidebar, objc_selector="preferredPlacement", objc_name="preferredPlacement")
+	TabBarControllerSidebar_preferredPlacement :: proc(self: ^TabBarControllerSidebar) -> TabBarControllerSidebarPlacement ---
+
+	@(objc_type=TabBarControllerSidebar, objc_selector="setPreferredPlacement:", objc_name="setPreferredPlacement")
+	TabBarControllerSidebar_setPreferredPlacement :: proc(self: ^TabBarControllerSidebar, preferredPlacement: TabBarControllerSidebarPlacement) ---
+
 	@(objc_type=TabBarControllerSidebar, objc_selector="isHidden", objc_name="isHidden")
 	TabBarControllerSidebar_isHidden :: proc(self: ^TabBarControllerSidebar) -> bool ---
 
@@ -624,6 +660,9 @@ TabBarControllerSidebarDelegate :: struct {
 
 @(default_calling_convention="c")
 foreign lib {
+	@(objc_type=TabBarControllerSidebarDelegate, objc_selector="tabBarController:sidebarAvailabilityDidChange:", objc_name="tabBarController_sidebarAvailabilityDidChange")
+	TabBarControllerSidebarDelegate_tabBarController_sidebarAvailabilityDidChange :: proc(self: ^TabBarControllerSidebarDelegate, tabBarController: ^TabBarController, sidebar: ^TabBarControllerSidebar) ---
+
 	@(objc_type=TabBarControllerSidebarDelegate, objc_selector="tabBarController:sidebarVisibilityWillChange:animator:", objc_name="tabBarController_sidebarVisibilityWillChange_animator")
 	TabBarControllerSidebarDelegate_tabBarController_sidebarVisibilityWillChange_animator :: proc(self: ^TabBarControllerSidebarDelegate, tabBarController: ^TabBarController, sidebar: ^TabBarControllerSidebar, animator: ^TabBarControllerSidebarAnimating) ---
 
@@ -879,17 +918,17 @@ foreign lib {
 	@(objc_type=TabGroup, objc_selector="setChildren:", objc_name="setChildren")
 	TabGroup_setChildren :: proc(self: ^TabGroup, children: ^NS.Array) ---
 
-	@(objc_type=TabGroup, objc_selector="displayOrderIdentifiers", objc_name="displayOrderIdentifiers")
-	TabGroup_displayOrderIdentifiers :: proc(self: ^TabGroup) -> ^NS.Array ---
-
-	@(objc_type=TabGroup, objc_selector="setDisplayOrderIdentifiers:", objc_name="setDisplayOrderIdentifiers")
-	TabGroup_setDisplayOrderIdentifiers :: proc(self: ^TabGroup, displayOrderIdentifiers: ^NS.Array) ---
-
 	@(objc_type=TabGroup, objc_selector="allowsReordering", objc_name="allowsReordering")
 	TabGroup_allowsReordering :: proc(self: ^TabGroup) -> bool ---
 
 	@(objc_type=TabGroup, objc_selector="setAllowsReordering:", objc_name="setAllowsReordering")
 	TabGroup_setAllowsReordering :: proc(self: ^TabGroup, allowsReordering: bool) ---
+
+	@(objc_type=TabGroup, objc_selector="displayOrderIdentifiers", objc_name="displayOrderIdentifiers")
+	TabGroup_displayOrderIdentifiers :: proc(self: ^TabGroup) -> ^NS.Array ---
+
+	@(objc_type=TabGroup, objc_selector="setDisplayOrderIdentifiers:", objc_name="setDisplayOrderIdentifiers")
+	TabGroup_setDisplayOrderIdentifiers :: proc(self: ^TabGroup, displayOrderIdentifiers: ^NS.Array) ---
 
 	@(objc_type=TabGroup, objc_selector="displayOrder", objc_name="displayOrder")
 	TabGroup_displayOrder :: proc(self: ^TabGroup) -> ^NS.Array ---
@@ -917,6 +956,12 @@ foreign lib {
 
 	@(objc_type=TabGroup, objc_selector="setIsSidebarDestination:", objc_name="setIsSidebarDestination")
 	TabGroup_setIsSidebarDestination :: proc(self: ^TabGroup, isSidebarDestination: bool) ---
+
+	@(objc_type=TabGroup, objc_selector="isCollapsedByDefault", objc_name="isCollapsedByDefault")
+	TabGroup_isCollapsedByDefault :: proc(self: ^TabGroup) -> bool ---
+
+	@(objc_type=TabGroup, objc_selector="setCollapsedByDefault:", objc_name="setCollapsedByDefault")
+	TabGroup_setCollapsedByDefault :: proc(self: ^TabGroup, collapsedByDefault: bool) ---
 }
 
 

@@ -3,12 +3,13 @@
 package darwin_AVFoundation
 
 import cffi "core:c"
+import CF "core:sys/darwin/CoreFoundation"
 import CM "vendor:darwin/CoreMedia"
 import NS "core:sys/darwin/Foundation"
 import "base:intrinsics"
-import CF "core:sys/darwin/CoreFoundation"
 import CA "vendor:darwin/QuartzCore"
 import AT "vendor:darwin/AudioToolbox"
+import CV "vendor:darwin/CoreVideo"
 
 @(objc_class="AVSampleBufferAudioRenderer", objc_superclass=NS.Object)
 SampleBufferAudioRenderer :: struct {
@@ -17,6 +18,18 @@ SampleBufferAudioRenderer :: struct {
 }
 
 foreign lib {
+	@(objc_type=SampleBufferAudioRenderer, objc_selector="enqueueSampleBuffer:", objc_name="enqueueSampleBuffer")
+	SampleBufferAudioRenderer_enqueueSampleBuffer :: proc(self: ^SampleBufferAudioRenderer, sampleBuffer: CM.SampleBufferRef) ---
+
+	@(objc_type=SampleBufferAudioRenderer, objc_selector="flush", objc_name="flush")
+	SampleBufferAudioRenderer_flush :: proc(self: ^SampleBufferAudioRenderer) ---
+
+	@(objc_type=SampleBufferAudioRenderer, objc_selector="requestMediaDataWhenReadyOnQueue:usingBlock:", objc_name="requestMediaDataWhenReadyOnQueue")
+	SampleBufferAudioRenderer_requestMediaDataWhenReadyOnQueue :: proc(self: ^SampleBufferAudioRenderer, queue: CF.dispatch_queue_t, block: ^Objc_Block(proc "c" ())) ---
+
+	@(objc_type=SampleBufferAudioRenderer, objc_selector="stopRequestingMediaData", objc_name="stopRequestingMediaData")
+	SampleBufferAudioRenderer_stopRequestingMediaData :: proc(self: ^SampleBufferAudioRenderer) ---
+
 	@(objc_type=SampleBufferAudioRenderer, objc_selector="status", objc_name="status")
 	SampleBufferAudioRenderer_status :: proc(self: ^SampleBufferAudioRenderer) -> QueuedSampleBufferRenderingStatus ---
 
@@ -40,6 +53,12 @@ foreign lib {
 
 	@(objc_type=SampleBufferAudioRenderer, objc_selector="setAllowedAudioSpatializationFormats:", objc_name="setAllowedAudioSpatializationFormats")
 	SampleBufferAudioRenderer_setAllowedAudioSpatializationFormats :: proc(self: ^SampleBufferAudioRenderer, allowedAudioSpatializationFormats: AudioSpatializationFormats) ---
+
+	@(objc_type=SampleBufferAudioRenderer, objc_selector="isReadyForMoreMediaData", objc_name="isReadyForMoreMediaData")
+	SampleBufferAudioRenderer_isReadyForMoreMediaData :: proc(self: ^SampleBufferAudioRenderer) -> bool ---
+
+	@(objc_type=SampleBufferAudioRenderer, objc_selector="hasSufficientMediaDataForReliablePlaybackStart", objc_name="hasSufficientMediaDataForReliablePlaybackStart")
+	SampleBufferAudioRenderer_hasSufficientMediaDataForReliablePlaybackStart :: proc(self: ^SampleBufferAudioRenderer) -> bool ---
 
 	@(objc_type=SampleBufferAudioRenderer, objc_selector="volume", objc_name="volume")
 	SampleBufferAudioRenderer_volume :: proc(self: ^SampleBufferAudioRenderer) -> cffi.float ---
@@ -349,6 +368,18 @@ foreign lib {
 	@(objc_type=SampleBufferVideoRenderer, objc_selector="flushWithRemovalOfDisplayedImage:completionHandler:", objc_name="flushWithRemovalOfDisplayedImage")
 	SampleBufferVideoRenderer_flushWithRemovalOfDisplayedImage :: proc(self: ^SampleBufferVideoRenderer, removeDisplayedImage: bool, handler: ^Objc_Block(proc "c" ())) ---
 
+	@(objc_type=SampleBufferVideoRenderer, objc_selector="enqueueSampleBuffer:", objc_name="enqueueSampleBuffer")
+	SampleBufferVideoRenderer_enqueueSampleBuffer :: proc(self: ^SampleBufferVideoRenderer, sampleBuffer: CM.SampleBufferRef) ---
+
+	@(objc_type=SampleBufferVideoRenderer, objc_selector="flush", objc_name="flush")
+	SampleBufferVideoRenderer_flush :: proc(self: ^SampleBufferVideoRenderer) ---
+
+	@(objc_type=SampleBufferVideoRenderer, objc_selector="requestMediaDataWhenReadyOnQueue:usingBlock:", objc_name="requestMediaDataWhenReadyOnQueue")
+	SampleBufferVideoRenderer_requestMediaDataWhenReadyOnQueue :: proc(self: ^SampleBufferVideoRenderer, queue: CF.dispatch_queue_t, block: ^Objc_Block(proc "c" ())) ---
+
+	@(objc_type=SampleBufferVideoRenderer, objc_selector="stopRequestingMediaData", objc_name="stopRequestingMediaData")
+	SampleBufferVideoRenderer_stopRequestingMediaData :: proc(self: ^SampleBufferVideoRenderer) ---
+
 	@(objc_type=SampleBufferVideoRenderer, objc_selector="status", objc_name="status")
 	SampleBufferVideoRenderer_status :: proc(self: ^SampleBufferVideoRenderer) -> QueuedSampleBufferRenderingStatus ---
 
@@ -358,8 +389,14 @@ foreign lib {
 	@(objc_type=SampleBufferVideoRenderer, objc_selector="requiresFlushToResumeDecoding", objc_name="requiresFlushToResumeDecoding")
 	SampleBufferVideoRenderer_requiresFlushToResumeDecoding :: proc(self: ^SampleBufferVideoRenderer) -> bool ---
 
+	@(objc_type=SampleBufferVideoRenderer, objc_selector="isReadyForMoreMediaData", objc_name="isReadyForMoreMediaData")
+	SampleBufferVideoRenderer_isReadyForMoreMediaData :: proc(self: ^SampleBufferVideoRenderer) -> bool ---
+
+	@(objc_type=SampleBufferVideoRenderer, objc_selector="hasSufficientMediaDataForReliablePlaybackStart", objc_name="hasSufficientMediaDataForReliablePlaybackStart")
+	SampleBufferVideoRenderer_hasSufficientMediaDataForReliablePlaybackStart :: proc(self: ^SampleBufferVideoRenderer) -> bool ---
+
 	@(objc_type=SampleBufferVideoRenderer, objc_selector="copyDisplayedPixelBuffer", objc_name="copyDisplayedPixelBuffer")
-	SampleBufferVideoRenderer_copyDisplayedPixelBuffer :: proc(self: ^SampleBufferVideoRenderer) -> CVPixelBufferRef ---
+	SampleBufferVideoRenderer_copyDisplayedPixelBuffer :: proc(self: ^SampleBufferVideoRenderer) -> CV.PixelBufferRef ---
 
 	@(objc_type=SampleBufferVideoRenderer, objc_selector="expectMinimumUpcomingSampleBufferPresentationTime:", objc_name="expectMinimumUpcomingSampleBufferPresentationTime")
 	SampleBufferVideoRenderer_expectMinimumUpcomingSampleBufferPresentationTime :: proc(self: ^SampleBufferVideoRenderer, minimumUpcomingPresentationTime: CM.Time) ---

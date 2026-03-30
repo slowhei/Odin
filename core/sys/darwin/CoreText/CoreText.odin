@@ -1460,8 +1460,8 @@ RunStatusFlag :: enum cffi.uint {
 	NonMonotonic         = 1,
 	HasNonIdentityMatrix = 2,
 }
+
 RunStatus :: bit_set[RunStatusFlag; cffi.uint]
-RunStatus_NoStatus :: RunStatus{}
 
 UnderlineStyle :: enum cffi.int {
 	None   = 0,

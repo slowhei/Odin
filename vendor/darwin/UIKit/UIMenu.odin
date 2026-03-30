@@ -250,6 +250,18 @@ foreign lib {
 
 	@(objc_type=MenuElement, objc_selector="image", objc_name="image")
 	MenuElement_image :: proc(self: ^MenuElement) -> ^Image ---
+
+	@(objc_type=MenuElement, objc_selector="preferredImageVisibility", objc_name="preferredImageVisibility")
+	MenuElement_preferredImageVisibility :: proc(self: ^MenuElement) -> MenuElementImageVisibility ---
+
+	@(objc_type=MenuElement, objc_selector="setPreferredImageVisibility:", objc_name="setPreferredImageVisibility")
+	MenuElement_setPreferredImageVisibility :: proc(self: ^MenuElement, preferredImageVisibility: MenuElementImageVisibility) ---
+
+	@(objc_type=MenuElement, objc_selector="highlightStateUpdateHandler", objc_name="highlightStateUpdateHandler")
+	MenuElement_highlightStateUpdateHandler :: proc(self: ^MenuElement) -> ^Objc_Block(proc "c" ()) ---
+
+	@(objc_type=MenuElement, objc_selector="setHighlightStateUpdateHandler:", objc_name="setHighlightStateUpdateHandler")
+	MenuElement_setHighlightStateUpdateHandler :: proc(self: ^MenuElement, highlightStateUpdateHandler: ^Objc_Block(proc "c" ())) ---
 }
 
 
@@ -327,6 +339,12 @@ foreign lib {
 	@(objc_type=MenuLeaf, objc_selector="setTitle:", objc_name="setTitle")
 	MenuLeaf_setTitle :: proc(self: ^MenuLeaf, title: ^NS.String) ---
 
+	@(objc_type=MenuLeaf, objc_selector="subtitle", objc_name="subtitle")
+	MenuLeaf_subtitle :: proc(self: ^MenuLeaf) -> ^NS.String ---
+
+	@(objc_type=MenuLeaf, objc_selector="setSubtitle:", objc_name="setSubtitle")
+	MenuLeaf_setSubtitle :: proc(self: ^MenuLeaf, subtitle: ^NS.String) ---
+
 	@(objc_type=MenuLeaf, objc_selector="image", objc_name="image")
 	MenuLeaf_image :: proc(self: ^MenuLeaf) -> ^Image ---
 
@@ -338,6 +356,12 @@ foreign lib {
 
 	@(objc_type=MenuLeaf, objc_selector="setSelectedImage:", objc_name="setSelectedImage")
 	MenuLeaf_setSelectedImage :: proc(self: ^MenuLeaf, selectedImage: ^Image) ---
+
+	@(objc_type=MenuLeaf, objc_selector="preferredImageVisibility", objc_name="preferredImageVisibility")
+	MenuLeaf_preferredImageVisibility :: proc(self: ^MenuLeaf) -> MenuElementImageVisibility ---
+
+	@(objc_type=MenuLeaf, objc_selector="setPreferredImageVisibility:", objc_name="setPreferredImageVisibility")
+	MenuLeaf_setPreferredImageVisibility :: proc(self: ^MenuLeaf, preferredImageVisibility: MenuElementImageVisibility) ---
 
 	@(objc_type=MenuLeaf, objc_selector="discoverabilityTitle", objc_name="discoverabilityTitle")
 	MenuLeaf_discoverabilityTitle :: proc(self: ^MenuLeaf) -> ^NS.String ---

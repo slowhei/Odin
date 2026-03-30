@@ -668,8 +668,11 @@ foreign lib {
 	@(objc_type=View, objc_selector="printJobTitle", objc_name="printJobTitle")
 	View_printJobTitle :: proc(self: ^View) -> ^NS.String ---
 
-	@(objc_type=View, objc_selector="beginDraggingSessionWithItems:event:source:", objc_name="beginDraggingSessionWithItems")
-	View_beginDraggingSessionWithItems :: proc(self: ^View, items: ^NS.Array, event: ^Event, source: ^DraggingSource) -> ^DraggingSession ---
+	@(objc_type=View, objc_selector="beginDraggingSessionWithItems:gesture:source:", objc_name="beginDraggingSessionWithItems_gesture_source")
+	View_beginDraggingSessionWithItems_gesture_source :: proc(self: ^View, items: ^NS.Array, gesture: ^GestureRecognizer, source: ^DraggingSource) -> ^DraggingSession ---
+
+	@(objc_type=View, objc_selector="beginDraggingSessionWithItems:event:source:", objc_name="beginDraggingSessionWithItems_event_source")
+	View_beginDraggingSessionWithItems_event_source :: proc(self: ^View, items: ^NS.Array, event: ^Event, source: ^DraggingSource) -> ^DraggingSession ---
 
 	@(objc_type=View, objc_selector="registerForDraggedTypes:", objc_name="registerForDraggedTypes")
 	View_registerForDraggedTypes :: proc(self: ^View, newTypes: ^NS.Array) ---
@@ -710,6 +713,12 @@ foreign lib {
 	@(objc_type=View, objc_selector="setGestureRecognizers:", objc_name="setGestureRecognizers")
 	View_setGestureRecognizers :: proc(self: ^View, gestureRecognizers: ^NS.Array) ---
 
+	@(objc_type=View, objc_selector="exclusiveGestureBehavior", objc_name="exclusiveGestureBehavior")
+	View_exclusiveGestureBehavior :: proc(self: ^View) -> ViewExclusiveGestureBehavior ---
+
+	@(objc_type=View, objc_selector="setExclusiveGestureBehavior:", objc_name="setExclusiveGestureBehavior")
+	View_setExclusiveGestureBehavior :: proc(self: ^View, exclusiveGestureBehavior: ViewExclusiveGestureBehavior) ---
+
 	@(objc_type=View, objc_selector="allowedTouchTypes", objc_name="allowedTouchTypes")
 	View_allowedTouchTypes :: proc(self: ^View) -> TouchTypeMask ---
 
@@ -733,6 +742,18 @@ foreign lib {
 
 	@(objc_type=View, objc_selector="layoutMarginsGuide", objc_name="layoutMarginsGuide")
 	View_layoutMarginsGuide :: proc(self: ^View) -> ^LayoutGuide ---
+
+	@(objc_type=View, objc_selector="viewDidChangeEffectiveCornerRadii", objc_name="viewDidChangeEffectiveCornerRadii")
+	View_viewDidChangeEffectiveCornerRadii :: proc(self: ^View) ---
+
+	@(objc_type=View, objc_selector="invalidateCornerConfiguration", objc_name="invalidateCornerConfiguration")
+	View_invalidateCornerConfiguration :: proc(self: ^View) ---
+
+	@(objc_type=View, objc_selector="cornerConfiguration", objc_name="cornerConfiguration")
+	View_cornerConfiguration :: proc(self: ^View) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=View, objc_selector="effectiveCornerRadii", objc_name="effectiveCornerRadii")
+	View_effectiveCornerRadii :: proc(self: ^View) -> ^ViewCornerRadii ---
 
 	@(objc_type=View, objc_selector="prefersCompactControlSizeMetrics", objc_name="prefersCompactControlSizeMetrics")
 	View_prefersCompactControlSizeMetrics :: proc(self: ^View) -> bool ---
@@ -989,6 +1010,12 @@ foreign lib {
 	@(objc_type=View, objc_selector="rectForLayoutRegion:", objc_name="rectForLayoutRegion")
 	View_rectForLayoutRegion :: proc(self: ^View, layoutRegion: ^ViewLayoutRegion) -> NS.Rect ---
 
+	@(objc_type=View, objc_selector="textSelectionManager", objc_name="textSelectionManager")
+	View_textSelectionManager :: proc(self: ^View) -> ^TextSelectionManager ---
+
+	@(objc_type=View, objc_selector="setTextSelectionManager:", objc_name="setTextSelectionManager")
+	View_setTextSelectionManager :: proc(self: ^View, textSelectionManager: ^TextSelectionManager) ---
+
 	@(objc_type=View, objc_selector="rulerView:shouldMoveMarker:", objc_name="rulerView_shouldMoveMarker")
 	View_rulerView_shouldMoveMarker :: proc(self: ^View, ruler: ^RulerView, marker: ^RulerMarker) -> bool ---
 
@@ -1054,6 +1081,12 @@ View_addSubview :: proc {
 View_displayRectIgnoringOpacity :: proc {
 	View_displayRectIgnoringOpacity_,
 	View_displayRectIgnoringOpacity_inContext,
+}
+
+@(objc_type=View, objc_name="beginDraggingSessionWithItems")
+View_beginDraggingSessionWithItems :: proc {
+	View_beginDraggingSessionWithItems_gesture_source,
+	View_beginDraggingSessionWithItems_event_source,
 }
 
 @(objc_type=View, objc_name="showDefinitionForAttributedString")
@@ -1286,6 +1319,126 @@ foreign lib {
 
 	@(objc_type=ViewControllerPresentationAnimator, objc_selector="animateDismissalOfViewController:fromViewController:", objc_name="animateDismissalOfViewController")
 	ViewControllerPresentationAnimator_animateDismissalOfViewController :: proc(self: ^ViewControllerPresentationAnimator, viewController: ^ViewController, fromViewController: ^ViewController) ---
+}
+
+
+@(objc_class="NSViewCornerConfiguration", objc_superclass=NS.Object)
+ViewCornerConfiguration :: struct { using _: NS.Object}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithRadius:", objc_name="configurationWithRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithRadius :: proc(radius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithTopLeftRadius:topRightRadius:bottomLeftRadius:bottomRightRadius:", objc_name="configurationWithTopLeftRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithTopLeftRadius :: proc(topLeftRadius: ^ViewCornerRadius, topRightRadius: ^ViewCornerRadius, bottomLeftRadius: ^ViewCornerRadius, bottomRightRadius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="capsuleCornerConfigurationWithMaximumRadius:", objc_name="capsuleCornerConfigurationWithMaximumRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_capsuleCornerConfigurationWithMaximumRadius :: proc(maximumRadius: CG.Float) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithUniformRadius:", objc_name="configurationWithUniformRadius_", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithUniformRadius_ :: proc(radius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithUniformRadius:topLeftRadius:topRightRadius:bottomLeftRadius:bottomRightRadius:", objc_name="configurationWithUniformRadius_topLeftRadius_topRightRadius_bottomLeftRadius_bottomRightRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithUniformRadius_topLeftRadius_topRightRadius_bottomLeftRadius_bottomRightRadius :: proc(radius: ^ViewCornerRadius, topLeftRadius: ^ViewCornerRadius, topRightRadius: ^ViewCornerRadius, bottomLeftRadius: ^ViewCornerRadius, bottomRightRadius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithUniformTopRadius:bottomRadius:", objc_name="configurationWithUniformTopRadius_bottomRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithUniformTopRadius_bottomRadius :: proc(topRadius: ^ViewCornerRadius, bottomRadius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithUniformLeftRadius:rightRadius:", objc_name="configurationWithUniformLeftRadius_rightRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithUniformLeftRadius_rightRadius :: proc(leftRadius: ^ViewCornerRadius, rightRadius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithUniformTopRadius:bottomLeftRadius:bottomRightRadius:", objc_name="configurationWithUniformTopRadius_bottomLeftRadius_bottomRightRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithUniformTopRadius_bottomLeftRadius_bottomRightRadius :: proc(topRadius: ^ViewCornerRadius, bottomLeftRadius: ^ViewCornerRadius, bottomRightRadius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithUniformBottomRadius:topLeftRadius:topRightRadius:", objc_name="configurationWithUniformBottomRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithUniformBottomRadius :: proc(bottomRadius: ^ViewCornerRadius, topLeftRadius: ^ViewCornerRadius, topRightRadius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithUniformLeftRadius:topRightRadius:bottomRightRadius:", objc_name="configurationWithUniformLeftRadius_topRightRadius_bottomRightRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithUniformLeftRadius_topRightRadius_bottomRightRadius :: proc(leftRadius: ^ViewCornerRadius, topRightRadius: ^ViewCornerRadius, bottomRightRadius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="configurationWithUniformRightRadius:topLeftRadius:bottomLeftRadius:", objc_name="configurationWithUniformRightRadius", objc_is_class_method=true)
+	ViewCornerConfiguration_configurationWithUniformRightRadius :: proc(rightRadius: ^ViewCornerRadius, topLeftRadius: ^ViewCornerRadius, bottomLeftRadius: ^ViewCornerRadius) -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="init", objc_name="init")
+	ViewCornerConfiguration_init :: proc(self: ^ViewCornerConfiguration) -> instancetype ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	ViewCornerConfiguration_new :: proc() -> ^ViewCornerConfiguration ---
+
+	@(objc_type=ViewCornerConfiguration, objc_selector="capsuleCornerConfiguration", objc_name="capsuleCornerConfiguration", objc_is_class_method=true)
+	ViewCornerConfiguration_capsuleCornerConfiguration :: proc() -> ^ViewCornerConfiguration ---
+}
+
+@(objc_type=ViewCornerConfiguration, objc_name="configurationWithUniformRadius", objc_is_class_method=true)
+ViewCornerConfiguration_configurationWithUniformRadius :: proc {
+	ViewCornerConfiguration_configurationWithUniformRadius_,
+	ViewCornerConfiguration_configurationWithUniformRadius_topLeftRadius_topRightRadius_bottomLeftRadius_bottomRightRadius,
+}
+
+@(objc_type=ViewCornerConfiguration, objc_name="configurationWithUniformTopRadius", objc_is_class_method=true)
+ViewCornerConfiguration_configurationWithUniformTopRadius :: proc {
+	ViewCornerConfiguration_configurationWithUniformTopRadius_bottomRadius,
+	ViewCornerConfiguration_configurationWithUniformTopRadius_bottomLeftRadius_bottomRightRadius,
+}
+
+@(objc_type=ViewCornerConfiguration, objc_name="configurationWithUniformLeftRadius", objc_is_class_method=true)
+ViewCornerConfiguration_configurationWithUniformLeftRadius :: proc {
+	ViewCornerConfiguration_configurationWithUniformLeftRadius_rightRadius,
+	ViewCornerConfiguration_configurationWithUniformLeftRadius_topRightRadius_bottomRightRadius,
+}
+
+
+@(objc_class="NSViewCornerRadii", objc_superclass=NS.Object)
+ViewCornerRadii :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=ViewCornerRadii, objc_selector="init", objc_name="init")
+	ViewCornerRadii_init :: proc(self: ^ViewCornerRadii) -> instancetype ---
+
+	@(objc_type=ViewCornerRadii, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	ViewCornerRadii_new :: proc() -> ^ViewCornerRadii ---
+
+	@(objc_type=ViewCornerRadii, objc_selector="topLeft", objc_name="topLeft")
+	ViewCornerRadii_topLeft :: proc(self: ^ViewCornerRadii) -> CG.Float ---
+
+	@(objc_type=ViewCornerRadii, objc_selector="topRight", objc_name="topRight")
+	ViewCornerRadii_topRight :: proc(self: ^ViewCornerRadii) -> CG.Float ---
+
+	@(objc_type=ViewCornerRadii, objc_selector="bottomLeft", objc_name="bottomLeft")
+	ViewCornerRadii_bottomLeft :: proc(self: ^ViewCornerRadii) -> CG.Float ---
+
+	@(objc_type=ViewCornerRadii, objc_selector="bottomRight", objc_name="bottomRight")
+	ViewCornerRadii_bottomRight :: proc(self: ^ViewCornerRadii) -> CG.Float ---
+}
+
+
+@(objc_class="NSViewCornerRadius", objc_superclass=NS.Object)
+ViewCornerRadius :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=ViewCornerRadius, objc_selector="fixedRadius:", objc_name="fixedRadius", objc_is_class_method=true)
+	ViewCornerRadius_fixedRadius :: proc(radius: CG.Float) -> ^ViewCornerRadius ---
+
+	@(objc_type=ViewCornerRadius, objc_selector="containerConcentricRadiusWithMinimum:", objc_name="containerConcentricRadiusWithMinimum", objc_is_class_method=true)
+	ViewCornerRadius_containerConcentricRadiusWithMinimum :: proc(minimumRadius: CG.Float) -> ^ViewCornerRadius ---
+
+	@(objc_type=ViewCornerRadius, objc_selector="init", objc_name="init")
+	ViewCornerRadius_init :: proc(self: ^ViewCornerRadius) -> instancetype ---
+
+	@(objc_type=ViewCornerRadius, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	ViewCornerRadius_new :: proc() -> ^ViewCornerRadius ---
+
+	@(objc_type=ViewCornerRadius, objc_selector="containerConcentricRadius", objc_name="containerConcentricRadius", objc_is_class_method=true)
+	ViewCornerRadius_containerConcentricRadius :: proc() -> ^ViewCornerRadius ---
 }
 
 

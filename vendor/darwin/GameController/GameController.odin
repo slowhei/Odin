@@ -203,6 +203,33 @@ foreign lib {
 	@(link_name="GCInputStylusSecondaryButton")
 	InputStylusSecondaryButton: ^NS.String
 
+	@(link_name="GCHapticsLocalityDefault")
+	HapticsLocalityDefault: ^NS.String
+
+	@(link_name="GCHapticsLocalityAll")
+	HapticsLocalityAll: ^NS.String
+
+	@(link_name="GCHapticsLocalityHandles")
+	HapticsLocalityHandles: ^NS.String
+
+	@(link_name="GCHapticsLocalityLeftHandle")
+	HapticsLocalityLeftHandle: ^NS.String
+
+	@(link_name="GCHapticsLocalityRightHandle")
+	HapticsLocalityRightHandle: ^NS.String
+
+	@(link_name="GCHapticsLocalityTriggers")
+	HapticsLocalityTriggers: ^NS.String
+
+	@(link_name="GCHapticsLocalityLeftTrigger")
+	HapticsLocalityLeftTrigger: ^NS.String
+
+	@(link_name="GCHapticsLocalityRightTrigger")
+	HapticsLocalityRightTrigger: ^NS.String
+
+	@(link_name="GCHapticDurationInfinite")
+	HapticDurationInfinite: cffi.float
+
 	@(link_name="GCCurrentExtendedGamepadSnapshotDataVersion")
 	CurrentExtendedGamepadSnapshotDataVersion: ExtendedGamepadSnapshotDataVersion
 
@@ -1052,6 +1079,12 @@ foreign lib {
 	@(link_name="GCControllerUserCustomizationsDidChangeNotification")
 	ControllerUserCustomizationsDidChangeNotification: ^NS.String
 
+	@(link_name="GCSpatialAccessoryDidConnectNotification")
+	SpatialAccessoryDidConnectNotification: ^NS.String
+
+	@(link_name="GCSpatialAccessoryDidDisconnectNotification")
+	SpatialAccessoryDidDisconnectNotification: ^NS.String
+
 	@(link_name="GCStylusDidConnectNotification")
 	StylusDidConnectNotification: ^NS.String
 
@@ -1081,33 +1114,6 @@ foreign lib {
 
 	@(link_name="GCRacingWheelDidDisconnectNotification")
 	RacingWheelDidDisconnectNotification: ^NS.String
-
-	@(link_name="GCHapticsLocalityDefault")
-	HapticsLocalityDefault: ^NS.String
-
-	@(link_name="GCHapticsLocalityAll")
-	HapticsLocalityAll: ^NS.String
-
-	@(link_name="GCHapticsLocalityHandles")
-	HapticsLocalityHandles: ^NS.String
-
-	@(link_name="GCHapticsLocalityLeftHandle")
-	HapticsLocalityLeftHandle: ^NS.String
-
-	@(link_name="GCHapticsLocalityRightHandle")
-	HapticsLocalityRightHandle: ^NS.String
-
-	@(link_name="GCHapticsLocalityTriggers")
-	HapticsLocalityTriggers: ^NS.String
-
-	@(link_name="GCHapticsLocalityLeftTrigger")
-	HapticsLocalityLeftTrigger: ^NS.String
-
-	@(link_name="GCHapticsLocalityRightTrigger")
-	HapticsLocalityRightTrigger: ^NS.String
-
-	@(link_name="GCHapticDurationInfinite")
-	HapticDurationInfinite: cffi.float
 
 	@(link_name="GCInputBackLeftButton")
 	InputBackLeftButton :: proc(position: NS.Integer) -> ^NS.String ---
@@ -1142,6 +1148,7 @@ InputButtonName :: distinct ^NS.String
 InputAxisName :: distinct ^NS.String
 InputSwitchName :: distinct ^NS.String
 InputDirectionPadName :: distinct ^NS.String
+HapticsLocality :: distinct ^NS.String
 ControllerAxisValueChangedHandler :: ^Objc_Block(proc "c" ( axis: ^ControllerAxisInput, value: cffi.float ))
 ControllerButtonValueChangedHandler :: ^Objc_Block(proc "c" ( button: ^ControllerButtonInput, value: cffi.float, pressed: bool ))
 ControllerButtonTouchedChangedHandler :: ^Objc_Block(proc "c" ( button: ^ControllerButtonInput, value: cffi.float, pressed: bool, touched: bool ))
@@ -1154,7 +1161,7 @@ KeyCode :: distinct CF.Index
 KeyboardValueChangedHandler :: ^Objc_Block(proc "c" ( keyboard: ^KeyboardInput, key: ^ControllerButtonInput, keyCode: KeyCode, pressed: bool ))
 MouseMoved :: ^Objc_Block(proc "c" ( mouse: ^MouseInput, deltaX: cffi.float, deltaY: cffi.float ))
 MicroGamepadValueChangedHandler :: ^Objc_Block(proc "c" ( gamepad: ^MicroGamepad, element: ^ControllerElement ))
-HapticsLocality :: distinct ^NS.String
+ControllerHomeButtonSettingsDidChangeHandler :: ^Objc_Block(proc "c" ( _0: ^ControllerHomeButtonSettingsManager ))
 
 DevicePhysicalInputElementChange :: enum cffi.long {
 	UnknownChange = -1,
@@ -1168,8 +1175,8 @@ PhysicalInputSourceDirectionFlag :: enum cffi.ulong {
 	Down  = 2,
 	Left  = 3,
 }
+
 PhysicalInputSourceDirection :: bit_set[PhysicalInputSourceDirectionFlag; cffi.ulong]
-PhysicalInputSourceDirection_NotApplicable :: PhysicalInputSourceDirection{}
 
 DeviceBatteryState :: enum cffi.long {
 	Unknown     = -1,
@@ -1180,8 +1187,8 @@ DeviceBatteryState :: enum cffi.long {
 
 SystemGestureState :: enum cffi.long {
 	Enabled       = 0,
-	AlwaysReceive = 1,
 	Disabled      = 2,
+	AlwaysReceive = 1,
 }
 
 TouchState :: enum cffi.long {
@@ -1229,13 +1236,37 @@ ControllerPlayerIndex :: enum cffi.long {
 	_4    = 3,
 }
 
+ControllerHomeButtonSettingSystemAction :: enum cffi.long {
+	Unavailable            = -1,
+	Other                  = 0,
+	OpenCurrentApplication = 1,
+	Disabled               = 9223372036854775807,
+}
+
+ControllerHomeButtonSettingInAppAction :: enum cffi.long {
+	Unavailable = -1,
+	Default     = 0,
+	Defer       = 1,
+	Disabled    = 9223372036854775807,
+}
+
+ControllerHomeButtonSettingCustomizationStatus :: enum cffi.long {
+	Default = 0,
+	User    = 1,
+}
+
+ControllerHomeButtonSettingsCustomizationActivity :: enum cffi.long {
+	CustomizeSystemActionActivity = 1,
+	CustomizeInAppActionActivity  = 2,
+}
+
 when ODIN_PLATFORM_SUBTARGET_IOS {
 	UIEventType :: enum cffi.ulong {
 		Gamepad = 0,
 		Stylus  = 1,
 	}
+
 	UIEventTypes :: bit_set[UIEventType; cffi.ulong]
-	UIEventTypes_None :: UIEventTypes{}
 }
 
 Point2 :: struct #align (4) {

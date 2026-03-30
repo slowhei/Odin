@@ -32,6 +32,9 @@ OpaquePolicySearchRef :: struct {}
 OpaqueSecTransformImplementation :: struct {}
 xpc_object_t :: distinct rawptr // TODO: Move XPC to its own framework instead of exporting from Foundation
 
+when ODIN_PLATFORM_SUBTARGET == .Default { SecKeyUsage_kSecKeyUsageAll :: transmute(SecKeyUsage)cffi.uint(2147483647) }
+when ODIN_PLATFORM_SUBTARGET == .Default { SecTrustSettingsKeyUsage_kSecTrustSettingsKeyUseAny :: transmute(SecTrustSettingsKeyUsage)max(cffi.uint) }
+
 
 
 foreign lib {
@@ -1496,6 +1499,9 @@ foreign lib {
 		@(link_name="kSecCFErrorPath")
 		kSecCFErrorPath: CF.StringRef
 
+		@(link_name="kSecCFErrorDetachedCertificates")
+		kSecCFErrorDetachedCertificates: CF.StringRef
+
 		@(link_name="kSecCodeAttributeArchitecture")
 		kSecCodeAttributeArchitecture: CF.StringRef
 
@@ -1543,6 +1549,12 @@ foreign lib {
 
 		@(link_name="kSecCodeInfoCMS")
 		kSecCodeInfoCMS: CF.StringRef
+
+		@(link_name="kSecCodeInfoTotalSignatures")
+		kSecCodeInfoTotalSignatures: CF.StringRef
+
+		@(link_name="kSecCodeInfoChosenSignature")
+		kSecCodeInfoChosenSignature: CF.StringRef
 
 		@(link_name="kSecCodeInfoDesignatedRequirement")
 		kSecCodeInfoDesignatedRequirement: CF.StringRef
@@ -1618,6 +1630,9 @@ foreign lib {
 
 		@(link_name="kSecCodeInfoStapledNotarizationTicket")
 		kSecCodeInfoStapledNotarizationTicket: CF.StringRef
+
+		@(link_name="kSecCodeInfoSignerInfoSKID")
+		kSecCodeInfoSignerInfoSKID: CF.StringRef
 
 		@(link_name="kSecTransformErrorDomain")
 		kSecTransformErrorDomain: CF.StringRef
@@ -3283,6 +3298,7 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 	kSecReadPermStatus                        :: 2
 	kSecWritePermStatus                       :: 4
 	kAuthorizationFlagCanNotPreAuthorize      :: 1
+	kSecCSMaxSignatures                       :: 2
 	errSecCSUnimplemented                     :: -67072
 	errSecCSInvalidObjectRef                  :: -67071
 	errSecCSInvalidFlags                      :: -67070
@@ -3367,6 +3383,11 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 	errSecCSRevokedNotarization               :: -66992
 	errSecCSCMSConstructionFailed             :: -66991
 	errSecCSRemoteSignerFailed                :: -66990
+	errSecCSRemoteSignerFirstSlotFull         :: -66989
+	errSecCSRemoteSignerSecondSlotFull        :: -66988
+	errSecCSUnsupportedAlgorithm              :: -66987
+	errSecCSMultipleSelfSigning               :: -66986
+	errSecCSDetachedCertificates              :: -66985
 	kSecNoGuest                               :: 0
 	kSecCSCheckAllArchitectures               :: 1
 	kSecCSDoNotValidateExecutable             :: 2
@@ -3924,9 +3945,9 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 
 when ODIN_PLATFORM_SUBTARGET == .Default {
 	CSSM_X509EXT_DATA_FORMAT :: enum cffi.uint {
-		ENCODED = 0,
-		PARSED  = 1,
-		PAIR    = 2,
+		DATAFORMAT_ENCODED = 0,
+		DATAFORMAT_PARSED  = 1,
+		DATAFORMAT_PAIR    = 2,
 	}
 
 	CE_GeneralNameType :: enum cffi.uint {
@@ -3983,9 +4004,8 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		DecipherOnly      = 8,
 		Critical          = 31,
 	}
+
 	SecKeyUsage :: bit_set[SecKeyUsageFlag; cffi.uint]
-	SecKeyUsage_Unspecified :: SecKeyUsage{}
-	SecKeyUsage_All :: transmute(SecKeyUsage)cffi.uint(0x7fffffff)
 }
 
 SecAccessControlCreateFlag :: enum cffi.ulong {
@@ -4052,9 +4072,11 @@ SecKeyOperationType :: enum cffi.long {
 }
 
 when ODIN_PLATFORM_SUBTARGET == .Default {
-	cssm_appledl_open_parameters_mask :: enum cffi.uint {
-		kCSSM_APPLEDL_MASK_MODE = 1,
+	cssm_appledl_open_parameters_maskFlag :: enum cffi.uint {
+		CSSM_APPLEDL_MASK_MODE = 0,
 	}
+
+	cssm_appledl_open_parameters_mask :: bit_set[cssm_appledl_open_parameters_maskFlag; cffi.uint]
 
 	SecAuthenticationType :: enum cffi.uint {
 		NTLM       = 1835824238,
@@ -4214,13 +4236,14 @@ SSLCiphersuiteGroup :: enum cffi.int {
 	Legacy           = 2,
 	ATS              = 3,
 	ATSCompatibility = 4,
+	ATSFCP_v2_1      = 5,
 }
 
 tls_protocol_version_t :: enum cffi.ushort {
-	LSv10   = 769,
-	LSv11   = 770,
-	LSv12   = 771,
-	LSv13   = 772,
+	TLSv10  = 769,
+	TLSv11  = 770,
+	TLSv12  = 771,
+	TLSv13  = 772,
 	DTLSv10 = 65279,
 	DTLSv12 = 65277,
 }
@@ -4260,6 +4283,7 @@ tls_ciphersuite_group_t :: enum cffi.ushort {
 	legacy            = 2,
 	ats               = 3,
 	ats_compatibility = 4,
+	ats_fcp_v2_1      = 5,
 }
 
 SSLProtocol :: enum cffi.int {
@@ -4291,12 +4315,14 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 
 	AuthorizationFlags :: bit_set[AuthorizationFlag; cffi.uint]
 
-	SessionAttributeBits :: enum cffi.uint {
-		IsRoot           = 1,
-		HasGraphicAccess = 16,
-		HasTTY           = 32,
-		IsRemote         = 4096,
+	SessionAttributeBit :: enum cffi.uint {
+		IsRoot           = 0,
+		HasGraphicAccess = 4,
+		HasTTY           = 5,
+		IsRemote         = 12,
 	}
+
+	SessionAttributeBits :: bit_set[SessionAttributeBit; cffi.uint]
 
 	SessionCreationFlag :: enum cffi.uint {
 		KeepCurrentBootstrap = 15,
@@ -4304,13 +4330,15 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 
 	SessionCreationFlags :: bit_set[SessionCreationFlag; cffi.uint]
 
-	SecKeychainPromptSelector :: enum cffi.ushort {
-		RequirePassphase = 1,
-		Unsigned         = 16,
-		UnsignedAct      = 32,
-		Invalid          = 64,
-		InvalidAct       = 128,
+	SecKeychainPromptSelectorFlag :: enum cffi.ushort {
+		RequirePassphase = 0,
+		Unsigned         = 4,
+		UnsignedAct      = 5,
+		Invalid          = 6,
+		InvalidAct       = 7,
 	}
+
+	SecKeychainPromptSelector :: bit_set[SecKeychainPromptSelectorFlag; cffi.ushort]
 
 	SecItemClass :: enum cffi.uint {
 		InternetPasswordItemClass   = 1768842612,
@@ -4361,8 +4389,8 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		SignRevocation = 4,
 		KeyExchange    = 5,
 	}
+
 	SecTrustSettingsKeyUsage :: bit_set[SecTrustSettingsKeyUsageFlag; cffi.uint]
-	SecTrustSettingsKeyUsage_Any :: transmute(SecTrustSettingsKeyUsage)cffi.uint(0xffffffff)
 
 	SecTrustSettingsResult :: enum cffi.uint {
 		Invalid     = 0,
@@ -4388,6 +4416,10 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		ApplyEmbeddedPolicy           = 25,
 		StripDisallowedXattrs         = 24,
 		MatchGuestRequirementInKernel = 23,
+		UseClassicalSignature         = 22,
+		UsePostQuantumSignature       = 21,
+		UseSignature1                 = 22,
+		UseSignature2                 = 21,
 	}
 
 	SecCSFlags :: bit_set[SecCSFlag; cffi.uint]
@@ -4407,13 +4439,15 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 
 	SecCodeSignatureFlags :: bit_set[SecCodeSignatureFlag; cffi.uint]
 
-	SecCodeStatus :: enum cffi.uint {
-		Valid    = 1,
-		Hard     = 256,
-		Kill     = 512,
-		Debugged = 268435456,
-		Platform = 67108864,
+	SecCodeStatusFlag :: enum cffi.uint {
+		Valid    = 0,
+		Hard     = 8,
+		Kill     = 9,
+		Debugged = 28,
+		Platform = 26,
 	}
+
+	SecCodeStatus :: bit_set[SecCodeStatusFlag; cffi.uint]
 
 	SecRequirementType :: enum cffi.uint {
 		HostRequirementType       = 1,

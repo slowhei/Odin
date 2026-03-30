@@ -5,11 +5,11 @@ package darwin_MapKit
 
 import UI "vendor:darwin/UIKit"
 
+UI_Color :: UI.Color
 UI_Control :: UI.Control
 UI_EdgeInsets :: UI.EdgeInsets
-UI_TraitCollection :: UI.TraitCollection
-UI_ViewController :: UI.ViewController
 UI_Image :: UI.Image
-UI_View :: UI.View
 UI_Scene :: UI.Scene
-UI_Color :: UI.Color
+UI_TraitCollection :: UI.TraitCollection
+UI_View :: UI.View
+UI_ViewController :: UI.ViewController

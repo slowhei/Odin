@@ -4,6 +4,7 @@ package darwin_AppKit
 
 import CG "core:sys/darwin/CoreGraphics"
 import NS "core:sys/darwin/Foundation"
+import "base:intrinsics"
 
 @(objc_class="NSStatusBar", objc_superclass=NS.Object)
 StatusBar :: struct { using _: NS.Object}
@@ -81,6 +82,33 @@ foreign lib {
 	@(objc_type=StatusItem, objc_selector="setAutosaveName:", objc_name="setAutosaveName")
 	StatusItem_setAutosaveName :: proc(self: ^StatusItem, autosaveName: ^NS.String) ---
 
+	@(objc_type=StatusItem, objc_selector="expandedInterfaceDelegate", objc_name="expandedInterfaceDelegate")
+	StatusItem_expandedInterfaceDelegate :: proc(self: ^StatusItem) -> ^StatusItemExpandedInterfaceDelegate ---
+
+	@(objc_type=StatusItem, objc_selector="setExpandedInterfaceDelegate:", objc_name="setExpandedInterfaceDelegate")
+	StatusItem_setExpandedInterfaceDelegate :: proc(self: ^StatusItem, expandedInterfaceDelegate: ^StatusItemExpandedInterfaceDelegate) ---
+
+	@(objc_type=StatusItem, objc_selector="expandedInterfaceSession", objc_name="expandedInterfaceSession")
+	StatusItem_expandedInterfaceSession :: proc(self: ^StatusItem) -> ^StatusItemExpandedInterfaceSession ---
+
+	@(objc_type=StatusItem, objc_selector="view", objc_name="view")
+	StatusItem_view :: proc(self: ^StatusItem) -> ^View ---
+
+	@(objc_type=StatusItem, objc_selector="setView:", objc_name="setView")
+	StatusItem_setView :: proc(self: ^StatusItem, view: ^View) ---
+
+	@(objc_type=StatusItem, objc_selector="target", objc_name="target")
+	StatusItem_target :: proc(self: ^StatusItem) -> id ---
+
+	@(objc_type=StatusItem, objc_selector="setTarget:", objc_name="setTarget")
+	StatusItem_setTarget :: proc(self: ^StatusItem, target: id) ---
+
+	@(objc_type=StatusItem, objc_selector="action", objc_name="action")
+	StatusItem_action :: proc(self: ^StatusItem) -> SEL ---
+
+	@(objc_type=StatusItem, objc_selector="setAction:", objc_name="setAction")
+	StatusItem_setAction :: proc(self: ^StatusItem, action: SEL) ---
+
 	@(objc_type=StatusItem, objc_selector="sendActionOn:", objc_name="sendActionOn")
 	StatusItem_sendActionOn :: proc(self: ^StatusItem, mask: EventMask) -> NS.Integer ---
 
@@ -90,23 +118,11 @@ foreign lib {
 	@(objc_type=StatusItem, objc_selector="popUpStatusItemMenu:", objc_name="popUpStatusItemMenu")
 	StatusItem_popUpStatusItemMenu :: proc(self: ^StatusItem, menu: ^Menu) ---
 
-	@(objc_type=StatusItem, objc_selector="action", objc_name="action")
-	StatusItem_action :: proc(self: ^StatusItem) -> SEL ---
-
-	@(objc_type=StatusItem, objc_selector="setAction:", objc_name="setAction")
-	StatusItem_setAction :: proc(self: ^StatusItem, action: SEL) ---
-
 	@(objc_type=StatusItem, objc_selector="doubleAction", objc_name="doubleAction")
 	StatusItem_doubleAction :: proc(self: ^StatusItem) -> SEL ---
 
 	@(objc_type=StatusItem, objc_selector="setDoubleAction:", objc_name="setDoubleAction")
 	StatusItem_setDoubleAction :: proc(self: ^StatusItem, doubleAction: SEL) ---
-
-	@(objc_type=StatusItem, objc_selector="target", objc_name="target")
-	StatusItem_target :: proc(self: ^StatusItem) -> id ---
-
-	@(objc_type=StatusItem, objc_selector="setTarget:", objc_name="setTarget")
-	StatusItem_setTarget :: proc(self: ^StatusItem, target: id) ---
 
 	@(objc_type=StatusItem, objc_selector="title", objc_name="title")
 	StatusItem_title :: proc(self: ^StatusItem) -> ^NS.String ---
@@ -149,10 +165,30 @@ foreign lib {
 
 	@(objc_type=StatusItem, objc_selector="setToolTip:", objc_name="setToolTip")
 	StatusItem_setToolTip :: proc(self: ^StatusItem, toolTip: ^NS.String) ---
+}
 
-	@(objc_type=StatusItem, objc_selector="view", objc_name="view")
-	StatusItem_view :: proc(self: ^StatusItem) -> ^View ---
 
-	@(objc_type=StatusItem, objc_selector="setView:", objc_name="setView")
-	StatusItem_setView :: proc(self: ^StatusItem, view: ^View) ---
+@(objc_class="NSStatusItemExpandedInterfaceDelegate")
+StatusItemExpandedInterfaceDelegate :: struct {
+	using _: intrinsics.objc_object,
+	using _: NS.ObjectProtocol,
+}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=StatusItemExpandedInterfaceDelegate, objc_selector="statusItem:didBeginExpandedInterfaceSession:", objc_name="statusItem")
+	StatusItemExpandedInterfaceDelegate_statusItem :: proc(self: ^StatusItemExpandedInterfaceDelegate, statusItem: ^StatusItem, expandedInterfaceSession: ^StatusItemExpandedInterfaceSession) ---
+
+	@(objc_type=StatusItemExpandedInterfaceDelegate, objc_selector="statusItemDidEndExpandedInterfaceSession:animated:", objc_name="statusItemDidEndExpandedInterfaceSession")
+	StatusItemExpandedInterfaceDelegate_statusItemDidEndExpandedInterfaceSession :: proc(self: ^StatusItemExpandedInterfaceDelegate, statusItem: ^StatusItem, animated: bool) ---
+}
+
+
+@(objc_class="NSStatusItemExpandedInterfaceSession", objc_superclass=NS.Object)
+StatusItemExpandedInterfaceSession :: struct { using _: NS.Object}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=StatusItemExpandedInterfaceSession, objc_selector="cancel", objc_name="cancel")
+	StatusItemExpandedInterfaceSession_cancel :: proc(self: ^StatusItemExpandedInterfaceSession) ---
 }

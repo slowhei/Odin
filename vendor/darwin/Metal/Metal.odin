@@ -21,6 +21,8 @@ foreign import lib {
 
 
 
+Stages_All :: transmute(Stages)cffi.ulong(max(NS.Integer))
+
 
 
 foreign lib {
@@ -189,11 +191,17 @@ IOCompressionContext :: distinct rawptr
 ResourceOptions_StorageModeMemoryless :: ResourceOptions { .StorageModeManaged, .StorageModePrivate, }
 ColorWriteMasks_All :: ColorWriteMasks { .Alpha, .Blue, .Green, .Red, }
 
+ContentionRelief :: enum cffi.long {
+	Automatic = 0,
+	None      = 1,
+}
+
 ResourceUsageFlag :: enum cffi.ulong {
 	Read   = 0,
 	Write  = 1,
 	Sample = 2,
 }
+
 ResourceUsage :: bit_set[ResourceUsageFlag; cffi.ulong]
 
 BarrierScopeFlag :: enum cffi.ulong {
@@ -201,6 +209,7 @@ BarrierScopeFlag :: enum cffi.ulong {
 	Textures      = 1,
 	RenderTargets = 2,
 }
+
 BarrierScope :: bit_set[BarrierScopeFlag; cffi.ulong]
 
 Stage :: enum cffi.ulong {
@@ -215,8 +224,8 @@ Stage :: enum cffi.ulong {
 	AccelerationStructure = 29,
 	MachineLearning       = 30,
 }
+
 Stages :: bit_set[Stage; cffi.ulong]
-Stages_All :: transmute(Stages)cffi.ulong(0x7fffffffffffffff)
 
 PurgeableState :: enum cffi.ulong {
 	KeepCurrent = 1,
@@ -293,6 +302,10 @@ PixelFormat :: enum cffi.ulong {
 	A1BGR5Unorm           = 41,
 	ABGR4Unorm            = 42,
 	BGR5A1Unorm           = 43,
+	RGB8Unorm             = 45,
+	RGB8Snorm             = 46,
+	RGB8Uint              = 47,
+	RGB8Sint              = 48,
 	R32Uint               = 53,
 	R32Sint               = 54,
 	R32Float              = 55,
@@ -315,6 +328,11 @@ PixelFormat :: enum cffi.ulong {
 	BGR10A2Unorm          = 94,
 	BGR10_XR              = 554,
 	BGR10_XR_sRGB         = 555,
+	RGB16Unorm            = 95,
+	RGB16Snorm            = 96,
+	RGB16Uint             = 97,
+	RGB16Sint             = 98,
+	RGB16Float            = 99,
 	RG32Uint              = 103,
 	RG32Sint              = 104,
 	RG32Float             = 105,
@@ -325,6 +343,9 @@ PixelFormat :: enum cffi.ulong {
 	RGBA16Float           = 115,
 	BGRA10_XR             = 552,
 	BGRA10_XR_sRGB        = 553,
+	RGB32Uint             = 120,
+	RGB32Sint             = 121,
+	RGB32Float            = 122,
 	RGBA32Uint            = 123,
 	RGBA32Sint            = 124,
 	RGBA32Float           = 125,
@@ -515,18 +536,24 @@ DataType :: enum cffi.ulong {
 }
 
 TensorDataType :: enum cffi.long {
-	None     = 0,
-	Float32  = 3,
-	Float16  = 16,
-	BFloat16 = 121,
-	Int8     = 45,
-	UInt8    = 49,
-	Int16    = 37,
-	UInt16   = 41,
-	Int32    = 29,
-	UInt32   = 33,
-	Int4     = 143,
-	UInt4    = 144,
+	None             = 0,
+	Float32          = 3,
+	Float16          = 16,
+	BFloat16         = 121,
+	Int8             = 45,
+	UInt8            = 49,
+	Int16            = 37,
+	UInt16           = 41,
+	Int32            = 29,
+	UInt32           = 33,
+	Int4             = 143,
+	UInt4            = 144,
+	MetalFloat8UE8M0 = 145,
+	UInt2            = 149,
+	Int2             = 150,
+	MetalFloat8E5M2  = 141,
+	MetalFloat8E4M3  = 142,
+	MetalFloat4E2M1  = 148,
 }
 
 TensorError :: enum cffi.long {
@@ -540,7 +567,13 @@ TensorUsageFlag :: enum cffi.ulong {
 	Render          = 1,
 	MachineLearning = 2,
 }
+
 TensorUsage :: bit_set[TensorUsageFlag; cffi.ulong]
+
+TensorPlaneType :: enum cffi.long {
+	Data   = 0,
+	Scales = 1,
+}
 
 TextureType :: enum cffi.ulong {
 	_1D                 = 0,
@@ -571,8 +604,8 @@ TextureUsageFlag :: enum cffi.ulong {
 	PixelFormatView = 4,
 	ShaderAtomic    = 5,
 }
+
 TextureUsage :: bit_set[TextureUsageFlag; cffi.ulong]
-TextureUsage_Unknown :: TextureUsage{}
 
 TextureCompressionType :: enum cffi.long {
 	Lossless = 0,
@@ -660,6 +693,7 @@ LanguageVersion :: enum cffi.ulong {
 	_3_1 = 196609,
 	_3_2 = 196610,
 	_4_0 = 262144,
+	_4_1 = 262145,
 }
 
 LibraryType :: enum cffi.long {
@@ -686,6 +720,11 @@ MathMode :: enum cffi.long {
 MathFloatingPointFunctions :: enum cffi.long {
 	Fast    = 0,
 	Precise = 1,
+}
+
+FloatingPointConversionRoundingMode :: enum cffi.long {
+	ToNearestEven = 0,
+	TowardZero    = 1,
 }
 
 LibraryError :: enum cffi.ulong {
@@ -775,6 +814,7 @@ GPUFamily :: enum cffi.long {
 	Apple8       = 1008,
 	Apple9       = 1009,
 	Apple10      = 1010,
+	Apple11      = 1011,
 	Mac1         = 2001,
 	Mac2         = 2002,
 	Common1      = 3001,
@@ -1094,6 +1134,12 @@ ShaderValidation :: enum cffi.long {
 	Disabled = 2,
 }
 
+ForwardProgressUsage :: enum cffi.long {
+	Automatic         = 0,
+	Weak              = 1,
+	SIMDGroupParallel = 2,
+}
+
 PrimitiveType :: enum cffi.ulong {
 	Point         = 0,
 	Line          = 1,
@@ -1130,11 +1176,11 @@ TriangleFillMode :: enum cffi.ulong {
 }
 
 RenderStage :: enum cffi.ulong {
-	StageVertex   = 0,
-	StageFragment = 1,
-	StageTile     = 2,
-	StageObject   = 3,
-	StageMesh     = 4,
+	Vertex   = 0,
+	Fragment = 1,
+	Tile     = 2,
+	Object   = 3,
+	Mesh     = 4,
 }
 
 RenderStages :: bit_set[RenderStage; cffi.ulong]
@@ -1258,8 +1304,8 @@ AccelerationStructureUsageFlag :: enum cffi.ulong {
 	PreferFastIntersection = 4,
 	MinimizeMemory         = 5,
 }
+
 AccelerationStructureUsage :: bit_set[AccelerationStructureUsageFlag; cffi.ulong]
-AccelerationStructureUsage_None :: AccelerationStructureUsage{}
 
 AccelerationStructureInstanceOption :: enum cffi.uint {
 	DisableTriangleCulling           = 0,
@@ -1362,6 +1408,7 @@ IndirectCommandTypeFlag :: enum cffi.ulong {
 	DrawMeshThreadgroups      = 7,
 	DrawMeshThreads           = 8,
 }
+
 IndirectCommandType :: bit_set[IndirectCommandTypeFlag; cffi.ulong]
 
 FunctionLogType :: enum cffi.ulong {
@@ -1411,8 +1458,8 @@ IntersectionFunctionSignatureFlag :: enum cffi.ulong {
 	IntersectionFunctionBuffer = 8,
 	UserData                   = 9,
 }
+
 IntersectionFunctionSignature :: bit_set[IntersectionFunctionSignatureFlag; cffi.ulong]
-IntersectionFunctionSignature_None :: IntersectionFunctionSignature{}
 
 StitchedLibraryOption :: enum cffi.ulong {
 	FailOnBinaryArchiveMiss          = 0,
@@ -1449,11 +1496,12 @@ IOCompressionStatus :: enum cffi.long {
 	Error    = 1,
 }
 
-MTL4ShaderReflection :: enum cffi.ulong {
-	None           = 0,
-	BindingInfo    = 1,
-	BufferTypeInfo = 2,
+MTL4ShaderReflectionFlag :: enum cffi.ulong {
+	BindingInfo    = 0,
+	BufferTypeInfo = 1,
 }
+
+MTL4ShaderReflection :: bit_set[MTL4ShaderReflectionFlag; cffi.ulong]
 
 MTL4AlphaToOneState :: enum cffi.long {
 	Disabled = 0,
@@ -1481,10 +1529,12 @@ MTL4LogicalToPhysicalColorAttachmentMappingState :: enum cffi.long {
 	Inherited = 1,
 }
 
-MTL4PipelineDataSetSerializerConfiguration :: enum cffi.ulong {
-	CaptureDescriptors = 1,
-	CaptureBinaries    = 2,
+MTL4PipelineDataSetSerializerConfigurationFlag :: enum cffi.ulong {
+	CaptureDescriptors = 0,
+	CaptureBinaries    = 1,
 }
+
+MTL4PipelineDataSetSerializerConfiguration :: bit_set[MTL4PipelineDataSetSerializerConfigurationFlag; cffi.ulong]
 
 MTL4BinaryFunctionOption :: enum cffi.ulong {
 	PipelineIndependent = 1,

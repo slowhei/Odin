@@ -97,6 +97,9 @@ foreign lib {
 	@(objc_type=ComputePipelineState, objc_selector="newIntersectionFunctionTableWithDescriptor:", objc_name="newIntersectionFunctionTableWithDescriptor")
 	ComputePipelineState_newIntersectionFunctionTableWithDescriptor :: proc(self: ^ComputePipelineState, descriptor: ^IntersectionFunctionTableDescriptor) -> ^IntersectionFunctionTable ---
 
+	@(objc_type=ComputePipelineState, objc_selector="recommendedPersistentThreadgroupsPerGridForThreadsPerThreadgroup:", objc_name="recommendedPersistentThreadgroupsPerGridForThreadsPerThreadgroup")
+	ComputePipelineState_recommendedPersistentThreadgroupsPerGridForThreadsPerThreadgroup :: proc(self: ^ComputePipelineState, threadsPerThreadgroup: Size) -> NS.UInteger ---
+
 	@(objc_type=ComputePipelineState, objc_selector="label", objc_name="label")
 	ComputePipelineState_label :: proc(self: ^ComputePipelineState) -> ^NS.String ---
 
@@ -126,6 +129,9 @@ foreign lib {
 
 	@(objc_type=ComputePipelineState, objc_selector="requiredThreadsPerThreadgroup", objc_name="requiredThreadsPerThreadgroup")
 	ComputePipelineState_requiredThreadsPerThreadgroup :: proc(self: ^ComputePipelineState) -> Size ---
+
+	@(objc_type=ComputePipelineState, objc_selector="forwardProgressUsage", objc_name="forwardProgressUsage")
+	ComputePipelineState_forwardProgressUsage :: proc(self: ^ComputePipelineState) -> ForwardProgressUsage ---
 }
 
 
@@ -240,6 +246,24 @@ foreign lib {
 
 	@(objc_type=ComputePipelineDescriptor, objc_selector="setRequiredThreadsPerThreadgroup:", objc_name="setRequiredThreadsPerThreadgroup")
 	ComputePipelineDescriptor_setRequiredThreadsPerThreadgroup :: proc(self: ^ComputePipelineDescriptor, requiredThreadsPerThreadgroup: Size) ---
+
+	@(objc_type=ComputePipelineDescriptor, objc_selector="forwardProgressUsage", objc_name="forwardProgressUsage")
+	ComputePipelineDescriptor_forwardProgressUsage :: proc(self: ^ComputePipelineDescriptor) -> ForwardProgressUsage ---
+
+	@(objc_type=ComputePipelineDescriptor, objc_selector="setForwardProgressUsage:", objc_name="setForwardProgressUsage")
+	ComputePipelineDescriptor_setForwardProgressUsage :: proc(self: ^ComputePipelineDescriptor, forwardProgressUsage: ForwardProgressUsage) ---
+
+	@(objc_type=ComputePipelineDescriptor, objc_selector="contentionRelief", objc_name="contentionRelief")
+	ComputePipelineDescriptor_contentionRelief :: proc(self: ^ComputePipelineDescriptor) -> ContentionRelief ---
+
+	@(objc_type=ComputePipelineDescriptor, objc_selector="setContentionRelief:", objc_name="setContentionRelief")
+	ComputePipelineDescriptor_setContentionRelief :: proc(self: ^ComputePipelineDescriptor, contentionRelief: ContentionRelief) ---
+
+	@(objc_type=ComputePipelineDescriptor, objc_selector="optimizeForPersistentKernel", objc_name="optimizeForPersistentKernel")
+	ComputePipelineDescriptor_optimizeForPersistentKernel :: proc(self: ^ComputePipelineDescriptor) -> bool ---
+
+	@(objc_type=ComputePipelineDescriptor, objc_selector="setOptimizeForPersistentKernel:", objc_name="setOptimizeForPersistentKernel")
+	ComputePipelineDescriptor_setOptimizeForPersistentKernel :: proc(self: ^ComputePipelineDescriptor, optimizeForPersistentKernel: bool) ---
 }
 
 

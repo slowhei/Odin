@@ -137,8 +137,14 @@ foreign lib {
 	@(objc_type=SceneConfiguration, objc_selector="configurationWithName:sessionRole:", objc_name="configurationWithName", objc_is_class_method=true)
 	SceneConfiguration_configurationWithName :: proc(name: ^NS.String, sessionRole: ^NS.String) -> instancetype ---
 
-	@(objc_type=SceneConfiguration, objc_selector="initWithName:sessionRole:", objc_name="initWithName")
-	SceneConfiguration_initWithName :: proc(self: ^SceneConfiguration, name: ^NS.String, sessionRole: ^NS.String) -> instancetype ---
+	@(objc_type=SceneConfiguration, objc_selector="initWithName:sessionRole:", objc_name="initWithName_sessionRole")
+	SceneConfiguration_initWithName_sessionRole :: proc(self: ^SceneConfiguration, name: ^NS.String, sessionRole: ^NS.String) -> instancetype ---
+
+	@(objc_type=SceneConfiguration, objc_selector="init", objc_name="init")
+	SceneConfiguration_init :: proc(self: ^SceneConfiguration) -> instancetype ---
+
+	@(objc_type=SceneConfiguration, objc_selector="initWithName:", objc_name="initWithName_")
+	SceneConfiguration_initWithName_ :: proc(self: ^SceneConfiguration, name: ^NS.String) -> instancetype ---
 
 	@(objc_type=SceneConfiguration, objc_selector="name", objc_name="name")
 	SceneConfiguration_name :: proc(self: ^SceneConfiguration) -> ^NS.String ---
@@ -163,6 +169,53 @@ foreign lib {
 
 	@(objc_type=SceneConfiguration, objc_selector="setStoryboard:", objc_name="setStoryboard")
 	SceneConfiguration_setStoryboard :: proc(self: ^SceneConfiguration, storyboard: ^Storyboard) ---
+}
+
+@(objc_type=SceneConfiguration, objc_name="initWithName")
+SceneConfiguration_initWithName :: proc {
+	SceneConfiguration_initWithName_sessionRole,
+	SceneConfiguration_initWithName_,
+}
+
+
+@(objc_class="UISceneAccessory", objc_superclass=NS.Object)
+SceneAccessory :: struct { using _: NS.Object}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=SceneAccessory, objc_selector="externalNonInteractiveSceneAccessoryWithConfiguration:", objc_name="externalNonInteractiveSceneAccessoryWithConfiguration_", objc_is_class_method=true)
+	SceneAccessory_externalNonInteractiveSceneAccessoryWithConfiguration_ :: proc(sceneConfiguration: ^SceneConfiguration) -> instancetype ---
+
+	@(objc_type=SceneAccessory, objc_selector="externalNonInteractiveSceneAccessoryWithConfiguration:userInfo:", objc_name="externalNonInteractiveSceneAccessoryWithConfiguration_userInfo", objc_is_class_method=true)
+	SceneAccessory_externalNonInteractiveSceneAccessoryWithConfiguration_userInfo :: proc(sceneConfiguration: ^SceneConfiguration, userInfo: id) -> instancetype ---
+
+	@(objc_type=SceneAccessory, objc_selector="init", objc_name="init")
+	SceneAccessory_init :: proc(self: ^SceneAccessory) -> instancetype ---
+}
+
+@(objc_type=SceneAccessory, objc_name="externalNonInteractiveSceneAccessoryWithConfiguration", objc_is_class_method=true)
+SceneAccessory_externalNonInteractiveSceneAccessoryWithConfiguration :: proc {
+	SceneAccessory_externalNonInteractiveSceneAccessoryWithConfiguration_,
+	SceneAccessory_externalNonInteractiveSceneAccessoryWithConfiguration_userInfo,
+}
+
+
+@(objc_class="UISceneAccessoryRegistration", objc_superclass=NS.Object)
+SceneAccessoryRegistration :: struct { using _: NS.Object}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=SceneAccessoryRegistration, objc_selector="init", objc_name="init")
+	SceneAccessoryRegistration_init :: proc(self: ^SceneAccessoryRegistration) -> instancetype ---
+
+	@(objc_type=SceneAccessoryRegistration, objc_selector="isAvailable", objc_name="isAvailable")
+	SceneAccessoryRegistration_isAvailable :: proc(self: ^SceneAccessoryRegistration) -> bool ---
+
+	@(objc_type=SceneAccessoryRegistration, objc_selector="isEnabled", objc_name="isEnabled")
+	SceneAccessoryRegistration_isEnabled :: proc(self: ^SceneAccessoryRegistration) -> bool ---
+
+	@(objc_type=SceneAccessoryRegistration, objc_selector="setEnabled:", objc_name="setEnabled")
+	SceneAccessoryRegistration_setEnabled :: proc(self: ^SceneAccessoryRegistration, enabled: bool) ---
 }
 
 
@@ -213,6 +266,26 @@ foreign lib {
 }
 
 
+@(objc_class="UISceneClosureConfirmation", objc_superclass=NS.Object)
+SceneClosureConfirmation :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+	using _: NS.SecureCoding,
+}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=SceneClosureConfirmation, objc_selector="confirmationWithTitle:message:actions:", objc_name="confirmationWithTitle", objc_is_class_method=true)
+	SceneClosureConfirmation_confirmationWithTitle :: proc(title: ^NS.String, message: ^NS.String, actions: ^NS.Array) -> instancetype ---
+
+	@(objc_type=SceneClosureConfirmation, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	SceneClosureConfirmation_new :: proc() -> ^SceneClosureConfirmation ---
+
+	@(objc_type=SceneClosureConfirmation, objc_selector="init", objc_name="init")
+	SceneClosureConfirmation_init :: proc(self: ^SceneClosureConfirmation) -> instancetype ---
+}
+
+
 @(objc_class="UISceneConnectionOptions", objc_superclass=NS.Object)
 SceneConnectionOptions :: struct { using _: NS.Object}
 
@@ -244,6 +317,9 @@ foreign lib {
 
 	@(objc_type=SceneConnectionOptions, objc_selector="cloudKitShareMetadata", objc_name="cloudKitShareMetadata")
 	SceneConnectionOptions_cloudKitShareMetadata :: proc(self: ^SceneConnectionOptions) -> ^CKShareMetadata ---
+
+	@(objc_type=SceneConnectionOptions, objc_selector="sceneAccessoryUserInfo", objc_name="sceneAccessoryUserInfo")
+	SceneConnectionOptions_sceneAccessoryUserInfo :: proc(self: ^SceneConnectionOptions) -> id ---
 }
 
 

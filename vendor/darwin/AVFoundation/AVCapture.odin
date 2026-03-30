@@ -10,6 +10,58 @@ import AT "vendor:darwin/AudioToolbox"
 import CM "vendor:darwin/CoreMedia"
 import CG "core:sys/darwin/CoreGraphics"
 import CA "vendor:darwin/QuartzCore"
+import CV "vendor:darwin/CoreVideo"
+
+@(objc_class="AVCaptureAncillaryDataEncoder", objc_superclass=NS.Object)
+CaptureAncillaryDataEncoder :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="init", objc_name="init")
+	CaptureAncillaryDataEncoder_init :: proc(self: ^CaptureAncillaryDataEncoder) -> instancetype ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	CaptureAncillaryDataEncoder_new :: proc() -> ^CaptureAncillaryDataEncoder ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="setUserInstanceUID:forUserUDAMVersion:", objc_name="setUserInstanceUID")
+	CaptureAncillaryDataEncoder_setUserInstanceUID :: proc(self: ^CaptureAncillaryDataEncoder, uuid: ^NS.UUID, version: ^NS.Number) ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="setRDD18AncillaryData:forTag:error:", objc_name="setRDD18AncillaryData_error")
+	CaptureAncillaryDataEncoder_setRDD18AncillaryData_error :: proc(self: ^CaptureAncillaryDataEncoder, data: ^NS.Data, tag: cffi.uint16_t, error: ^^NS.Error) -> bool ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="setRDD18AncillaryDataString:forTag:error:", objc_name="setRDD18AncillaryDataString_error")
+	CaptureAncillaryDataEncoder_setRDD18AncillaryDataString_error :: proc(self: ^CaptureAncillaryDataEncoder, string: ^NS.String, tag: cffi.uint16_t, error: ^^NS.Error) -> bool ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="removeRDD18AncillaryDataForTag:", objc_name="removeRDD18AncillaryDataForTag")
+	CaptureAncillaryDataEncoder_removeRDD18AncillaryDataForTag :: proc(self: ^CaptureAncillaryDataEncoder, tag: cffi.uint16_t) ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="isEnabled", objc_name="isEnabled")
+	CaptureAncillaryDataEncoder_isEnabled :: proc(self: ^CaptureAncillaryDataEncoder) -> bool ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="setEnabled:", objc_name="setEnabled")
+	CaptureAncillaryDataEncoder_setEnabled :: proc(self: ^CaptureAncillaryDataEncoder, enabled: bool) ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="currentUserDefinedAncillaryData", objc_name="currentUserDefinedAncillaryData")
+	CaptureAncillaryDataEncoder_currentUserDefinedAncillaryData :: proc(self: ^CaptureAncillaryDataEncoder) -> ^NS.Dictionary ---
+
+	@(objc_type=CaptureAncillaryDataEncoder, objc_selector="userDefinedAncillaryDataSizeRemaining", objc_name="userDefinedAncillaryDataSizeRemaining")
+	CaptureAncillaryDataEncoder_userDefinedAncillaryDataSizeRemaining :: proc(self: ^CaptureAncillaryDataEncoder) -> cffi.int16_t ---
+}
+
+
+// Odin-style wrappers for methods with a trailing `^^Error` out-parameter
+
+@(objc_type=CaptureAncillaryDataEncoder, objc_name="setRDD18AncillaryData")
+CaptureAncillaryDataEncoder_setRDD18AncillaryData :: #force_inline proc "c" (self: ^CaptureAncillaryDataEncoder, data: ^NS.Data, tag: cffi.uint16_t) -> (ok: bool, err: ^NS.Error) {
+	ok = CaptureAncillaryDataEncoder_setRDD18AncillaryData_error(self, data, tag, &err)
+	return
+}
+
+@(objc_type=CaptureAncillaryDataEncoder, objc_name="setRDD18AncillaryDataString")
+CaptureAncillaryDataEncoder_setRDD18AncillaryDataString :: #force_inline proc "c" (self: ^CaptureAncillaryDataEncoder, string: ^NS.String, tag: cffi.uint16_t) -> (ok: bool, err: ^NS.Error) {
+	ok = CaptureAncillaryDataEncoder_setRDD18AncillaryDataString_error(self, string, tag, &err)
+	return
+}
+
 
 @(objc_class="AVCaptureAudioChannel", objc_superclass=NS.Object)
 CaptureAudioChannel :: struct { using _: NS.Object}
@@ -198,6 +250,63 @@ foreign lib {
 }
 
 
+@(objc_class="AVCaptureBroadcastVideoOutput", objc_superclass=CaptureOutput)
+CaptureBroadcastVideoOutput :: struct { using _: CaptureOutput}
+
+foreign lib {
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="init", objc_name="init")
+	CaptureBroadcastVideoOutput_init :: proc(self: ^CaptureBroadcastVideoOutput) -> instancetype ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	CaptureBroadcastVideoOutput_new :: proc() -> ^CaptureBroadcastVideoOutput ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="setDelegate:queue:", objc_name="setDelegate")
+	CaptureBroadcastVideoOutput_setDelegate :: proc(self: ^CaptureBroadcastVideoOutput, delegate: ^CaptureBroadcastVideoOutputDelegate, delegateCallbackQueue: CF.dispatch_queue_t) ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="resetFrameBuffer", objc_name="resetFrameBuffer")
+	CaptureBroadcastVideoOutput_resetFrameBuffer :: proc(self: ^CaptureBroadcastVideoOutput) ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="delegate", objc_name="delegate")
+	CaptureBroadcastVideoOutput_delegate :: proc(self: ^CaptureBroadcastVideoOutput) -> ^CaptureBroadcastVideoOutputDelegate ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="delegateCallbackQueue", objc_name="delegateCallbackQueue")
+	CaptureBroadcastVideoOutput_delegateCallbackQueue :: proc(self: ^CaptureBroadcastVideoOutput) -> CF.dispatch_queue_t ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="videoSettings", objc_name="videoSettings")
+	CaptureBroadcastVideoOutput_videoSettings :: proc(self: ^CaptureBroadcastVideoOutput) -> ^NS.Dictionary ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="maxBufferedFrameCount", objc_name="maxBufferedFrameCount")
+	CaptureBroadcastVideoOutput_maxBufferedFrameCount :: proc(self: ^CaptureBroadcastVideoOutput) -> NS.Integer ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="setMaxBufferedFrameCount:", objc_name="setMaxBufferedFrameCount")
+	CaptureBroadcastVideoOutput_setMaxBufferedFrameCount :: proc(self: ^CaptureBroadcastVideoOutput, maxBufferedFrameCount: NS.Integer) ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="maxSupportedBufferedFrameCount", objc_name="maxSupportedBufferedFrameCount", objc_is_class_method=true)
+	CaptureBroadcastVideoOutput_maxSupportedBufferedFrameCount :: proc() -> NS.Integer ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="ancillaryDataEncoder", objc_name="ancillaryDataEncoder")
+	CaptureBroadcastVideoOutput_ancillaryDataEncoder :: proc(self: ^CaptureBroadcastVideoOutput) -> ^CaptureAncillaryDataEncoder ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="droppedFrameReplacementPolicy", objc_name="droppedFrameReplacementPolicy")
+	CaptureBroadcastVideoOutput_droppedFrameReplacementPolicy :: proc(self: ^CaptureBroadcastVideoOutput) -> CaptureBroadcastVideoOutputDroppedFrameReplacementPolicy ---
+
+	@(objc_type=CaptureBroadcastVideoOutput, objc_selector="setDroppedFrameReplacementPolicy:", objc_name="setDroppedFrameReplacementPolicy")
+	CaptureBroadcastVideoOutput_setDroppedFrameReplacementPolicy :: proc(self: ^CaptureBroadcastVideoOutput, droppedFrameReplacementPolicy: CaptureBroadcastVideoOutputDroppedFrameReplacementPolicy) ---
+}
+
+
+@(objc_class="AVCaptureBroadcastVideoOutputDelegate")
+CaptureBroadcastVideoOutputDelegate :: struct {
+	using _: intrinsics.objc_object,
+	using _: NS.ObjectProtocol,
+}
+
+foreign lib {
+	@(objc_type=CaptureBroadcastVideoOutputDelegate, objc_selector="broadcastVideoOutput:didDropVideoFrameWithPresentationTimeStamp:fromConnection:", objc_name="broadcastVideoOutput")
+	CaptureBroadcastVideoOutputDelegate_broadcastVideoOutput :: proc(self: ^CaptureBroadcastVideoOutputDelegate, output: ^CaptureBroadcastVideoOutput, presentationTimeStamp: CM.Time, connection: ^CaptureConnection) ---
+}
+
+
 @(objc_class="AVCaptureConnection", objc_superclass=NS.Object)
 CaptureConnection :: struct { using _: NS.Object}
 
@@ -339,6 +448,21 @@ foreign lib {
 
 	@(objc_type=CaptureConnection, objc_selector="setCameraIntrinsicMatrixDeliveryEnabled:", objc_name="setCameraIntrinsicMatrixDeliveryEnabled")
 	CaptureConnection_setCameraIntrinsicMatrixDeliveryEnabled :: proc(self: ^CaptureConnection, cameraIntrinsicMatrixDeliveryEnabled: bool) ---
+
+	@(objc_type=CaptureConnection, objc_selector="isLowLightVideoNoiseReductionSupported", objc_name="isLowLightVideoNoiseReductionSupported")
+	CaptureConnection_isLowLightVideoNoiseReductionSupported :: proc(self: ^CaptureConnection) -> bool ---
+
+	@(objc_type=CaptureConnection, objc_selector="automaticallyEnablesLowLightVideoNoiseReduction", objc_name="automaticallyEnablesLowLightVideoNoiseReduction")
+	CaptureConnection_automaticallyEnablesLowLightVideoNoiseReduction :: proc(self: ^CaptureConnection) -> bool ---
+
+	@(objc_type=CaptureConnection, objc_selector="setAutomaticallyEnablesLowLightVideoNoiseReduction:", objc_name="setAutomaticallyEnablesLowLightVideoNoiseReduction")
+	CaptureConnection_setAutomaticallyEnablesLowLightVideoNoiseReduction :: proc(self: ^CaptureConnection, automaticallyEnablesLowLightVideoNoiseReduction: bool) ---
+
+	@(objc_type=CaptureConnection, objc_selector="isLowLightVideoNoiseReductionEnabled", objc_name="isLowLightVideoNoiseReductionEnabled")
+	CaptureConnection_isLowLightVideoNoiseReductionEnabled :: proc(self: ^CaptureConnection) -> bool ---
+
+	@(objc_type=CaptureConnection, objc_selector="setLowLightVideoNoiseReductionEnabled:", objc_name="setLowLightVideoNoiseReductionEnabled")
+	CaptureConnection_setLowLightVideoNoiseReductionEnabled :: proc(self: ^CaptureConnection, lowLightVideoNoiseReductionEnabled: bool) ---
 }
 
 
@@ -739,6 +863,9 @@ foreign lib {
 	@(objc_type=CaptureDevice, objc_selector="minSupportedExternalSyncFrameDuration", objc_name="minSupportedExternalSyncFrameDuration")
 	CaptureDevice_minSupportedExternalSyncFrameDuration :: proc(self: ^CaptureDevice) -> CM.Time ---
 
+	@(objc_type=CaptureDevice, objc_selector="isAdjustingSignalCompensationDelayWhileRunningSupported", objc_name="isAdjustingSignalCompensationDelayWhileRunningSupported")
+	CaptureDevice_isAdjustingSignalCompensationDelayWhileRunningSupported :: proc(self: ^CaptureDevice) -> bool ---
+
 	@(objc_type=CaptureDevice, objc_selector="isAutoVideoFrameRateEnabled", objc_name="isAutoVideoFrameRateEnabled")
 	CaptureDevice_isAutoVideoFrameRateEnabled :: proc(self: ^CaptureDevice) -> bool ---
 
@@ -775,6 +902,9 @@ foreign lib {
 	@(objc_type=CaptureDevice, objc_selector="systemPressureState", objc_name="systemPressureState")
 	CaptureDevice_systemPressureState :: proc(self: ^CaptureDevice) -> ^CaptureSystemPressureState ---
 
+	@(objc_type=CaptureDevice, objc_selector="setPrimaryConstituentDeviceSwitchingBehaviorLockedWithDevice:", objc_name="setPrimaryConstituentDeviceSwitchingBehaviorLockedWithDevice")
+	CaptureDevice_setPrimaryConstituentDeviceSwitchingBehaviorLockedWithDevice :: proc(self: ^CaptureDevice, device: ^CaptureDevice) ---
+
 	@(objc_type=CaptureDevice, objc_selector="setPrimaryConstituentDeviceSwitchingBehavior:restrictedSwitchingBehaviorConditions:", objc_name="setPrimaryConstituentDeviceSwitchingBehavior")
 	CaptureDevice_setPrimaryConstituentDeviceSwitchingBehavior :: proc(self: ^CaptureDevice, switchingBehavior: CapturePrimaryConstituentDeviceSwitchingBehavior, restrictedSwitchingBehaviorConditions: CapturePrimaryConstituentDeviceRestrictedSwitchingBehaviorConditions) ---
 
@@ -786,6 +916,9 @@ foreign lib {
 
 	@(objc_type=CaptureDevice, objc_selector="virtualDeviceSwitchOverVideoZoomFactors", objc_name="virtualDeviceSwitchOverVideoZoomFactors")
 	CaptureDevice_virtualDeviceSwitchOverVideoZoomFactors :: proc(self: ^CaptureDevice) -> ^NS.Array ---
+
+	@(objc_type=CaptureDevice, objc_selector="isPrimaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported", objc_name="isPrimaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported")
+	CaptureDevice_isPrimaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported :: proc(self: ^CaptureDevice) -> bool ---
 
 	@(objc_type=CaptureDevice, objc_selector="primaryConstituentDeviceSwitchingBehavior", objc_name="primaryConstituentDeviceSwitchingBehavior")
 	CaptureDevice_primaryConstituentDeviceSwitchingBehavior :: proc(self: ^CaptureDevice) -> CapturePrimaryConstituentDeviceSwitchingBehavior ---
@@ -949,6 +1082,9 @@ foreign lib {
 	@(objc_type=CaptureDevice, objc_selector="setExposureModeCustomWithDuration:ISO:completionHandler:", objc_name="setExposureModeCustomWithDuration")
 	CaptureDevice_setExposureModeCustomWithDuration :: proc(self: ^CaptureDevice, duration: CM.Time, ISO: cffi.float, handler: ^Objc_Block(proc "c" ( syncTime: CM.Time ))) ---
 
+	@(objc_type=CaptureDevice, objc_selector="setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:", objc_name="setExposureModeCustomWithLensAperture")
+	CaptureDevice_setExposureModeCustomWithLensAperture :: proc(self: ^CaptureDevice, lensAperture: cffi.float, duration: CM.Time, ISO: cffi.float, handler: ^Objc_Block(proc "c" ( syncTime: CM.Time ))) ---
+
 	@(objc_type=CaptureDevice, objc_selector="setExposureTargetBias:completionHandler:", objc_name="setExposureTargetBias")
 	CaptureDevice_setExposureTargetBias :: proc(self: ^CaptureDevice, bias: cffi.float, handler: ^Objc_Block(proc "c" ( syncTime: CM.Time ))) ---
 
@@ -1009,6 +1145,21 @@ foreign lib {
 	@(objc_type=CaptureDevice, objc_selector="ISO", objc_name="ISO")
 	CaptureDevice_ISO :: proc(self: ^CaptureDevice) -> cffi.float ---
 
+	@(objc_type=CaptureDevice, objc_selector="autoExposureLensApertureRateLimit", objc_name="autoExposureLensApertureRateLimit")
+	CaptureDevice_autoExposureLensApertureRateLimit :: proc(self: ^CaptureDevice) -> cffi.float ---
+
+	@(objc_type=CaptureDevice, objc_selector="setAutoExposureLensApertureRateLimit:", objc_name="setAutoExposureLensApertureRateLimit")
+	CaptureDevice_setAutoExposureLensApertureRateLimit :: proc(self: ^CaptureDevice, autoExposureLensApertureRateLimit: cffi.float) ---
+
+	@(objc_type=CaptureDevice, objc_selector="automaticallyAdjustsLensAperture", objc_name="automaticallyAdjustsLensAperture")
+	CaptureDevice_automaticallyAdjustsLensAperture :: proc(self: ^CaptureDevice) -> bool ---
+
+	@(objc_type=CaptureDevice, objc_selector="automaticallyAdjustsExposureDuration", objc_name="automaticallyAdjustsExposureDuration")
+	CaptureDevice_automaticallyAdjustsExposureDuration :: proc(self: ^CaptureDevice) -> bool ---
+
+	@(objc_type=CaptureDevice, objc_selector="automaticallyAdjustsISO", objc_name="automaticallyAdjustsISO")
+	CaptureDevice_automaticallyAdjustsISO :: proc(self: ^CaptureDevice) -> bool ---
+
 	@(objc_type=CaptureDevice, objc_selector="exposureTargetOffset", objc_name="exposureTargetOffset")
 	CaptureDevice_exposureTargetOffset :: proc(self: ^CaptureDevice) -> cffi.float ---
 
@@ -1020,6 +1171,24 @@ foreign lib {
 
 	@(objc_type=CaptureDevice, objc_selector="maxExposureTargetBias", objc_name="maxExposureTargetBias")
 	CaptureDevice_maxExposureTargetBias :: proc(self: ^CaptureDevice) -> cffi.float ---
+
+	@(objc_type=CaptureDevice, objc_selector="activeExposureSignals", objc_name="activeExposureSignals")
+	CaptureDevice_activeExposureSignals :: proc(self: ^CaptureDevice) -> ^NS.Set ---
+
+	@(objc_type=CaptureDevice, objc_selector="enabledExposureSignals", objc_name="enabledExposureSignals")
+	CaptureDevice_enabledExposureSignals :: proc(self: ^CaptureDevice) -> ^NS.Set ---
+
+	@(objc_type=CaptureDevice, objc_selector="setEnabledExposureSignals:", objc_name="setEnabledExposureSignals")
+	CaptureDevice_setEnabledExposureSignals :: proc(self: ^CaptureDevice, enabledExposureSignals: ^NS.Set) ---
+
+	@(objc_type=CaptureDevice, objc_selector="supportedExposureSignals", objc_name="supportedExposureSignals")
+	CaptureDevice_supportedExposureSignals :: proc(self: ^CaptureDevice) -> ^NS.Set ---
+
+	@(objc_type=CaptureDevice, objc_selector="automaticallyEnablesExposureSignals", objc_name="automaticallyEnablesExposureSignals")
+	CaptureDevice_automaticallyEnablesExposureSignals :: proc(self: ^CaptureDevice) -> bool ---
+
+	@(objc_type=CaptureDevice, objc_selector="setAutomaticallyEnablesExposureSignals:", objc_name="setAutomaticallyEnablesExposureSignals")
+	CaptureDevice_setAutomaticallyEnablesExposureSignals :: proc(self: ^CaptureDevice, automaticallyEnablesExposureSignals: bool) ---
 
 	@(objc_type=CaptureDevice, objc_selector="isGlobalToneMappingEnabled", objc_name="isGlobalToneMappingEnabled")
 	CaptureDevice_isGlobalToneMappingEnabled :: proc(self: ^CaptureDevice) -> bool ---
@@ -1264,6 +1433,21 @@ foreign lib {
 	@(objc_type=CaptureDevice, objc_selector="nominalFocalLengthIn35mmFilm", objc_name="nominalFocalLengthIn35mmFilm")
 	CaptureDevice_nominalFocalLengthIn35mmFilm :: proc(self: ^CaptureDevice) -> cffi.float ---
 
+	@(objc_type=CaptureDevice, objc_selector="isContinuousAutoFocusTrackingEnabled", objc_name="isContinuousAutoFocusTrackingEnabled")
+	CaptureDevice_isContinuousAutoFocusTrackingEnabled :: proc(self: ^CaptureDevice) -> bool ---
+
+	@(objc_type=CaptureDevice, objc_selector="setContinuousAutoFocusTrackingEnabled:", objc_name="setContinuousAutoFocusTrackingEnabled")
+	CaptureDevice_setContinuousAutoFocusTrackingEnabled :: proc(self: ^CaptureDevice, continuousAutoFocusTrackingEnabled: bool) ---
+
+	@(objc_type=CaptureDevice, objc_selector="continuousAutoFocusTrackingLensPositionBias", objc_name="continuousAutoFocusTrackingLensPositionBias")
+	CaptureDevice_continuousAutoFocusTrackingLensPositionBias :: proc(self: ^CaptureDevice) -> cffi.float ---
+
+	@(objc_type=CaptureDevice, objc_selector="setContinuousAutoFocusTrackingLensPositionBias:", objc_name="setContinuousAutoFocusTrackingLensPositionBias")
+	CaptureDevice_setContinuousAutoFocusTrackingLensPositionBias :: proc(self: ^CaptureDevice, continuousAutoFocusTrackingLensPositionBias: cffi.float) ---
+
+	@(objc_type=CaptureDevice, objc_selector="isContinuousAutoFocusTrackingSubjectAcquired", objc_name="isContinuousAutoFocusTrackingSubjectAcquired")
+	CaptureDevice_isContinuousAutoFocusTrackingSubjectAcquired :: proc(self: ^CaptureDevice) -> bool ---
+
 	@(objc_type=CaptureDevice, objc_selector="isStudioLightEnabled", objc_name="isStudioLightEnabled", objc_is_class_method=true)
 	CaptureDevice_isStudioLightEnabled :: proc() -> bool ---
 
@@ -1343,6 +1527,9 @@ foreign lib {
 	@(objc_type=CaptureDeviceFormat, objc_selector="isVideoStabilizationModeSupported:", objc_name="isVideoStabilizationModeSupported")
 	CaptureDeviceFormat_isVideoStabilizationModeSupported :: proc(self: ^CaptureDeviceFormat, videoStabilizationMode: CaptureVideoStabilizationMode) -> bool ---
 
+	@(objc_type=CaptureDeviceFormat, objc_selector="supportsExposureModeCustomWithLensAperture:duration:ISO:", objc_name="supportsExposureModeCustomWithLensAperture")
+	CaptureDeviceFormat_supportsExposureModeCustomWithLensAperture :: proc(self: ^CaptureDeviceFormat, lensAperture: cffi.float, duration: CM.Time, ISO: cffi.float) -> bool ---
+
 	@(objc_type=CaptureDeviceFormat, objc_selector="mediaType", objc_name="mediaType")
 	CaptureDeviceFormat_mediaType :: proc(self: ^CaptureDeviceFormat) -> ^NS.String ---
 
@@ -1369,6 +1556,18 @@ foreign lib {
 
 	@(objc_type=CaptureDeviceFormat, objc_selector="systemRecommendedVideoZoomRange", objc_name="systemRecommendedVideoZoomRange")
 	CaptureDeviceFormat_systemRecommendedVideoZoomRange :: proc(self: ^CaptureDeviceFormat) -> ^ZoomRange ---
+
+	@(objc_type=CaptureDeviceFormat, objc_selector="recommendedLensApertureStops", objc_name="recommendedLensApertureStops")
+	CaptureDeviceFormat_recommendedLensApertureStops :: proc(self: ^CaptureDeviceFormat) -> ^NS.Array ---
+
+	@(objc_type=CaptureDeviceFormat, objc_selector="minLensAperture", objc_name="minLensAperture")
+	CaptureDeviceFormat_minLensAperture :: proc(self: ^CaptureDeviceFormat) -> cffi.float ---
+
+	@(objc_type=CaptureDeviceFormat, objc_selector="maxLensAperture", objc_name="maxLensAperture")
+	CaptureDeviceFormat_maxLensAperture :: proc(self: ^CaptureDeviceFormat) -> cffi.float ---
+
+	@(objc_type=CaptureDeviceFormat, objc_selector="defaultLensAperture", objc_name="defaultLensAperture")
+	CaptureDeviceFormat_defaultLensAperture :: proc(self: ^CaptureDeviceFormat) -> cffi.float ---
 
 	@(objc_type=CaptureDeviceFormat, objc_selector="minExposureDuration", objc_name="minExposureDuration")
 	CaptureDeviceFormat_minExposureDuration :: proc(self: ^CaptureDeviceFormat) -> CM.Time ---
@@ -1508,6 +1707,9 @@ foreign lib {
 	@(objc_type=CaptureDeviceFormat, objc_selector="videoFrameRateRangeForCinematicVideo", objc_name="videoFrameRateRangeForCinematicVideo")
 	CaptureDeviceFormat_videoFrameRateRangeForCinematicVideo :: proc(self: ^CaptureDeviceFormat) -> ^FrameRateRange ---
 
+	@(objc_type=CaptureDeviceFormat, objc_selector="isCinematicVideoMetadataCaptureSupported", objc_name="isCinematicVideoMetadataCaptureSupported")
+	CaptureDeviceFormat_isCinematicVideoMetadataCaptureSupported :: proc(self: ^CaptureDeviceFormat) -> bool ---
+
 	@(objc_type=CaptureDeviceFormat, objc_selector="videoFieldOfViewForAspectRatio:geometricDistortionCorrected:", objc_name="videoFieldOfViewForAspectRatio")
 	CaptureDeviceFormat_videoFieldOfViewForAspectRatio :: proc(self: ^CaptureDeviceFormat, aspectRatio: ^NS.String, geometricDistortionCorrected: bool) -> cffi.float ---
 
@@ -1519,6 +1721,12 @@ foreign lib {
 
 	@(objc_type=CaptureDeviceFormat, objc_selector="isCameraLensSmudgeDetectionSupported", objc_name="isCameraLensSmudgeDetectionSupported")
 	CaptureDeviceFormat_isCameraLensSmudgeDetectionSupported :: proc(self: ^CaptureDeviceFormat) -> bool ---
+
+	@(objc_type=CaptureDeviceFormat, objc_selector="isContinuousAutoFocusTrackingSupported", objc_name="isContinuousAutoFocusTrackingSupported")
+	CaptureDeviceFormat_isContinuousAutoFocusTrackingSupported :: proc(self: ^CaptureDeviceFormat) -> bool ---
+
+	@(objc_type=CaptureDeviceFormat, objc_selector="isLowLightVideoNoiseReductionSupported", objc_name="isLowLightVideoNoiseReductionSupported")
+	CaptureDeviceFormat_isLowLightVideoNoiseReductionSupported :: proc(self: ^CaptureDeviceFormat) -> bool ---
 }
 
 
@@ -1675,6 +1883,9 @@ foreign lib {
 
 	@(objc_type=CaptureDeviceRotationCoordinator, objc_selector="initWithDevice:previewLayer:", objc_name="initWithDevice")
 	CaptureDeviceRotationCoordinator_initWithDevice :: proc(self: ^CaptureDeviceRotationCoordinator, device: ^CaptureDevice, previewLayer: ^CA.Layer) -> instancetype ---
+
+	@(objc_type=CaptureDeviceRotationCoordinator, objc_selector="videoRotationAngleRelativeToDeviceOrientation:", objc_name="videoRotationAngleRelativeToDeviceOrientation")
+	CaptureDeviceRotationCoordinator_videoRotationAngleRelativeToDeviceOrientation :: proc(self: ^CaptureDeviceRotationCoordinator, deviceOrientation: CaptureVideoOrientation) -> CG.Float ---
 
 	@(objc_type=CaptureDeviceRotationCoordinator, objc_selector="device", objc_name="device")
 	CaptureDeviceRotationCoordinator_device :: proc(self: ^CaptureDeviceRotationCoordinator) -> ^CaptureDevice ---
@@ -2079,6 +2290,30 @@ foreign lib {
 
 	@(objc_type=CaptureMovieFileOutput, objc_selector="setSpatialVideoCaptureEnabled:", objc_name="setSpatialVideoCaptureEnabled")
 	CaptureMovieFileOutput_setSpatialVideoCaptureEnabled :: proc(self: ^CaptureMovieFileOutput, spatialVideoCaptureEnabled: bool) ---
+
+	@(objc_type=CaptureMovieFileOutput, objc_selector="isCinematicVideoMetadataCaptureSupported", objc_name="isCinematicVideoMetadataCaptureSupported")
+	CaptureMovieFileOutput_isCinematicVideoMetadataCaptureSupported :: proc(self: ^CaptureMovieFileOutput) -> bool ---
+
+	@(objc_type=CaptureMovieFileOutput, objc_selector="automaticallyAdjustsCinematicVideoMetadataCaptureEnabled", objc_name="automaticallyAdjustsCinematicVideoMetadataCaptureEnabled")
+	CaptureMovieFileOutput_automaticallyAdjustsCinematicVideoMetadataCaptureEnabled :: proc(self: ^CaptureMovieFileOutput) -> bool ---
+
+	@(objc_type=CaptureMovieFileOutput, objc_selector="setAutomaticallyAdjustsCinematicVideoMetadataCaptureEnabled:", objc_name="setAutomaticallyAdjustsCinematicVideoMetadataCaptureEnabled")
+	CaptureMovieFileOutput_setAutomaticallyAdjustsCinematicVideoMetadataCaptureEnabled :: proc(self: ^CaptureMovieFileOutput, automaticallyAdjustsCinematicVideoMetadataCaptureEnabled: bool) ---
+
+	@(objc_type=CaptureMovieFileOutput, objc_selector="isCinematicVideoMetadataCaptureEnabled", objc_name="isCinematicVideoMetadataCaptureEnabled")
+	CaptureMovieFileOutput_isCinematicVideoMetadataCaptureEnabled :: proc(self: ^CaptureMovieFileOutput) -> bool ---
+
+	@(objc_type=CaptureMovieFileOutput, objc_selector="setCinematicVideoMetadataCaptureEnabled:", objc_name="setCinematicVideoMetadataCaptureEnabled")
+	CaptureMovieFileOutput_setCinematicVideoMetadataCaptureEnabled :: proc(self: ^CaptureMovieFileOutput, cinematicVideoMetadataCaptureEnabled: bool) ---
+
+	@(objc_type=CaptureMovieFileOutput, objc_selector="isProVideoStorageSupported", objc_name="isProVideoStorageSupported")
+	CaptureMovieFileOutput_isProVideoStorageSupported :: proc(self: ^CaptureMovieFileOutput) -> bool ---
+
+	@(objc_type=CaptureMovieFileOutput, objc_selector="usesProVideoStorage", objc_name="usesProVideoStorage")
+	CaptureMovieFileOutput_usesProVideoStorage :: proc(self: ^CaptureMovieFileOutput) -> bool ---
+
+	@(objc_type=CaptureMovieFileOutput, objc_selector="setUsesProVideoStorage:", objc_name="setUsesProVideoStorage")
+	CaptureMovieFileOutput_setUsesProVideoStorage :: proc(self: ^CaptureMovieFileOutput, usesProVideoStorage: bool) ---
 }
 
 
@@ -2146,10 +2381,10 @@ foreign lib {
 	CapturePhoto_isRawPhoto :: proc(self: ^CapturePhoto) -> bool ---
 
 	@(objc_type=CapturePhoto, objc_selector="pixelBuffer", objc_name="pixelBuffer")
-	CapturePhoto_pixelBuffer :: proc(self: ^CapturePhoto) -> CVPixelBufferRef ---
+	CapturePhoto_pixelBuffer :: proc(self: ^CapturePhoto) -> CV.PixelBufferRef ---
 
 	@(objc_type=CapturePhoto, objc_selector="previewPixelBuffer", objc_name="previewPixelBuffer")
-	CapturePhoto_previewPixelBuffer :: proc(self: ^CapturePhoto) -> CVPixelBufferRef ---
+	CapturePhoto_previewPixelBuffer :: proc(self: ^CapturePhoto) -> CV.PixelBufferRef ---
 
 	@(objc_type=CapturePhoto, objc_selector="embeddedThumbnailPhotoFormat", objc_name="embeddedThumbnailPhotoFormat")
 	CapturePhoto_embeddedThumbnailPhotoFormat :: proc(self: ^CapturePhoto) -> ^NS.Dictionary ---
@@ -2176,7 +2411,7 @@ foreign lib {
 	CapturePhoto_sourceDeviceType :: proc(self: ^CapturePhoto) -> ^NS.String ---
 
 	@(objc_type=CapturePhoto, objc_selector="constantColorConfidenceMap", objc_name="constantColorConfidenceMap")
-	CapturePhoto_constantColorConfidenceMap :: proc(self: ^CapturePhoto) -> CVPixelBufferRef ---
+	CapturePhoto_constantColorConfidenceMap :: proc(self: ^CapturePhoto) -> CV.PixelBufferRef ---
 
 	@(objc_type=CapturePhoto, objc_selector="constantColorCenterWeightedMeanConfidenceLevel", objc_name="constantColorCenterWeightedMeanConfidenceLevel")
 	CapturePhoto_constantColorCenterWeightedMeanConfidenceLevel :: proc(self: ^CapturePhoto) -> cffi.float ---
@@ -2191,7 +2426,7 @@ foreign lib {
 	CapturePhoto_fileDataRepresentationWithCustomizer :: proc(self: ^CapturePhoto, customizer: ^CapturePhotoFileDataRepresentationCustomizer) -> ^NS.Data ---
 
 	@(objc_type=CapturePhoto, objc_selector="fileDataRepresentationWithReplacementMetadata:replacementEmbeddedThumbnailPhotoFormat:replacementEmbeddedThumbnailPixelBuffer:replacementDepthData:", objc_name="fileDataRepresentationWithReplacementMetadata")
-	CapturePhoto_fileDataRepresentationWithReplacementMetadata :: proc(self: ^CapturePhoto, replacementMetadata: ^NS.Dictionary, replacementEmbeddedThumbnailPhotoFormat: ^NS.Dictionary, replacementEmbeddedThumbnailPixelBuffer: CVPixelBufferRef, replacementDepthData: ^DepthData) -> ^NS.Data ---
+	CapturePhoto_fileDataRepresentationWithReplacementMetadata :: proc(self: ^CapturePhoto, replacementMetadata: ^NS.Dictionary, replacementEmbeddedThumbnailPhotoFormat: ^NS.Dictionary, replacementEmbeddedThumbnailPixelBuffer: CV.PixelBufferRef, replacementDepthData: ^DepthData) -> ^NS.Data ---
 
 	@(objc_type=CapturePhoto, objc_selector="CGImageRepresentation", objc_name="CGImageRepresentation")
 	CapturePhoto_CGImageRepresentation :: proc(self: ^CapturePhoto) -> CG.ImageRef ---
@@ -2297,7 +2532,7 @@ foreign lib {
 	CapturePhotoFileDataRepresentationCustomizer_replacementMetadataForPhoto :: proc(self: ^CapturePhotoFileDataRepresentationCustomizer, photo: ^CapturePhoto) -> ^NS.Dictionary ---
 
 	@(objc_type=CapturePhotoFileDataRepresentationCustomizer, objc_selector="replacementEmbeddedThumbnailPixelBufferWithPhotoFormat:forPhoto:", objc_name="replacementEmbeddedThumbnailPixelBufferWithPhotoFormat")
-	CapturePhotoFileDataRepresentationCustomizer_replacementEmbeddedThumbnailPixelBufferWithPhotoFormat :: proc(self: ^CapturePhotoFileDataRepresentationCustomizer, replacementEmbeddedThumbnailPhotoFormatOut: ^^NS.Dictionary, photo: ^CapturePhoto) -> CVPixelBufferRef ---
+	CapturePhotoFileDataRepresentationCustomizer_replacementEmbeddedThumbnailPixelBufferWithPhotoFormat :: proc(self: ^CapturePhotoFileDataRepresentationCustomizer, replacementEmbeddedThumbnailPhotoFormatOut: ^^NS.Dictionary, photo: ^CapturePhoto) -> CV.PixelBufferRef ---
 
 	@(objc_type=CapturePhotoFileDataRepresentationCustomizer, objc_selector="replacementDepthDataForPhoto:", objc_name="replacementDepthDataForPhoto")
 	CapturePhotoFileDataRepresentationCustomizer_replacementDepthDataForPhoto :: proc(self: ^CapturePhotoFileDataRepresentationCustomizer, photo: ^CapturePhoto) -> ^DepthData ---

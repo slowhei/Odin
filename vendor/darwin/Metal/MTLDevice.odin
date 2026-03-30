@@ -252,6 +252,9 @@ foreign lib {
 	@(objc_type=Device, objc_selector="newTensorWithDescriptor:error:", objc_name="newTensorWithDescriptor_error")
 	Device_newTensorWithDescriptor_error :: proc(self: ^Device, descriptor: ^TensorDescriptor, error: ^^NS.Error) -> ^Tensor ---
 
+	@(objc_type=Device, objc_selector="newTensorWithDescriptor:attachments:error:", objc_name="newTensorWithDescriptor_attachments_error")
+	Device_newTensorWithDescriptor_attachments_error :: proc(self: ^Device, descriptor: ^TensorDescriptor, attachments: ^TensorBufferAttachments, error: ^^NS.Error) -> ^Tensor ---
+
 	@(objc_type=Device, objc_selector="functionHandleWithFunction:", objc_name="functionHandleWithFunction")
 	Device_functionHandleWithFunction :: proc(self: ^Device, function: ^Function) -> ^FunctionHandle ---
 
@@ -511,6 +514,12 @@ Device_sparseTileSizeWithTextureType :: proc {
 	Device_sparseTileSizeWithTextureType_pixelFormat_sampleCount_sparsePageSize,
 }
 
+@(objc_type=Device, objc_name="newTensorWithDescriptor")
+Device_newTensorWithDescriptor :: proc {
+	Device_newTensorWithDescriptor_,
+	Device_newTensorWithDescriptor_attachments,
+}
+
 @(objc_type=Device, objc_name="newBufferWithLength")
 Device_newBufferWithLength :: proc {
 	Device_newBufferWithLength_options,
@@ -664,9 +673,15 @@ Device_newResidencySetWithDescriptor :: #force_inline proc "c" (self: ^Device, d
 	return
 }
 
-@(objc_type=Device, objc_name="newTensorWithDescriptor")
-Device_newTensorWithDescriptor :: #force_inline proc "c" (self: ^Device, descriptor: ^TensorDescriptor) -> (res: ^Tensor, err: ^NS.Error) {
+@(objc_type=Device, objc_name="newTensorWithDescriptor_")
+Device_newTensorWithDescriptor_ :: #force_inline proc "c" (self: ^Device, descriptor: ^TensorDescriptor) -> (res: ^Tensor, err: ^NS.Error) {
 	res = Device_newTensorWithDescriptor_error(self, descriptor, &err)
+	return
+}
+
+@(objc_type=Device, objc_name="newTensorWithDescriptor_attachments")
+Device_newTensorWithDescriptor_attachments :: #force_inline proc "c" (self: ^Device, descriptor: ^TensorDescriptor, attachments: ^TensorBufferAttachments) -> (res: ^Tensor, err: ^NS.Error) {
+	res = Device_newTensorWithDescriptor_attachments_error(self, descriptor, attachments, &err)
 	return
 }
 

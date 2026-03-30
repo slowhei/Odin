@@ -17,7 +17,7 @@ IMP           :: rawptr
 Protocol      :: distinct id
 instancetype  :: intrinsics.objc_instancetype
 
-@(export, require)
+@(export)
 foreign import lib {
 	"system:CoreGraphics.framework",
 }
@@ -1852,7 +1852,7 @@ foreign lib {
 	ColorConversionInfoCreateFromListWithArguments :: proc(options: CF.DictionaryRef, _0: ColorSpaceRef, _1: ColorConversionInfoTransformType, _2: ColorRenderingIntent, _3: ^cffi.va_list) -> ColorConversionInfoRef ---
 
 	@(link_name="CGColorConversionInfoCreateForToneMapping")
-	ColorConversionInfoCreateForToneMapping :: proc(from: ColorSpaceRef, source_headroom: cffi.float, to: ColorSpaceRef, target_headroom: cffi.float, method: ToneMapping, options: CF.DictionaryRef, error: ^CF.ErrorRef) -> ColorConversionInfoRef ---
+	ColorConversionInfoCreateForToneMapping :: proc(source: ColorSpaceRef, source_headroom: cffi.float, target: ColorSpaceRef, target_headroom: cffi.float, method: ToneMapping, options: CF.DictionaryRef, error: ^CF.ErrorRef) -> ColorConversionInfoRef ---
 
 	@(link_name="CGColorConversionInfoConvertData")
 	ColorConversionInfoConvertData :: proc(info: ColorConversionInfoRef, width: cffi.size_t, height: cffi.size_t, dst_data: rawptr, dst_format: ColorBufferFormat, src_data: rawptr, src_format: ColorBufferFormat, options: CF.DictionaryRef) -> cffi.bool ---
@@ -1923,6 +1923,12 @@ foreign lib {
 	@(link_name="CGPDFContentStreamGetResource")
 	PDFContentStreamGetResource :: proc(cs: PDFContentStreamRef, category: cstring, name: cstring) -> PDFObjectRef ---
 
+	@(link_name="CGPDFMarkedContentItemRetain")
+	PDFMarkedContentItemRetain :: proc(markedContentItem: PDFMarkedContentItemRef) -> PDFMarkedContentItemRef ---
+
+	@(link_name="CGPDFMarkedContentItemRelease")
+	PDFMarkedContentItemRelease :: proc(markedContentItem: PDFMarkedContentItemRef) ---
+
 	@(link_name="CGPDFContextCreate")
 	PDFContextCreate :: proc(consumer: DataConsumerRef, mediaBox: ^Rect, auxiliaryInfo: CF.DictionaryRef) -> ContextRef ---
 
@@ -1970,6 +1976,54 @@ foreign lib {
 
 	@(link_name="CGPDFContextEndTag")
 	PDFContextEndTag :: proc(_context: ContextRef) ---
+
+	@(link_name="CGPDFContextBeginMarkedContentSequence")
+	PDFContextBeginMarkedContentSequence :: proc(_context: ContextRef, tagType: PDFTagType) -> PDFMarkedContentItemRef ---
+
+	@(link_name="CGPDFContextBeginNonStructuralMarkedContentSequence")
+	PDFContextBeginNonStructuralMarkedContentSequence :: proc(_context: ContextRef, tagType: PDFTagType) ---
+
+	@(link_name="CGPDFContextEndMarkedContentSequence")
+	PDFContextEndMarkedContentSequence :: proc(_context: ContextRef) ---
+
+	@(link_name="CGPDFContextBeginObjectReference")
+	PDFContextBeginObjectReference :: proc(_context: ContextRef) -> PDFMarkedContentItemRef ---
+
+	@(link_name="CGPDFContextEndObjectReference")
+	PDFContextEndObjectReference :: proc(_context: ContextRef) ---
+
+	@(link_name="CGPDFContextAddStructureTreeRootChild")
+	PDFContextAddStructureTreeRootChild :: proc(_context: ContextRef, structureElement: PDFStructureElementRef) -> CF.OSStatus ---
+
+	@(link_name="CGPDFStructureElementCreate")
+	PDFStructureElementCreate :: proc(type: PDFTagType) -> PDFStructureElementRef ---
+
+	@(link_name="CGPDFStructureElementRetain")
+	PDFStructureElementRetain :: proc(structureElemnt: PDFStructureElementRef) -> PDFStructureElementRef ---
+
+	@(link_name="CGPDFStructureElementRelease")
+	PDFStructureElementRelease :: proc(structureElemnt: PDFStructureElementRef) ---
+
+	@(link_name="CGPDFStructureElementSetTitle")
+	PDFStructureElementSetTitle :: proc(structureElement: PDFStructureElementRef, title: CF.StringRef) ---
+
+	@(link_name="CGPDFStructureElementSetLanguageIdentifier")
+	PDFStructureElementSetLanguageIdentifier :: proc(structureElement: PDFStructureElementRef, languageID: CF.StringRef) ---
+
+	@(link_name="CGPDFStructureElementSetAlternativeText")
+	PDFStructureElementSetAlternativeText :: proc(structureElement: PDFStructureElementRef, alternativeText: CF.StringRef) ---
+
+	@(link_name="CGPDFStructureElementSetExpansionText")
+	PDFStructureElementSetExpansionText :: proc(structureElement: PDFStructureElementRef, expansionText: CF.StringRef) ---
+
+	@(link_name="CGPDFStructureElementSetActualText")
+	PDFStructureElementSetActualText :: proc(structureElement: PDFStructureElementRef, actualText: CF.StringRef) ---
+
+	@(link_name="CGPDFStructureElementAddStructureElement")
+	PDFStructureElementAddStructureElement :: proc(structureElement: PDFStructureElementRef, childStructureElement: PDFStructureElementRef) -> CF.OSStatus ---
+
+	@(link_name="CGPDFStructureElementAddMarkedContentItem")
+	PDFStructureElementAddMarkedContentItem :: proc(structureElement: PDFStructureElementRef, markedContentItem: PDFMarkedContentItemRef) -> CF.OSStatus ---
 
 	@(link_name="CGPDFScannerCreate")
 	PDFScannerCreate :: proc(cs: PDFContentStreamRef, table: PDFOperatorTableRef, info: rawptr) -> PDFScannerRef ---
@@ -2674,6 +2728,8 @@ DataConsumerReleaseInfoCallback :: proc "c" ( info: rawptr )
 ErrorCallback :: proc "c" ()
 LayerRef :: distinct ^Layer
 PDFContentStreamRef :: distinct ^PDFContentStream
+PDFMarkedContentItemRef :: distinct ^PDFMarkedContentItem
+PDFStructureElementRef :: distinct ^PDFStructureElement
 PDFTagProperty :: distinct CF.StringRef
 PDFOperatorTableRef :: distinct ^PDFOperatorTable
 PDFScannerRef :: distinct ^PDFScanner
@@ -2771,6 +2827,7 @@ GradientDrawingOption :: enum cffi.uint {
 	DrawsBeforeStartLocation = 0,
 	DrawsAfterEndLocation    = 1,
 }
+
 GradientDrawingOptions :: bit_set[GradientDrawingOption; cffi.uint]
 
 ImageAlphaInfo :: enum cffi.uint {
@@ -2880,15 +2937,17 @@ PDFAccessPermission :: enum cffi.uint {
 	AllowsCommenting           = 6,
 	AllowsFormFieldEntry       = 7,
 }
+
 PDFAccessPermissions :: bit_set[PDFAccessPermission; cffi.uint]
 
 ToneMapping :: enum cffi.uint {
-	Default                  = 0,
-	ImageSpecificLumaScaling = 1,
-	ReferenceWhiteBased      = 2,
-	ITURecommended           = 3,
-	EXRGamma                 = 4,
-	None                     = 5,
+	Default                   = 0,
+	ImageSpecificLumaScaling  = 1,
+	HeadroomAdaptiveGainCurve = 6,
+	ReferenceWhiteBased       = 2,
+	ITURecommended            = 3,
+	EXRGamma                  = 4,
+	None                      = 5,
 }
 
 PathDrawingMode :: enum cffi.int {
@@ -2961,8 +3020,8 @@ ColorModelFlag :: enum cffi.uint {
 	Lab     = 3,
 	DeviceN = 4,
 }
+
 ColorModel :: bit_set[ColorModelFlag; cffi.uint]
-ColorModel_NoColorant :: ColorModel{}
 
 Component :: enum cffi.uint {
 	Unknown      = 0,
@@ -3060,6 +3119,7 @@ PDFTagType :: enum cffi.int {
 	Formula            = 701,
 	Form               = 702,
 	Object             = 800,
+	Artifact           = 900,
 }
 
 when ODIN_PLATFORM_SUBTARGET == .Default {
@@ -3075,23 +3135,25 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		StoreBuffered    = 2,
 	}
 
-	WindowListOption :: enum cffi.uint {
-		All                    = 0,
-		OnScreenOnly           = 1,
-		OnScreenAboveWindow    = 2,
-		OnScreenBelowWindow    = 4,
-		IncludingWindow        = 8,
-		ExcludeDesktopElements = 16,
+	WindowListOptionFlag :: enum cffi.uint {
+		OnScreenOnly           = 0,
+		OnScreenAboveWindow    = 1,
+		OnScreenBelowWindow    = 2,
+		IncludingWindow        = 3,
+		ExcludeDesktopElements = 4,
 	}
 
-	WindowImageOption :: enum cffi.uint {
-		Default             = 0,
-		BoundsIgnoreFraming = 1,
-		ShouldBeOpaque      = 2,
-		OnlyShadows         = 4,
-		BestResolution      = 8,
-		NominalResolution   = 16,
+	WindowListOption :: bit_set[WindowListOptionFlag; cffi.uint]
+
+	WindowImageOptionFlag :: enum cffi.uint {
+		BoundsIgnoreFraming = 0,
+		ShouldBeOpaque      = 1,
+		OnlyShadows         = 2,
+		BestResolution      = 3,
+		NominalResolution   = 4,
 	}
+
+	WindowImageOption :: bit_set[WindowImageOptionFlag; cffi.uint]
 
 	WindowLevelKey :: enum cffi.int {
 		BaseWindowLevelKey              = 0,
@@ -3121,14 +3183,15 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 	CaptureOption :: enum cffi.uint {
 		NoFill = 0,
 	}
-	CaptureOptions :: bit_set[CaptureOption; cffi.uint]
-	CaptureOptions_NoOptions :: CaptureOptions{}
 
-	ConfigureOption :: enum cffi.uint {
-		ForAppOnly  = 0,
-		ForSession  = 1,
-		Permanently = 2,
+	CaptureOptions :: bit_set[CaptureOption; cffi.uint]
+
+	ConfigureOptionFlag :: enum cffi.uint {
+		ForSession  = 0,
+		Permanently = 1,
 	}
+
+	ConfigureOption :: bit_set[ConfigureOptionFlag; cffi.uint]
 
 	DisplayChangeSummaryFlag :: enum cffi.uint {
 		BeginConfigurationFlag  = 0,
@@ -3164,16 +3227,16 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		Move                       = 0,
 		ReducedDirtyRectangleCount = 31,
 	}
-	ScreenUpdateOperation :: bit_set[ScreenUpdateOperationFlag; cffi.uint]
-	ScreenUpdateOperation_Refresh :: ScreenUpdateOperation{}
 
-	EventFilterMaskFlag :: enum cffi.uint {
+	ScreenUpdateOperation :: bit_set[ScreenUpdateOperationFlag; cffi.uint]
+
+	EventFilterFlag :: enum cffi.uint {
 		PermitLocalMouseEvents    = 0,
 		PermitLocalKeyboardEvents = 1,
 		PermitSystemDefinedEvents = 2,
 	}
 
-	EventFilterMask :: bit_set[EventFilterMaskFlag; cffi.uint]
+	EventFilterMask :: bit_set[EventFilterFlag; cffi.uint]
 
 	EventSuppressionState :: enum cffi.uint {
 		SuppressionInterval            = 0,
@@ -3518,6 +3581,10 @@ DataConsumerCallbacks :: struct #align (8) {
 Layer :: struct {}
 
 PDFContentStream :: struct {}
+
+PDFMarkedContentItem :: struct {}
+
+PDFStructureElement :: struct {}
 
 PDFOperatorTable :: struct {}
 

@@ -1064,7 +1064,7 @@ UndoCloseGroupingRunLoopOrdering                     :: NS.UndoCloseGroupingRunL
 NotificationDeliverImmediately                       :: NS.NotificationDeliverImmediately
 NotificationPostToAllSessions                        :: NS.NotificationPostToAllSessions
 
-@(require) foreign import Foundation_exports "system:Foundation.framework"
+foreign import Foundation_exports "system:Foundation.framework"
 foreign Foundation_exports {
 	@(link_name="NSFoundationVersionNumber") FoundationVersionNumber: cffi.double
 	@(link_name="NSItemProviderPreferredImageSizeKey") ItemProviderPreferredImageSizeKey: ^String
@@ -1934,3 +1934,7 @@ Range_Equal                :: NS.Range_Equal
 Range_LocationInRange      :: NS.Range_LocationInRange
 Range_Max                  :: NS.Range_Max
 Block                      :: NS.Block
+os_workgroup_t             :: NS.os_workgroup_t
+OS_os_workgroup            :: NS.OS_os_workgroup
+os_workgroup_s             :: NS.os_workgroup_s
+OS_object                  :: NS.OS_object

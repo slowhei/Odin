@@ -4,6 +4,7 @@ package darwin_UIKit
 
 import CG "core:sys/darwin/CoreGraphics"
 import NS "core:sys/darwin/Foundation"
+import CA "vendor:darwin/QuartzCore"
 import "base:intrinsics"
 
 @(objc_class="UIWindow", objc_superclass=View)
@@ -96,6 +97,9 @@ foreign lib {
 	@(objc_type=WindowScene, objc_selector="requestGeometryUpdateWithPreferences:errorHandler:", objc_name="requestGeometryUpdateWithPreferences")
 	WindowScene_requestGeometryUpdateWithPreferences :: proc(self: ^WindowScene, geometryPreferences: ^WindowSceneGeometryPreferences, errorHandler: ^Objc_Block(proc "c" ( error: ^NS.Error ))) ---
 
+	@(objc_type=WindowScene, objc_selector="displayLinkWithTarget:selector:", objc_name="displayLinkWithTarget")
+	WindowScene_displayLinkWithTarget :: proc(self: ^WindowScene, target: id, sel: SEL) -> ^CA.DisplayLink ---
+
 	@(objc_type=WindowScene, objc_selector="screen", objc_name="screen")
 	WindowScene_screen :: proc(self: ^WindowScene) -> ^Screen ---
 
@@ -132,6 +136,12 @@ foreign lib {
 	@(objc_type=WindowScene, objc_selector="isFullScreen", objc_name="isFullScreen")
 	WindowScene_isFullScreen :: proc(self: ^WindowScene) -> bool ---
 
+	@(objc_type=WindowScene, objc_selector="closureConfirmation", objc_name="closureConfirmation")
+	WindowScene_closureConfirmation :: proc(self: ^WindowScene) -> ^SceneClosureConfirmation ---
+
+	@(objc_type=WindowScene, objc_selector="setClosureConfirmation:", objc_name="setClosureConfirmation")
+	WindowScene_setClosureConfirmation :: proc(self: ^WindowScene, closureConfirmation: ^SceneClosureConfirmation) ---
+
 	@(objc_type=WindowScene, objc_selector="traitOverrides", objc_name="traitOverrides")
 	WindowScene_traitOverrides :: proc(self: ^WindowScene) -> ^TraitOverrides ---
 
@@ -166,6 +176,9 @@ foreign lib {
 
 	@(objc_type=WindowSceneDelegateProtocol, objc_selector="windowScene:didUpdateEffectiveGeometry:", objc_name="windowScene_didUpdateEffectiveGeometry")
 	WindowSceneDelegateProtocol_windowScene_didUpdateEffectiveGeometry :: proc(self: ^WindowSceneDelegateProtocol, windowScene: ^WindowScene, previousEffectiveGeometry: ^WindowSceneGeometry) ---
+
+	@(objc_type=WindowSceneDelegateProtocol, objc_selector="supportedInterfaceOrientationsForWindowScene:", objc_name="supportedInterfaceOrientationsForWindowScene")
+	WindowSceneDelegateProtocol_supportedInterfaceOrientationsForWindowScene :: proc(self: ^WindowSceneDelegateProtocol, windowScene: ^WindowScene) -> InterfaceOrientationMask ---
 
 	@(objc_type=WindowSceneDelegateProtocol, objc_selector="windowScene:performActionForShortcutItem:completionHandler:", objc_name="windowScene_performActionForShortcutItem_completionHandler")
 	WindowSceneDelegateProtocol_windowScene_performActionForShortcutItem_completionHandler :: proc(self: ^WindowSceneDelegateProtocol, windowScene: ^WindowScene, shortcutItem: ^ApplicationShortcutItem, completionHandler: ^Objc_Block(proc "c" ( succeeded: bool ))) ---

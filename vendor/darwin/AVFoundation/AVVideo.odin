@@ -8,6 +8,7 @@ import cffi "core:c"
 import CG "core:sys/darwin/CoreGraphics"
 import CM "vendor:darwin/CoreMedia"
 import CA "vendor:darwin/QuartzCore"
+import CV "vendor:darwin/CoreVideo"
 
 @(objc_class="AVVideoCompositing")
 VideoCompositing :: struct {
@@ -474,7 +475,7 @@ VideoCompositionRenderContext :: struct { using _: NS.Object}
 
 foreign lib {
 	@(objc_type=VideoCompositionRenderContext, objc_selector="newPixelBuffer", objc_name="newPixelBuffer")
-	VideoCompositionRenderContext_newPixelBuffer :: proc(self: ^VideoCompositionRenderContext) -> CVPixelBufferRef ---
+	VideoCompositionRenderContext_newPixelBuffer :: proc(self: ^VideoCompositionRenderContext) -> CV.PixelBufferRef ---
 
 	@(objc_type=VideoCompositionRenderContext, objc_selector="size", objc_name="size")
 	VideoCompositionRenderContext_size :: proc(self: ^VideoCompositionRenderContext) -> CG.Size ---

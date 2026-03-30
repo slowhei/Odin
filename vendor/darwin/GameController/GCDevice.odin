@@ -53,9 +53,6 @@ DeviceCursor :: struct { using _: ControllerDirectionPad}
 DeviceHaptics :: struct { using _: NS.Object}
 
 foreign lib {
-	@(objc_type=DeviceHaptics, objc_selector="init", objc_name="init")
-	DeviceHaptics_init :: proc(self: ^DeviceHaptics) -> instancetype ---
-
 	@(objc_type=DeviceHaptics, objc_selector="createEngineWithLocality:", objc_name="createEngineWithLocality")
 	DeviceHaptics_createEngineWithLocality :: proc(self: ^DeviceHaptics, locality: ^NS.String) -> ^CHHapticEngine ---
 
@@ -91,6 +88,9 @@ foreign lib {
 
 	@(objc_type=DevicePhysicalInput, objc_selector="nextInputState", objc_name="nextInputState")
 	DevicePhysicalInput_nextInputState :: proc(self: ^DevicePhysicalInput) -> ^id ---
+
+	@(objc_type=DevicePhysicalInput, objc_selector="inputStateForSpatialAccessoryAnchorTimestamp:", objc_name="inputStateForSpatialAccessoryAnchorTimestamp")
+	DevicePhysicalInput_inputStateForSpatialAccessoryAnchorTimestamp :: proc(self: ^DevicePhysicalInput, timestamp: NS.TimeInterval) -> ^DevicePhysicalInputState ---
 
 	@(objc_type=DevicePhysicalInput, objc_selector="device", objc_name="device")
 	DevicePhysicalInput_device :: proc(self: ^DevicePhysicalInput) -> ^Device ---
@@ -169,4 +169,25 @@ foreign lib {
 
 	@(objc_type=DevicePhysicalInputStateDiff, objc_selector="changedElements", objc_name="changedElements")
 	DevicePhysicalInputStateDiff_changedElements :: proc(self: ^DevicePhysicalInputStateDiff) -> ^NS.Enumerator ---
+}
+
+
+@(objc_class="GCDeviceType", objc_superclass=NS.Object)
+DeviceType :: struct {
+	using _: NS.Object,
+	using _: NS.Copying,
+}
+
+foreign lib {
+	@(objc_type=DeviceType, objc_selector="deviceTypeWithIdentifier:", objc_name="deviceTypeWithIdentifier", objc_is_class_method=true)
+	DeviceType_deviceTypeWithIdentifier :: proc(identifier: ^NS.String) -> instancetype ---
+
+	@(objc_type=DeviceType, objc_selector="init", objc_name="init")
+	DeviceType_init :: proc(self: ^DeviceType) -> instancetype ---
+
+	@(objc_type=DeviceType, objc_selector="localizedDescription", objc_name="localizedDescription")
+	DeviceType_localizedDescription :: proc(self: ^DeviceType) -> ^NS.String ---
+
+	@(objc_type=DeviceType, objc_selector="spatialAccessoryType", objc_name="spatialAccessoryType", objc_is_class_method=true)
+	DeviceType_spatialAccessoryType :: proc() -> ^DeviceType ---
 }

@@ -23,6 +23,15 @@ foreign lib {
 	@(objc_type=WritingToolsCoordinator, objc_selector="updateForReflowedTextInContextWithIdentifier:", objc_name="updateForReflowedTextInContextWithIdentifier")
 	WritingToolsCoordinator_updateForReflowedTextInContextWithIdentifier :: proc(self: ^WritingToolsCoordinator, contextID: ^NS.UUID) ---
 
+	@(objc_type=WritingToolsCoordinator, objc_selector="startTextAnimation:forRange:inContext:writingDirection:", objc_name="startTextAnimation")
+	WritingToolsCoordinator_startTextAnimation :: proc(self: ^WritingToolsCoordinator, textAnimation: WritingToolsCoordinatorTextAnimation, range: NS._NSRange, _context: ^WritingToolsCoordinatorContext, writingDirection: WritingDirection) -> ^NS.UUID ---
+
+	@(objc_type=WritingToolsCoordinator, objc_selector="cancelTextAnimationsWithIdentifiers:", objc_name="cancelTextAnimationsWithIdentifiers")
+	WritingToolsCoordinator_cancelTextAnimationsWithIdentifiers :: proc(self: ^WritingToolsCoordinator, identifiers: ^NS.Array) ---
+
+	@(objc_type=WritingToolsCoordinator, objc_selector="showGrammarPresentationForRange:inContext:", objc_name="showGrammarPresentationForRange")
+	WritingToolsCoordinator_showGrammarPresentationForRange :: proc(self: ^WritingToolsCoordinator, range: NS._NSRange, _context: ^WritingToolsCoordinatorContext) -> bool ---
+
 	@(objc_type=WritingToolsCoordinator, objc_selector="isWritingToolsAvailable", objc_name="isWritingToolsAvailable", objc_is_class_method=true)
 	WritingToolsCoordinator_isWritingToolsAvailable :: proc() -> bool ---
 
@@ -116,6 +125,15 @@ foreign lib {
 
 	@(objc_type=WritingToolsCoordinatorDelegate, objc_selector="writingToolsCoordinator:willChangeToState:completion:", objc_name="writingToolsCoordinator_willChangeToState_completion")
 	WritingToolsCoordinatorDelegate_writingToolsCoordinator_willChangeToState_completion :: proc(self: ^WritingToolsCoordinatorDelegate, writingToolsCoordinator: ^WritingToolsCoordinator, newState: WritingToolsCoordinatorState, completion: ^Objc_Block(proc "c" ())) ---
+
+	@(objc_type=WritingToolsCoordinatorDelegate, objc_selector="writingToolsCoordinator:requestsPreviewForTextAnimation:ofRange:inContext:textDecoration:completion:", objc_name="writingToolsCoordinator_requestsPreviewForTextAnimation_ofRange_inContext_textDecoration_completion")
+	WritingToolsCoordinatorDelegate_writingToolsCoordinator_requestsPreviewForTextAnimation_ofRange_inContext_textDecoration_completion :: proc(self: ^WritingToolsCoordinatorDelegate, writingToolsCoordinator: ^WritingToolsCoordinator, textAnimation: WritingToolsCoordinatorTextAnimation, range: NS._NSRange, _context: ^WritingToolsCoordinatorContext, textDecoration: WritingToolsCoordinatorTextDecoration, completion: ^Objc_Block(proc "c" ( textPreviews: ^NS.Array ))) ---
+
+	@(objc_type=WritingToolsCoordinatorDelegate, objc_selector="writingToolsCoordinator:requestsGrammarResultsForContext:completion:", objc_name="writingToolsCoordinator_requestsGrammarResultsForContext_completion")
+	WritingToolsCoordinatorDelegate_writingToolsCoordinator_requestsGrammarResultsForContext_completion :: proc(self: ^WritingToolsCoordinatorDelegate, writingToolsCoordinator: ^WritingToolsCoordinator, _context: ^WritingToolsCoordinatorContext, completion: ^Objc_Block(proc "c" ( results: ^NS.Array ))) ---
+
+	@(objc_type=WritingToolsCoordinatorDelegate, objc_selector="writingToolsCoordinator:setGrammarCheckingEnabled:", objc_name="writingToolsCoordinator_setGrammarCheckingEnabled")
+	WritingToolsCoordinatorDelegate_writingToolsCoordinator_setGrammarCheckingEnabled :: proc(self: ^WritingToolsCoordinatorDelegate, writingToolsCoordinator: ^WritingToolsCoordinator, enabled: bool) ---
 
 	@(objc_type=WritingToolsCoordinatorDelegate, objc_selector="writingToolsCoordinator:requestsRangeInContextWithIdentifierForPoint:completion:", objc_name="writingToolsCoordinator_requestsRangeInContextWithIdentifierForPoint_completion")
 	WritingToolsCoordinatorDelegate_writingToolsCoordinator_requestsRangeInContextWithIdentifierForPoint_completion :: proc(self: ^WritingToolsCoordinatorDelegate, writingToolsCoordinator: ^WritingToolsCoordinator, point: CG.Point, completion: ^Objc_Block(proc "c" ( range: NS._NSRange, contextID: ^NS.UUID ))) ---

@@ -418,6 +418,21 @@ foreign lib {
 MetadataObjectInternal :: struct { using _: intrinsics.objc_object}
 
 
+@(objc_class="AVMetadataCinematicVideoMetadataObject", objc_superclass=MetadataObject)
+MetadataCinematicVideoMetadataObject :: struct {
+	using _: MetadataObject,
+	using _: NS.Copying,
+}
+
+foreign lib {
+	@(objc_type=MetadataCinematicVideoMetadataObject, objc_selector="cinematicVideoMetadataFormatDescription", objc_name="cinematicVideoMetadataFormatDescription", objc_is_class_method=true)
+	MetadataCinematicVideoMetadataObject_cinematicVideoMetadataFormatDescription :: proc() -> CM.FormatDescriptionRef ---
+
+	@(objc_type=MetadataCinematicVideoMetadataObject, objc_selector="timedMetadataGroup", objc_name="timedMetadataGroup")
+	MetadataCinematicVideoMetadataObject_timedMetadataGroup :: proc(self: ^MetadataCinematicVideoMetadataObject) -> ^TimedMetadataGroup ---
+}
+
+
 @(objc_class="AVMetadataBodyObject", objc_superclass=MetadataObject)
 MetadataBodyObject :: struct {
 	using _: MetadataObject,
@@ -453,6 +468,13 @@ MetadataDogBodyObject :: struct {
 
 @(objc_class="AVMetadataDogHeadObject", objc_superclass=MetadataObject)
 MetadataDogHeadObject :: struct {
+	using _: MetadataObject,
+	using _: NS.Copying,
+}
+
+
+@(objc_class="AVMetadataFocusTrackedObject", objc_superclass=MetadataObject)
+MetadataFocusTrackedObject :: struct {
 	using _: MetadataObject,
 	using _: NS.Copying,
 }

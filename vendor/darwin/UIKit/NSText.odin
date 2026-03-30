@@ -159,10 +159,91 @@ foreign lib {
 }
 
 
+@(objc_class="NSTextBlock", objc_superclass=NS.Object)
+NSTextBlock :: struct {
+	using _: NS.Object,
+	using _: NS.SecureCoding,
+	using _: NS.Copying,
+}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=NSTextBlock, objc_selector="init", objc_name="init")
+	NSTextBlock_init :: proc(self: ^NSTextBlock) -> instancetype ---
+
+	@(objc_type=NSTextBlock, objc_selector="initWithCoder:", objc_name="initWithCoder")
+	NSTextBlock_initWithCoder :: proc(self: ^NSTextBlock, coder: ^NS.Coder) -> instancetype ---
+
+	@(objc_type=NSTextBlock, objc_selector="setValue:type:forDimension:", objc_name="setValue")
+	NSTextBlock_setValue :: proc(self: ^NSTextBlock, value: CG.Float, type: NSTextBlockValueType, dimension: NSTextBlockDimension) ---
+
+	@(objc_type=NSTextBlock, objc_selector="valueForDimension:", objc_name="valueForDimension")
+	NSTextBlock_valueForDimension :: proc(self: ^NSTextBlock, dimension: NSTextBlockDimension) -> CG.Float ---
+
+	@(objc_type=NSTextBlock, objc_selector="valueTypeForDimension:", objc_name="valueTypeForDimension")
+	NSTextBlock_valueTypeForDimension :: proc(self: ^NSTextBlock, dimension: NSTextBlockDimension) -> NSTextBlockValueType ---
+
+	@(objc_type=NSTextBlock, objc_selector="setContentWidth:type:", objc_name="setContentWidth")
+	NSTextBlock_setContentWidth :: proc(self: ^NSTextBlock, contentWidth: CG.Float, type: NSTextBlockValueType) ---
+
+	@(objc_type=NSTextBlock, objc_selector="setWidth:type:forLayer:", objc_name="setWidth_type_forLayer")
+	NSTextBlock_setWidth_type_forLayer :: proc(self: ^NSTextBlock, width: CG.Float, type: NSTextBlockValueType, layer: NSTextBlockLayer) ---
+
+	@(objc_type=NSTextBlock, objc_selector="setWidth:type:forLayer:rectEdge:", objc_name="setWidth_type_forLayer_rectEdge")
+	NSTextBlock_setWidth_type_forLayer_rectEdge :: proc(self: ^NSTextBlock, width: CG.Float, type: NSTextBlockValueType, layer: NSTextBlockLayer, rectEdge: CG.RectEdge) ---
+
+	@(objc_type=NSTextBlock, objc_selector="widthForLayer:rectEdge:", objc_name="widthForLayer")
+	NSTextBlock_widthForLayer :: proc(self: ^NSTextBlock, layer: NSTextBlockLayer, rectEdge: CG.RectEdge) -> CG.Float ---
+
+	@(objc_type=NSTextBlock, objc_selector="widthValueTypeForLayer:rectEdge:", objc_name="widthValueTypeForLayer")
+	NSTextBlock_widthValueTypeForLayer :: proc(self: ^NSTextBlock, layer: NSTextBlockLayer, rectEdge: CG.RectEdge) -> NSTextBlockValueType ---
+
+	@(objc_type=NSTextBlock, objc_selector="setBorderColor:", objc_name="setBorderColor_")
+	NSTextBlock_setBorderColor_ :: proc(self: ^NSTextBlock, color: ^Color) ---
+
+	@(objc_type=NSTextBlock, objc_selector="setBorderColor:rectEdge:", objc_name="setBorderColor_rectEdge")
+	NSTextBlock_setBorderColor_rectEdge :: proc(self: ^NSTextBlock, borderColor: ^Color, rectEdge: CG.RectEdge) ---
+
+	@(objc_type=NSTextBlock, objc_selector="borderColorForRectEdge:", objc_name="borderColorForRectEdge")
+	NSTextBlock_borderColorForRectEdge :: proc(self: ^NSTextBlock, rectEdge: CG.RectEdge) -> ^Color ---
+
+	@(objc_type=NSTextBlock, objc_selector="contentWidth", objc_name="contentWidth")
+	NSTextBlock_contentWidth :: proc(self: ^NSTextBlock) -> CG.Float ---
+
+	@(objc_type=NSTextBlock, objc_selector="contentWidthValueType", objc_name="contentWidthValueType")
+	NSTextBlock_contentWidthValueType :: proc(self: ^NSTextBlock) -> NSTextBlockValueType ---
+
+	@(objc_type=NSTextBlock, objc_selector="verticalAlignment", objc_name="verticalAlignment")
+	NSTextBlock_verticalAlignment :: proc(self: ^NSTextBlock) -> NSTextBlockVerticalAlignment ---
+
+	@(objc_type=NSTextBlock, objc_selector="setVerticalAlignment:", objc_name="setVerticalAlignment")
+	NSTextBlock_setVerticalAlignment :: proc(self: ^NSTextBlock, verticalAlignment: NSTextBlockVerticalAlignment) ---
+
+	@(objc_type=NSTextBlock, objc_selector="backgroundColor", objc_name="backgroundColor")
+	NSTextBlock_backgroundColor :: proc(self: ^NSTextBlock) -> ^Color ---
+
+	@(objc_type=NSTextBlock, objc_selector="setBackgroundColor:", objc_name="setBackgroundColor")
+	NSTextBlock_setBackgroundColor :: proc(self: ^NSTextBlock, backgroundColor: ^Color) ---
+}
+
+@(objc_type=NSTextBlock, objc_name="setWidth")
+NSTextBlock_setWidth :: proc {
+	NSTextBlock_setWidth_type_forLayer,
+	NSTextBlock_setWidth_type_forLayer_rectEdge,
+}
+
+@(objc_type=NSTextBlock, objc_name="setBorderColor")
+NSTextBlock_setBorderColor :: proc {
+	NSTextBlock_setBorderColor_,
+	NSTextBlock_setBorderColor_rectEdge,
+}
+
+
 @(objc_class="NSTextContainer", objc_superclass=NS.Object)
 NSTextContainer :: struct {
 	using _: NS.Object,
 	using _: NS.SecureCoding,
+	using _: NSTextLayoutOrientationProvider,
 }
 
 @(default_calling_convention="c")
@@ -191,6 +272,12 @@ foreign lib {
 	@(objc_type=NSTextContainer, objc_selector="setLineBreakMode:", objc_name="setLineBreakMode")
 	NSTextContainer_setLineBreakMode :: proc(self: ^NSTextContainer, lineBreakMode: NSLineBreakMode) ---
 
+	@(objc_type=NSTextContainer, objc_selector="exclusionPaths", objc_name="exclusionPaths")
+	NSTextContainer_exclusionPaths :: proc(self: ^NSTextContainer) -> ^NS.Array ---
+
+	@(objc_type=NSTextContainer, objc_selector="setExclusionPaths:", objc_name="setExclusionPaths")
+	NSTextContainer_setExclusionPaths :: proc(self: ^NSTextContainer, exclusionPaths: ^NS.Array) ---
+
 	@(objc_type=NSTextContainer, objc_selector="lineFragmentPadding", objc_name="lineFragmentPadding")
 	NSTextContainer_lineFragmentPadding :: proc(self: ^NSTextContainer) -> CG.Float ---
 
@@ -218,20 +305,14 @@ foreign lib {
 	@(objc_type=NSTextContainer, objc_selector="setHeightTracksTextView:", objc_name="setHeightTracksTextView")
 	NSTextContainer_setHeightTracksTextView :: proc(self: ^NSTextContainer, heightTracksTextView: bool) ---
 
+	@(objc_type=NSTextContainer, objc_selector="replaceLayoutManager:", objc_name="replaceLayoutManager")
+	NSTextContainer_replaceLayoutManager :: proc(self: ^NSTextContainer, newLayoutManager: ^NSLayoutManager) ---
+
 	@(objc_type=NSTextContainer, objc_selector="layoutManager", objc_name="layoutManager")
 	NSTextContainer_layoutManager :: proc(self: ^NSTextContainer) -> ^NSLayoutManager ---
 
 	@(objc_type=NSTextContainer, objc_selector="setLayoutManager:", objc_name="setLayoutManager")
 	NSTextContainer_setLayoutManager :: proc(self: ^NSTextContainer, layoutManager: ^NSLayoutManager) ---
-
-	@(objc_type=NSTextContainer, objc_selector="replaceLayoutManager:", objc_name="replaceLayoutManager")
-	NSTextContainer_replaceLayoutManager :: proc(self: ^NSTextContainer, newLayoutManager: ^NSLayoutManager) ---
-
-	@(objc_type=NSTextContainer, objc_selector="exclusionPaths", objc_name="exclusionPaths")
-	NSTextContainer_exclusionPaths :: proc(self: ^NSTextContainer) -> ^NS.Array ---
-
-	@(objc_type=NSTextContainer, objc_selector="setExclusionPaths:", objc_name="setExclusionPaths")
-	NSTextContainer_setExclusionPaths :: proc(self: ^NSTextContainer, exclusionPaths: ^NS.Array) ---
 }
 
 
@@ -463,6 +544,7 @@ foreign lib {
 NSTextLayoutFragment :: struct {
 	using _: NS.Object,
 	using _: NS.SecureCoding,
+	using _: NSTextViewportRenderingSurfaceKey,
 }
 
 @(default_calling_convention="c")
@@ -694,6 +776,12 @@ foreign lib {
 
 	@(objc_type=NSTextLayoutManagerDelegate, objc_selector="textLayoutManager:renderingAttributesForLink:atLocation:defaultAttributes:", objc_name="textLayoutManager_renderingAttributesForLink_atLocation_defaultAttributes")
 	NSTextLayoutManagerDelegate_textLayoutManager_renderingAttributesForLink_atLocation_defaultAttributes :: proc(self: ^NSTextLayoutManagerDelegate, textLayoutManager: ^NSTextLayoutManager, link: id, location: ^NSTextLocation, renderingAttributes: ^NS.Dictionary) -> ^NS.Dictionary ---
+
+	@(objc_type=NSTextLayoutManagerDelegate, objc_selector="textLayoutManager:cacheTextAttachmentViewProvider:forTextAttachment:", objc_name="textLayoutManager_cacheTextAttachmentViewProvider_forTextAttachment")
+	NSTextLayoutManagerDelegate_textLayoutManager_cacheTextAttachmentViewProvider_forTextAttachment :: proc(self: ^NSTextLayoutManagerDelegate, textLayoutManager: ^NSTextLayoutManager, viewProvider: ^NSTextAttachmentViewProvider, textAttachment: ^NSTextAttachment) ---
+
+	@(objc_type=NSTextLayoutManagerDelegate, objc_selector="textLayoutManager:retrieveCachedTextAttachmentViewProviderForTextAttachment:", objc_name="textLayoutManager_retrieveCachedTextAttachmentViewProviderForTextAttachment")
+	NSTextLayoutManagerDelegate_textLayoutManager_retrieveCachedTextAttachmentViewProviderForTextAttachment :: proc(self: ^NSTextLayoutManagerDelegate, textLayoutManager: ^NSTextLayoutManager, attachment: ^NSTextAttachment) -> ^NSTextAttachmentViewProvider ---
 }
 
 @(objc_type=NSTextLayoutManagerDelegate, objc_name="textLayoutManager")
@@ -701,6 +789,8 @@ NSTextLayoutManagerDelegate_textLayoutManager :: proc {
 	NSTextLayoutManagerDelegate_textLayoutManager_textLayoutFragmentForLocation_inTextElement,
 	NSTextLayoutManagerDelegate_textLayoutManager_shouldBreakLineBeforeLocation_hyphenating,
 	NSTextLayoutManagerDelegate_textLayoutManager_renderingAttributesForLink_atLocation_defaultAttributes,
+	NSTextLayoutManagerDelegate_textLayoutManager_cacheTextAttachmentViewProvider_forTextAttachment,
+	NSTextLayoutManagerDelegate_textLayoutManager_retrieveCachedTextAttachmentViewProviderForTextAttachment,
 }
 
 
@@ -854,6 +944,12 @@ NSTextLocation :: struct {
 foreign lib {
 	@(objc_type=NSTextLocation, objc_selector="compare:", objc_name="compare")
 	NSTextLocation_compare :: proc(self: ^NSTextLocation, location: ^NSTextLocation) -> NS.ComparisonResult ---
+
+	@(objc_type=NSTextLocation, objc_selector="isEqual:", objc_name="isEqual")
+	NSTextLocation_isEqual :: proc(self: ^NSTextLocation, location: id) -> bool ---
+
+	@(objc_type=NSTextLocation, objc_selector="hash", objc_name="hash")
+	NSTextLocation_hash :: proc(self: ^NSTextLocation) -> NS.UInteger ---
 }
 
 
@@ -1008,6 +1104,9 @@ foreign lib {
 	@(objc_type=NSTextSelectionDataSource, objc_selector="textLayoutOrientationAtLocation:", objc_name="textLayoutOrientationAtLocation")
 	NSTextSelectionDataSource_textLayoutOrientationAtLocation :: proc(self: ^NSTextSelectionDataSource, location: ^NSTextLocation) -> NSTextSelectionNavigationLayoutOrientation ---
 
+	@(objc_type=NSTextSelectionDataSource, objc_selector="convertInteractionPoint:toContainerAtLocation:", objc_name="convertInteractionPoint")
+	NSTextSelectionDataSource_convertInteractionPoint :: proc(self: ^NSTextSelectionDataSource, point: CG.Point, containerLocation: ^NSTextLocation) -> CG.Point ---
+
 	@(objc_type=NSTextSelectionDataSource, objc_selector="documentRange", objc_name="documentRange")
 	NSTextSelectionDataSource_documentRange :: proc(self: ^NSTextSelectionDataSource) -> ^NSTextRange ---
 }
@@ -1079,12 +1178,6 @@ NSTextStorage :: struct {
 
 @(default_calling_convention="c")
 foreign lib {
-	@(objc_type=NSTextStorage, objc_selector="addLayoutManager:", objc_name="addLayoutManager")
-	NSTextStorage_addLayoutManager :: proc(self: ^NSTextStorage, aLayoutManager: ^NSLayoutManager) ---
-
-	@(objc_type=NSTextStorage, objc_selector="removeLayoutManager:", objc_name="removeLayoutManager")
-	NSTextStorage_removeLayoutManager :: proc(self: ^NSTextStorage, aLayoutManager: ^NSLayoutManager) ---
-
 	@(objc_type=NSTextStorage, objc_selector="edited:range:changeInLength:", objc_name="edited")
 	NSTextStorage_edited :: proc(self: ^NSTextStorage, editedMask: NSTextStorageEditActions, editedRange: NS._NSRange, delta: NS.Integer) ---
 
@@ -1096,9 +1189,6 @@ foreign lib {
 
 	@(objc_type=NSTextStorage, objc_selector="ensureAttributesAreFixedInRange:", objc_name="ensureAttributesAreFixedInRange")
 	NSTextStorage_ensureAttributesAreFixedInRange :: proc(self: ^NSTextStorage, range: NS._NSRange) ---
-
-	@(objc_type=NSTextStorage, objc_selector="layoutManagers", objc_name="layoutManagers")
-	NSTextStorage_layoutManagers :: proc(self: ^NSTextStorage) -> ^NS.Array ---
 
 	@(objc_type=NSTextStorage, objc_selector="editedMask", objc_name="editedMask")
 	NSTextStorage_editedMask :: proc(self: ^NSTextStorage) -> NSTextStorageEditActions ---
@@ -1123,6 +1213,15 @@ foreign lib {
 
 	@(objc_type=NSTextStorage, objc_selector="setTextStorageObserver:", objc_name="setTextStorageObserver")
 	NSTextStorage_setTextStorageObserver :: proc(self: ^NSTextStorage, textStorageObserver: ^NSTextStorageObserving) ---
+
+	@(objc_type=NSTextStorage, objc_selector="addLayoutManager:", objc_name="addLayoutManager")
+	NSTextStorage_addLayoutManager :: proc(self: ^NSTextStorage, aLayoutManager: ^NSLayoutManager) ---
+
+	@(objc_type=NSTextStorage, objc_selector="removeLayoutManager:", objc_name="removeLayoutManager")
+	NSTextStorage_removeLayoutManager :: proc(self: ^NSTextStorage, aLayoutManager: ^NSLayoutManager) ---
+
+	@(objc_type=NSTextStorage, objc_selector="layoutManagers", objc_name="layoutManagers")
+	NSTextStorage_layoutManagers :: proc(self: ^NSTextStorage) -> ^NS.Array ---
 }
 
 
@@ -1177,18 +1276,84 @@ foreign lib {
 	@(objc_type=NSTextTab, objc_selector="columnTerminatorsForLocale:", objc_name="columnTerminatorsForLocale", objc_is_class_method=true)
 	NSTextTab_columnTerminatorsForLocale :: proc(aLocale: ^NS.Locale) -> ^NS.CharacterSet ---
 
-	@(objc_type=NSTextTab, objc_selector="location", objc_name="location")
-	NSTextTab_location :: proc(self: ^NSTextTab) -> CG.Float ---
-
-	@(objc_type=NSTextTab, objc_selector="options", objc_name="options")
-	NSTextTab_options :: proc(self: ^NSTextTab) -> ^NS.Dictionary ---
-
 	@(objc_type=NSTextTab, objc_selector="initWithTextAlignment:location:options:", objc_name="initWithTextAlignment")
 	NSTextTab_initWithTextAlignment :: proc(self: ^NSTextTab, alignment: NSTextAlignment, loc: CG.Float, options: ^NS.Dictionary) -> instancetype ---
 
 	@(objc_type=NSTextTab, objc_selector="alignment", objc_name="alignment")
 	NSTextTab_alignment :: proc(self: ^NSTextTab) -> NSTextAlignment ---
+
+	@(objc_type=NSTextTab, objc_selector="location", objc_name="location")
+	NSTextTab_location :: proc(self: ^NSTextTab) -> CG.Float ---
+
+	@(objc_type=NSTextTab, objc_selector="options", objc_name="options")
+	NSTextTab_options :: proc(self: ^NSTextTab) -> ^NS.Dictionary ---
 }
+
+
+@(objc_class="NSTextTable", objc_superclass=NSTextBlock)
+NSTextTable :: struct { using _: NSTextBlock}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=NSTextTable, objc_selector="numberOfColumns", objc_name="numberOfColumns")
+	NSTextTable_numberOfColumns :: proc(self: ^NSTextTable) -> NS.Integer ---
+
+	@(objc_type=NSTextTable, objc_selector="setNumberOfColumns:", objc_name="setNumberOfColumns")
+	NSTextTable_setNumberOfColumns :: proc(self: ^NSTextTable, numberOfColumns: NS.Integer) ---
+
+	@(objc_type=NSTextTable, objc_selector="layoutAlgorithm", objc_name="layoutAlgorithm")
+	NSTextTable_layoutAlgorithm :: proc(self: ^NSTextTable) -> NSTextTableLayoutAlgorithm ---
+
+	@(objc_type=NSTextTable, objc_selector="setLayoutAlgorithm:", objc_name="setLayoutAlgorithm")
+	NSTextTable_setLayoutAlgorithm :: proc(self: ^NSTextTable, layoutAlgorithm: NSTextTableLayoutAlgorithm) ---
+
+	@(objc_type=NSTextTable, objc_selector="collapsesBorders", objc_name="collapsesBorders")
+	NSTextTable_collapsesBorders :: proc(self: ^NSTextTable) -> bool ---
+
+	@(objc_type=NSTextTable, objc_selector="setCollapsesBorders:", objc_name="setCollapsesBorders")
+	NSTextTable_setCollapsesBorders :: proc(self: ^NSTextTable, collapsesBorders: bool) ---
+
+	@(objc_type=NSTextTable, objc_selector="hidesEmptyCells", objc_name="hidesEmptyCells")
+	NSTextTable_hidesEmptyCells :: proc(self: ^NSTextTable) -> bool ---
+
+	@(objc_type=NSTextTable, objc_selector="setHidesEmptyCells:", objc_name="setHidesEmptyCells")
+	NSTextTable_setHidesEmptyCells :: proc(self: ^NSTextTable, hidesEmptyCells: bool) ---
+}
+
+
+@(objc_class="NSTextTableBlock", objc_superclass=NSTextBlock)
+NSTextTableBlock :: struct { using _: NSTextBlock}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=NSTextTableBlock, objc_selector="initWithTable:startingRow:rowSpan:startingColumn:columnSpan:", objc_name="initWithTable")
+	NSTextTableBlock_initWithTable :: proc(self: ^NSTextTableBlock, table: ^NSTextTable, row: NS.Integer, rowSpan: NS.Integer, column: NS.Integer, columnSpan: NS.Integer) -> instancetype ---
+
+	@(objc_type=NSTextTableBlock, objc_selector="initWithCoder:", objc_name="initWithCoder")
+	NSTextTableBlock_initWithCoder :: proc(self: ^NSTextTableBlock, coder: ^NS.Coder) -> instancetype ---
+
+	@(objc_type=NSTextTableBlock, objc_selector="table", objc_name="table")
+	NSTextTableBlock_table :: proc(self: ^NSTextTableBlock) -> ^NSTextTable ---
+
+	@(objc_type=NSTextTableBlock, objc_selector="startingRow", objc_name="startingRow")
+	NSTextTableBlock_startingRow :: proc(self: ^NSTextTableBlock) -> NS.Integer ---
+
+	@(objc_type=NSTextTableBlock, objc_selector="rowSpan", objc_name="rowSpan")
+	NSTextTableBlock_rowSpan :: proc(self: ^NSTextTableBlock) -> NS.Integer ---
+
+	@(objc_type=NSTextTableBlock, objc_selector="startingColumn", objc_name="startingColumn")
+	NSTextTableBlock_startingColumn :: proc(self: ^NSTextTableBlock) -> NS.Integer ---
+
+	@(objc_type=NSTextTableBlock, objc_selector="columnSpan", objc_name="columnSpan")
+	NSTextTableBlock_columnSpan :: proc(self: ^NSTextTableBlock) -> NS.Integer ---
+}
+
+
+@(objc_class="NSTextView")
+NSTextView :: struct { using _: intrinsics.objc_object}
+
+@(default_calling_convention="c")
+foreign lib {}
 
 
 @(objc_class="NSTextViewportLayoutController", objc_superclass=NS.Object)
@@ -1213,6 +1378,9 @@ foreign lib {
 
 	@(objc_type=NSTextViewportLayoutController, objc_selector="adjustViewportByVerticalOffset:", objc_name="adjustViewportByVerticalOffset")
 	NSTextViewportLayoutController_adjustViewportByVerticalOffset :: proc(self: ^NSTextViewportLayoutController, verticalOffset: CG.Float) ---
+
+	@(objc_type=NSTextViewportLayoutController, objc_selector="renderingSurfaceForKey:", objc_name="renderingSurfaceForKey")
+	NSTextViewportLayoutController_renderingSurfaceForKey :: proc(self: ^NSTextViewportLayoutController, key: ^NSTextViewportRenderingSurfaceKey) -> ^NSTextViewportRenderingSurface ---
 
 	@(objc_type=NSTextViewportLayoutController, objc_selector="delegate", objc_name="delegate")
 	NSTextViewportLayoutController_delegate :: proc(self: ^NSTextViewportLayoutController) -> ^NSTextViewportLayoutControllerDelegate ---
@@ -1242,12 +1410,44 @@ foreign lib {
 	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="viewportBoundsForTextViewportLayoutController:", objc_name="viewportBoundsForTextViewportLayoutController")
 	NSTextViewportLayoutControllerDelegate_viewportBoundsForTextViewportLayoutController :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController) -> CG.Rect ---
 
-	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="textViewportLayoutController:configureRenderingSurfaceForTextLayoutFragment:", objc_name="textViewportLayoutController")
-	NSTextViewportLayoutControllerDelegate_textViewportLayoutController :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController, textLayoutFragment: ^NSTextLayoutFragment) ---
+	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="textViewportLayoutController:configureRenderingSurfaceForTextLayoutFragment:", objc_name="textViewportLayoutController_configureRenderingSurfaceForTextLayoutFragment")
+	NSTextViewportLayoutControllerDelegate_textViewportLayoutController_configureRenderingSurfaceForTextLayoutFragment :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController, textLayoutFragment: ^NSTextLayoutFragment) ---
 
 	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="textViewportLayoutControllerWillLayout:", objc_name="textViewportLayoutControllerWillLayout")
 	NSTextViewportLayoutControllerDelegate_textViewportLayoutControllerWillLayout :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController) ---
 
 	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="textViewportLayoutControllerDidLayout:", objc_name="textViewportLayoutControllerDidLayout")
 	NSTextViewportLayoutControllerDelegate_textViewportLayoutControllerDidLayout :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController) ---
+
+	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="textViewportLayoutController:cacheRenderingSurface:forKey:", objc_name="textViewportLayoutController_cacheRenderingSurface_forKey")
+	NSTextViewportLayoutControllerDelegate_textViewportLayoutController_cacheRenderingSurface_forKey :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController, renderingSurface: ^NSTextViewportRenderingSurface, renderingSurfaceKey: ^NSTextViewportRenderingSurfaceKey) ---
+
+	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="textViewportLayoutController:retrieveCachedRenderingSurfaceForKey:", objc_name="textViewportLayoutController_retrieveCachedRenderingSurfaceForKey")
+	NSTextViewportLayoutControllerDelegate_textViewportLayoutController_retrieveCachedRenderingSurfaceForKey :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController, renderingSurfaceKey: ^NSTextViewportRenderingSurfaceKey) -> ^NSTextViewportRenderingSurface ---
+
+	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="textViewportLayoutControllerReceivedSetNeedsLayout:", objc_name="textViewportLayoutControllerReceivedSetNeedsLayout")
+	NSTextViewportLayoutControllerDelegate_textViewportLayoutControllerReceivedSetNeedsLayout :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController) ---
+
+	@(objc_type=NSTextViewportLayoutControllerDelegate, objc_selector="textViewportLayoutController:renderingSurfaceForTextLayoutFragment:", objc_name="textViewportLayoutController_renderingSurfaceForTextLayoutFragment")
+	NSTextViewportLayoutControllerDelegate_textViewportLayoutController_renderingSurfaceForTextLayoutFragment :: proc(self: ^NSTextViewportLayoutControllerDelegate, textViewportLayoutController: ^NSTextViewportLayoutController, textLayoutFragment: ^NSTextLayoutFragment) -> ^NSTextViewportRenderingSurface ---
 }
+
+
+@(objc_class="NSTextViewportRenderingSurface")
+NSTextViewportRenderingSurface :: struct {
+	using _: intrinsics.objc_object,
+	using _: NS.ObjectProtocol,
+}
+
+@(default_calling_convention="c")
+foreign lib {}
+
+
+@(objc_class="NSTextViewportRenderingSurfaceKey")
+NSTextViewportRenderingSurfaceKey :: struct {
+	using _: intrinsics.objc_object,
+	using _: NS.ObjectProtocol,
+}
+
+@(default_calling_convention="c")
+foreign lib {}

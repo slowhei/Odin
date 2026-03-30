@@ -15,7 +15,7 @@ IMP           :: rawptr
 Protocol      :: distinct id
 instancetype  :: intrinsics.objc_instancetype
 
-@(export, require)
+@(export)
 foreign import lib {
 	"system:MapKit.framework",
 }
@@ -24,6 +24,8 @@ foreign import lib {
 
 
 CNPostalAddress :: NS.Object
+
+DirectionsTransportType_Any :: transmute(DirectionsTransportType)cffi.ulong(268435455)
 
 
 
@@ -46,6 +48,9 @@ foreign lib {
 	@(link_name="MKPointOfInterestCategoryAirport")
 	PointOfInterestCategoryAirport: ^NS.String
 
+	@(link_name="MKPointOfInterestCategoryAirportTerminal")
+	PointOfInterestCategoryAirportTerminal: ^NS.String
+
 	@(link_name="MKPointOfInterestCategoryAmusementPark")
 	PointOfInterestCategoryAmusementPark: ^NS.String
 
@@ -54,6 +59,9 @@ foreign lib {
 
 	@(link_name="MKPointOfInterestCategoryATM")
 	PointOfInterestCategoryATM: ^NS.String
+
+	@(link_name="MKPointOfInterestCategoryAutomotiveDealership")
+	PointOfInterestCategoryAutomotiveDealership: ^NS.String
 
 	@(link_name="MKPointOfInterestCategoryAutomotiveRepair")
 	PointOfInterestCategoryAutomotiveRepair: ^NS.String
@@ -93,6 +101,9 @@ foreign lib {
 
 	@(link_name="MKPointOfInterestCategoryCastle")
 	PointOfInterestCategoryCastle: ^NS.String
+
+	@(link_name="MKPointOfInterestCategoryCommercialVehicleDealership")
+	PointOfInterestCategoryCommercialVehicleDealership: ^NS.String
 
 	@(link_name="MKPointOfInterestCategoryConventionCenter")
 	PointOfInterestCategoryConventionCenter: ^NS.String
@@ -139,6 +150,9 @@ foreign lib {
 	@(link_name="MKPointOfInterestCategoryHotel")
 	PointOfInterestCategoryHotel: ^NS.String
 
+	@(link_name="MKPointOfInterestCategoryInformationBooth")
+	PointOfInterestCategoryInformationBooth: ^NS.String
+
 	@(link_name="MKPointOfInterestCategoryKayaking")
 	PointOfInterestCategoryKayaking: ^NS.String
 
@@ -159,6 +173,9 @@ foreign lib {
 
 	@(link_name="MKPointOfInterestCategoryMiniGolf")
 	PointOfInterestCategoryMiniGolf: ^NS.String
+
+	@(link_name="MKPointOfInterestCategoryMotorbikeDealership")
+	PointOfInterestCategoryMotorbikeDealership: ^NS.String
 
 	@(link_name="MKPointOfInterestCategoryMovieTheater")
 	PointOfInterestCategoryMovieTheater: ^NS.String
@@ -187,6 +204,9 @@ foreign lib {
 	@(link_name="MKPointOfInterestCategoryPharmacy")
 	PointOfInterestCategoryPharmacy: ^NS.String
 
+	@(link_name="MKPointOfInterestCategoryPicnicArea")
+	PointOfInterestCategoryPicnicArea: ^NS.String
+
 	@(link_name="MKPointOfInterestCategoryPlanetarium")
 	PointOfInterestCategoryPlanetarium: ^NS.String
 
@@ -199,6 +219,12 @@ foreign lib {
 	@(link_name="MKPointOfInterestCategoryPublicTransport")
 	PointOfInterestCategoryPublicTransport: ^NS.String
 
+	@(link_name="MKPointOfInterestCategoryRangerStation")
+	PointOfInterestCategoryRangerStation: ^NS.String
+
+	@(link_name="MKPointOfInterestCategoryRestArea")
+	PointOfInterestCategoryRestArea: ^NS.String
+
 	@(link_name="MKPointOfInterestCategoryRestaurant")
 	PointOfInterestCategoryRestaurant: ^NS.String
 
@@ -210,6 +236,9 @@ foreign lib {
 
 	@(link_name="MKPointOfInterestCategoryRVPark")
 	PointOfInterestCategoryRVPark: ^NS.String
+
+	@(link_name="MKPointOfInterestCategoryScenicView")
+	PointOfInterestCategoryScenicView: ^NS.String
 
 	@(link_name="MKPointOfInterestCategorySchool")
 	PointOfInterestCategorySchool: ^NS.String
@@ -247,8 +276,14 @@ foreign lib {
 	@(link_name="MKPointOfInterestCategoryTheater")
 	PointOfInterestCategoryTheater: ^NS.String
 
+	@(link_name="MKPointOfInterestCategoryTicketOffice")
+	PointOfInterestCategoryTicketOffice: ^NS.String
+
 	@(link_name="MKPointOfInterestCategoryUniversity")
 	PointOfInterestCategoryUniversity: ^NS.String
+
+	@(link_name="MKPointOfInterestCategoryVisitorCenter")
+	PointOfInterestCategoryVisitorCenter: ^NS.String
 
 	@(link_name="MKPointOfInterestCategoryWinery")
 	PointOfInterestCategoryWinery: ^NS.String
@@ -434,8 +469,8 @@ DirectionsTransportTypeFlag :: enum cffi.ulong {
 	Transit    = 2,
 	Cycling    = 3,
 }
+
 DirectionsTransportType :: bit_set[DirectionsTransportTypeFlag; cffi.ulong]
-DirectionsTransportType_Any :: transmute(DirectionsTransportType)cffi.ulong(0xfffffff)
 
 DirectionsRoutePreference :: enum cffi.long {
 	Any   = 0,
@@ -460,6 +495,7 @@ LocalSearchResultTypeFlag :: enum cffi.ulong {
 	PointOfInterest = 1,
 	PhysicalFeature = 2,
 }
+
 LocalSearchResultType :: bit_set[LocalSearchResultTypeFlag; cffi.ulong]
 
 SearchCompletionFilterType :: enum cffi.long {
@@ -473,6 +509,7 @@ LocalSearchCompleterResultTypeFlag :: enum cffi.ulong {
 	Query           = 2,
 	PhysicalFeature = 3,
 }
+
 LocalSearchCompleterResultType :: bit_set[LocalSearchCompleterResultTypeFlag; cffi.ulong]
 
 MapElevationStyle :: enum cffi.long {

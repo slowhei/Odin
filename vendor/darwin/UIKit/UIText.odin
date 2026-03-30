@@ -32,6 +32,12 @@ foreign lib {
 	@(objc_type=TextChecker, objc_selector="unlearnWord:", objc_name="unlearnWord", objc_is_class_method=true)
 	TextChecker_unlearnWord :: proc(word: ^NS.String) ---
 
+	@(objc_type=TextChecker, objc_selector="requestGrammarCheckingOfString:range:waitForAllResults:completionHandler:", objc_name="requestGrammarCheckingOfString")
+	TextChecker_requestGrammarCheckingOfString :: proc(self: ^TextChecker, stringToCheck: ^NS.String, range: NS._NSRange, waitForAllResults: bool, completionHandler: ^Objc_Block(proc "c" ( results: ^NS.Array ))) ---
+
+	@(objc_type=TextChecker, objc_selector="ignoreGrammarRange:inSentence:", objc_name="ignoreGrammarRange")
+	TextChecker_ignoreGrammarRange :: proc(self: ^TextChecker, grammarRange: NS._NSRange, sentence: ^NS.String) ---
+
 	@(objc_type=TextChecker, objc_selector="ignoredWords", objc_name="ignoredWords")
 	TextChecker_ignoredWords :: proc(self: ^TextChecker) -> ^NS.Array ---
 
@@ -1509,6 +1515,12 @@ foreign lib {
 	@(objc_type=TextInputTraitsProtocol, objc_selector="setMathExpressionCompletionType:", objc_name="setMathExpressionCompletionType")
 	TextInputTraitsProtocol_setMathExpressionCompletionType :: proc(self: ^TextInputTraitsProtocol, mathExpressionCompletionType: TextMathExpressionCompletionType) ---
 
+	@(objc_type=TextInputTraitsProtocol, objc_selector="grammarCheckingType", objc_name="grammarCheckingType")
+	TextInputTraitsProtocol_grammarCheckingType :: proc(self: ^TextInputTraitsProtocol) -> TextGrammarCheckingType ---
+
+	@(objc_type=TextInputTraitsProtocol, objc_selector="setGrammarCheckingType:", objc_name="setGrammarCheckingType")
+	TextInputTraitsProtocol_setGrammarCheckingType :: proc(self: ^TextInputTraitsProtocol, grammarCheckingType: TextGrammarCheckingType) ---
+
 	@(objc_type=TextInputTraitsProtocol, objc_selector="keyboardType", objc_name="keyboardType")
 	TextInputTraitsProtocol_keyboardType :: proc(self: ^TextInputTraitsProtocol) -> KeyboardType ---
 
@@ -1959,6 +1971,7 @@ TextView :: struct {
 	using _: TextInput,
 	using _: ContentSizeCategoryAdjusting,
 	using _: LetterformAwareAdjusting,
+	using _: NSTextViewportLayoutControllerDelegate,
 }
 
 @(default_calling_convention="c")
@@ -1977,6 +1990,24 @@ foreign lib {
 
 	@(objc_type=TextView, objc_selector="drawTextHighlightBackgroundForTextRange:origin:", objc_name="drawTextHighlightBackgroundForTextRange")
 	TextView_drawTextHighlightBackgroundForTextRange :: proc(self: ^TextView, textRange: ^NSTextRange, origin: CG.Point) ---
+
+	@(objc_type=TextView, objc_selector="registerTextAttachmentViewProviderReusePolicy:forTextAttachmentViewProviderType:", objc_name="registerTextAttachmentViewProviderReusePolicy")
+	TextView_registerTextAttachmentViewProviderReusePolicy :: proc(self: ^TextView, policy: TextAttachmentViewProviderReusePolicy, viewProviderType: Class) ---
+
+	@(objc_type=TextView, objc_selector="textViewportLayoutController:configureRenderingSurfaceForTextLayoutFragment:", objc_name="textViewportLayoutController")
+	TextView_textViewportLayoutController :: proc(self: ^TextView, textViewportLayoutController: ^NSTextViewportLayoutController, textLayoutFragment: ^NSTextLayoutFragment) ---
+
+	@(objc_type=TextView, objc_selector="viewportBoundsForTextViewportLayoutController:", objc_name="viewportBoundsForTextViewportLayoutController")
+	TextView_viewportBoundsForTextViewportLayoutController :: proc(self: ^TextView, textViewportLayoutController: ^NSTextViewportLayoutController) -> CG.Rect ---
+
+	@(objc_type=TextView, objc_selector="textViewportLayoutControllerWillLayout:", objc_name="textViewportLayoutControllerWillLayout")
+	TextView_textViewportLayoutControllerWillLayout :: proc(self: ^TextView, textViewportLayoutController: ^NSTextViewportLayoutController) ---
+
+	@(objc_type=TextView, objc_selector="textViewportLayoutControllerDidLayout:", objc_name="textViewportLayoutControllerDidLayout")
+	TextView_textViewportLayoutControllerDidLayout :: proc(self: ^TextView, textViewportLayoutController: ^NSTextViewportLayoutController) ---
+
+	@(objc_type=TextView, objc_selector="textViewportLayoutControllerReceivedSetNeedsLayout:", objc_name="textViewportLayoutControllerReceivedSetNeedsLayout")
+	TextView_textViewportLayoutControllerReceivedSetNeedsLayout :: proc(self: ^TextView, textViewportLayoutController: ^NSTextViewportLayoutController) ---
 
 	@(objc_type=TextView, objc_selector="delegate", objc_name="delegate")
 	TextView_delegate :: proc(self: ^TextView) -> ^TextViewDelegate ---

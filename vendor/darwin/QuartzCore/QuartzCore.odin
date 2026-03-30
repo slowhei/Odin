@@ -16,7 +16,7 @@ IMP           :: rawptr
 Protocol      :: distinct id
 instancetype  :: intrinsics.objc_instancetype
 
-@(export, require)
+@(export)
 foreign import lib {
 	"system:QuartzCore.framework",
 }
@@ -817,7 +817,7 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 	}
 }
 
-AutoresizingMaskFlag :: enum cffi.uint {
+AutoresizingFlag :: enum cffi.uint {
 	MinXMargin    = 0,
 	WidthSizable  = 1,
 	MaxXMargin    = 2,
@@ -826,25 +826,25 @@ AutoresizingMaskFlag :: enum cffi.uint {
 	MaxYMargin    = 5,
 }
 
-AutoresizingMask :: bit_set[AutoresizingMaskFlag; cffi.uint]
+AutoresizingMask :: bit_set[AutoresizingFlag; cffi.uint]
 
-EdgeAntialiasingMaskFlag :: enum cffi.uint {
+EdgeAntialiasingFlag :: enum cffi.uint {
 	LeftEdge   = 0,
 	RightEdge  = 1,
 	BottomEdge = 2,
 	TopEdge    = 3,
 }
 
-EdgeAntialiasingMask :: bit_set[EdgeAntialiasingMaskFlag; cffi.uint]
+EdgeAntialiasingMask :: bit_set[EdgeAntialiasingFlag; cffi.uint]
 
-CornerMaskFlag :: enum cffi.ulong {
+CornerFlag :: enum cffi.ulong {
 	MinXMinYCorner = 0,
 	MaxXMinYCorner = 1,
 	MinXMaxYCorner = 2,
 	MaxXMaxYCorner = 3,
 }
 
-CornerMask :: bit_set[CornerMaskFlag; cffi.ulong]
+CornerMask :: bit_set[CornerFlag; cffi.ulong]
 
 ConstraintAttribute :: enum cffi.int {
 	MinX   = 0,

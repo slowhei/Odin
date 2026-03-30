@@ -14,7 +14,7 @@ IMP           :: rawptr
 Protocol      :: distinct id
 instancetype  :: intrinsics.objc_instancetype
 
-@(export, require)
+@(export)
 foreign import lib {
 	"system:CoreFoundation.framework",
 }
@@ -46,6 +46,54 @@ foreign lib {
 
 STR :: StringMakeConstantString
 
+dispatch_get_main_queue :: proc "c" () -> dispatch_queue_main_t {
+	return &_dispatch_main_q
+}
+
+DISPATCH_QUEUE_PRIORITY_LOW        :: -2
+DISPATCH_QUEUE_PRIORITY_BACKGROUND :: -32768
+
+DISPATCH_APPLY_AUTO              := dispatch_queue_t(nil)
+DISPATCH_QUEUE_SERIAL            := dispatch_queue_attr_t(nil)
+DISPATCH_TARGET_QUEUE_DEFAULT    := dispatch_queue_t(nil)
+DISPATCH_CURRENT_QUEUE_LABEL     := dispatch_queue_t(nil)
+DISPATCH_DATA_DESTRUCTOR_DEFAULT := dispatch_block_t(nil)
+
+DISPATCH_QUEUE_CONCURRENT := &_dispatch_queue_attr_concurrent
+dispatch_data_empty       := &_dispatch_data_empty
+
+DISPATCH_SOURCE_TYPE_DATA_ADD       := &_dispatch_source_type_data_add
+DISPATCH_SOURCE_TYPE_DATA_OR        := &_dispatch_source_type_data_or
+DISPATCH_SOURCE_TYPE_DATA_REPLACE   := &_dispatch_source_type_data_replace
+DISPATCH_SOURCE_TYPE_MACH_SEND      := &_dispatch_source_type_mach_send
+DISPATCH_SOURCE_TYPE_MACH_RECV      := &_dispatch_source_type_mach_recv
+DISPATCH_SOURCE_TYPE_MEMORYPRESSURE := &_dispatch_source_type_memorypressure
+DISPATCH_SOURCE_TYPE_PROC           := &_dispatch_source_type_proc
+DISPATCH_SOURCE_TYPE_READ           := &_dispatch_source_type_read
+DISPATCH_SOURCE_TYPE_SIGNAL         := &_dispatch_source_type_signal
+DISPATCH_SOURCE_TYPE_TIMER          := &_dispatch_source_type_timer
+DISPATCH_SOURCE_TYPE_VNODE          := &_dispatch_source_type_vnode
+DISPATCH_SOURCE_TYPE_WRITE          := &_dispatch_source_type_write
+
+DISPATCH_DATA_DESTRUCTOR_FREE   := _dispatch_data_destructor_free
+DISPATCH_DATA_DESTRUCTOR_MUNMAP := _dispatch_data_destructor_munmap
+
+DISPATCH_QUEUE_SERIAL_INACTIVE :: proc "c" () -> dispatch_queue_attr_t {
+	return dispatch_queue_attr_make_initially_inactive(DISPATCH_QUEUE_SERIAL)
+}
+
+DISPATCH_QUEUE_CONCURRENT_INACTIVE :: proc "c" () -> dispatch_queue_attr_t {
+	return dispatch_queue_attr_make_initially_inactive(DISPATCH_QUEUE_CONCURRENT)
+}
+
+DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL :: proc "c" () -> dispatch_queue_attr_t {
+	return dispatch_queue_attr_make_with_autorelease_frequency(DISPATCH_QUEUE_SERIAL, .WORK_ITEM)
+}
+
+DISPATCH_QUEUE_CONCURRENT_WITH_AUTORELEASE_POOL :: proc "c" () -> dispatch_queue_attr_t {
+	return dispatch_queue_attr_make_with_autorelease_frequency(DISPATCH_QUEUE_CONCURRENT, .WORK_ITEM)
+}
+
 StringCopyToOdinString :: proc( theString: StringRef, allocator := context.allocator ) -> (str: string, ok: bool) #optional_ok {
 	length := StringGetLength(theString)
 	max    := StringGetMaximumSizeForEncoding(length, StringEncoding(StringBuiltInEncodings.UTF8))
@@ -59,6 +107,9 @@ StringCopyToOdinString :: proc( theString: StringRef, allocator := context.alloc
 	StringGetBytes(theString, {0, length}, StringEncoding(StringBuiltInEncodings.UTF8), 0, false, raw_data(buf), Index(len(buf)), &n)
 	return string(buf[:n]), true
 }
+
+RunLoopActivity_AllActivities :: transmute(RunLoopActivity)cffi.ulong(268435455)
+when ODIN_PLATFORM_SUBTARGET == .Default { XMLParserOptions_AllOptions :: transmute(XMLParserOptions)cffi.ulong(16777215) }
 
 
 
@@ -998,6 +1049,57 @@ foreign lib {
 
 	@(link_name="kCFSocketRetrieveCommand")
 	kSocketRetrieveCommand: StringRef
+
+	@(link_name="_dispatch_main_q")
+	_dispatch_main_q: dispatch_queue_s
+
+	@(link_name="_dispatch_queue_attr_concurrent")
+	_dispatch_queue_attr_concurrent: dispatch_queue_attr_s
+
+	@(link_name="_dispatch_source_type_data_add")
+	_dispatch_source_type_data_add: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_data_or")
+	_dispatch_source_type_data_or: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_data_replace")
+	_dispatch_source_type_data_replace: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_mach_send")
+	_dispatch_source_type_mach_send: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_mach_recv")
+	_dispatch_source_type_mach_recv: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_memorypressure")
+	_dispatch_source_type_memorypressure: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_proc")
+	_dispatch_source_type_proc: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_read")
+	_dispatch_source_type_read: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_signal")
+	_dispatch_source_type_signal: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_timer")
+	_dispatch_source_type_timer: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_vnode")
+	_dispatch_source_type_vnode: dispatch_source_type_s
+
+	@(link_name="_dispatch_source_type_write")
+	_dispatch_source_type_write: dispatch_source_type_s
+
+	@(link_name="_dispatch_data_empty")
+	_dispatch_data_empty: dispatch_data_s
+
+	@(link_name="_dispatch_data_destructor_free")
+	_dispatch_data_destructor_free: dispatch_block_t
+
+	@(link_name="_dispatch_data_destructor_munmap")
+	_dispatch_data_destructor_munmap: dispatch_block_t
 
 	@(link_name="kCFStreamPropertyDataWritten")
 	kStreamPropertyDataWritten: StreamPropertyKey
@@ -2996,7 +3098,7 @@ foreign lib {
 
 	dispatch_io_set_low_water :: proc(channel: dispatch_io_t, low_water: cffi.size_t) ---
 
-	dispatch_io_set_interval :: proc(channel: dispatch_io_t, interval: cffi.uint64_t, flags: cffi.ulong) ---
+	dispatch_io_set_interval :: proc(channel: dispatch_io_t, interval: cffi.uint64_t, flags: dispatch_io_interval_flags_t) ---
 
 	dispatch_workloop_create :: proc(label: cstring) -> dispatch_workloop_t ---
 
@@ -3905,6 +4007,34 @@ foreign lib {
 
 
 
+NSEC_PER_USEC                    :: 1000
+USEC_PER_SEC                     :: 1000000
+NSEC_PER_SEC                     :: 1000000000
+NSEC_PER_MSEC                    :: 1000000
+MSEC_PER_SEC                     :: 1000
+DISPATCH_QUEUE_PRIORITY_HIGH     :: 2
+DISPATCH_QUEUE_PRIORITY_DEFAULT  :: 0
+DISPATCH_MACH_SEND_DEAD          :: 1
+DISPATCH_MEMORYPRESSURE_NORMAL   :: 1
+DISPATCH_MEMORYPRESSURE_WARN     :: 2
+DISPATCH_MEMORYPRESSURE_CRITICAL :: 4
+DISPATCH_PROC_EXIT               :: 2147483648
+DISPATCH_PROC_FORK               :: 1073741824
+DISPATCH_PROC_EXEC               :: 536870912
+DISPATCH_PROC_SIGNAL             :: 134217728
+DISPATCH_VNODE_DELETE            :: 1
+DISPATCH_VNODE_WRITE             :: 2
+DISPATCH_VNODE_EXTEND            :: 4
+DISPATCH_VNODE_ATTRIB            :: 8
+DISPATCH_VNODE_LINK              :: 16
+DISPATCH_VNODE_RENAME            :: 32
+DISPATCH_VNODE_REVOKE            :: 64
+DISPATCH_VNODE_FUNLOCK           :: 256
+DISPATCH_TIMER_STRICT            :: 1
+DISPATCH_IO_STREAM               :: 0
+DISPATCH_IO_RANDOM               :: 1
+DISPATCH_IO_STOP                 :: 1
+DISPATCH_IO_STRICT_INTERVAL      :: 1
 OSUnknownByteOrder                          :: 0
 OSLittleEndian                              :: 1
 OSBigEndian                                 :: 2
@@ -4142,6 +4272,7 @@ dispatch_io_t :: ^dispatch_io_s
 dispatch_io_type_t :: cffi.ulong
 dispatch_io_handler_t :: ^Objc_Block(proc "c" ( done: cffi.bool, data: dispatch_data_t, error: cffi.int ))
 dispatch_io_close_flags_t :: cffi.ulong
+dispatch_io_interval_flags_t :: cffi.ulong
 dispatch_workloop_t :: dispatch_queue_t
 StreamPropertyKey :: StringRef
 ReadStreamRef :: ^__CFReadStream
@@ -4200,6 +4331,10 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 	XMLParserReleaseCallBack :: proc "c" ( info: rawptr )
 	XMLParserCopyDescriptionCallBack :: proc "c" ( info: rawptr ) -> StringRef
 }
+ISO8601DateFormatOptions_FullDate :: ISO8601DateFormatOptions { .Year, .Month, .Day, .DashSeparatorInDate, }
+ISO8601DateFormatOptions_FullTime :: ISO8601DateFormatOptions { .Time, .TimeZone, .ColonSeparatorInTime, .ColonSeparatorInTimeZone, }
+ISO8601DateFormatOptions_InternetDateTime :: ISO8601DateFormatOptions { .Year, .Month, .Day, .Time, .TimeZone, .DashSeparatorInDate, .ColonSeparatorInTime, .ColonSeparatorInTimeZone, }
+SocketCallBackType_DataCallBack :: SocketCallBackType { .ReadCallBack, .AcceptCallBack, }
 
 os_clockid_t :: enum cffi.uint {
 	CLOCK_MACH_ABSOLUTE_TIME = 32,
@@ -4220,7 +4355,7 @@ dispatch_autorelease_frequency_t :: enum cffi.ulong {
 	NEVER     = 2,
 }
 
-dispatch_block_flag_t :: enum cffi.ulong {
+dispatch_block_flag :: enum cffi.ulong {
 	BARRIER           = 0,
 	DETACHED          = 1,
 	ASSIGN_CURRENT    = 2,
@@ -4228,7 +4363,8 @@ dispatch_block_flag_t :: enum cffi.ulong {
 	INHERIT_QOS_CLASS = 4,
 	ENFORCE_QOS_CLASS = 5,
 }
-dispatch_block_flags_t :: bit_set[dispatch_block_flag_t; cffi.ulong]
+
+dispatch_block_flags_t :: bit_set[dispatch_block_flag; cffi.ulong]
 
 ComparisonResult :: enum cffi.long {
 	LessThan    = -1,
@@ -4258,12 +4394,12 @@ LocaleLanguageDirection :: enum cffi.long {
 }
 
 GregorianUnitFlag :: enum cffi.ulong {
-	Years   = 0,
-	Months  = 1,
-	Days    = 2,
-	Hours   = 3,
-	Minutes = 4,
-	Seconds = 5,
+	UnitsYears   = 0,
+	UnitsMonths  = 1,
+	UnitsDays    = 2,
+	UnitsHours   = 3,
+	UnitsMinutes = 4,
+	UnitsSeconds = 5,
 }
 
 GregorianUnitFlags :: bit_set[GregorianUnitFlag; cffi.ulong]
@@ -4357,6 +4493,7 @@ CalendarUnitFlag :: enum cffi.ulong {
 	YearForWeekOfYear = 14,
 	DayOfYear         = 16,
 }
+
 CalendarUnit :: bit_set[CalendarUnitFlag; cffi.ulong]
 
 DateFormatterStyle :: enum cffi.long {
@@ -4380,10 +4517,8 @@ ISO8601DateFormatOption :: enum cffi.ulong {
 	ColonSeparatorInTimeZone = 10,
 	FractionalSeconds        = 11,
 }
+
 ISO8601DateFormatOptions :: bit_set[ISO8601DateFormatOption; cffi.ulong]
-ISO8601DateFormatOptions_FullDate :: ISO8601DateFormatOptions{.Year, .Month, .Day, .DashSeparatorInDate}
-ISO8601DateFormatOptions_FullTime :: ISO8601DateFormatOptions{.Time, .TimeZone, .ColonSeparatorInTime, .ColonSeparatorInTimeZone}
-ISO8601DateFormatOptions_InternetDateTime :: ISO8601DateFormatOptions{.Year, .Month, .Day, .Time, .TimeZone, .DashSeparatorInDate, .ColonSeparatorInTime, .ColonSeparatorInTimeZone}
 
 NumberType :: enum cffi.long {
 	SInt8Type     = 1,
@@ -4442,9 +4577,9 @@ NumberFormatterPadPosition :: enum cffi.long {
 }
 
 URLPathStyle :: enum cffi.long {
-	POSIXPathStyle   = 0,
-	HFSPathStyle     = 1,
-	WindowsPathStyle = 2,
+	CFURLPOSIXPathStyle = 0,
+	CFURLHFSPathStyle   = 1,
+	WindowsPathStyle    = 2,
 }
 
 URLComponentType :: enum cffi.long {
@@ -4470,6 +4605,7 @@ URLBookmarkCreationOption :: enum cffi.ulong {
 	WithoutImplicitSecurityScope     = 29,
 	PreferFileIDResolutionMask       = 8,
 }
+
 URLBookmarkCreationOptions :: bit_set[URLBookmarkCreationOption; cffi.ulong]
 
 URLBookmarkResolutionOption :: enum cffi.ulong {
@@ -4477,7 +4613,10 @@ URLBookmarkResolutionOption :: enum cffi.ulong {
 	WithoutMountingMask           = 9,
 	WithSecurityScope             = 10,
 	WithoutImplicitStartAccessing = 15,
+	kWithoutUIMask                = 8,
+	kWithoutMountingMask          = 9,
 }
+
 URLBookmarkResolutionOptions :: bit_set[URLBookmarkResolutionOption; cffi.ulong]
 
 RunLoopRunResult :: enum cffi.int {
@@ -4495,8 +4634,8 @@ RunLoopActivityFlag :: enum cffi.ulong {
 	AfterWaiting  = 6,
 	Exit          = 7,
 }
+
 RunLoopActivity :: bit_set[RunLoopActivityFlag; cffi.ulong]
-RunLoopActivity_AllActivities :: transmute(RunLoopActivity)cffi.ulong(0xfffffff)
 
 SocketError :: enum cffi.long {
 	Success = 0,
@@ -4504,14 +4643,14 @@ SocketError :: enum cffi.long {
 	Timeout = -2,
 }
 
-SocketCallBackType :: enum cffi.ulong {
-	NoCallBack      = 0,
-	ReadCallBack    = 1,
-	AcceptCallBack  = 2,
-	DataCallBack    = 3,
-	ConnectCallBack = 4,
-	WriteCallBack   = 8,
+SocketCallBackTypeFlag :: enum cffi.ulong {
+	ReadCallBack    = 0,
+	AcceptCallBack  = 1,
+	ConnectCallBack = 2,
+	WriteCallBack   = 3,
 }
+
+SocketCallBackType :: bit_set[SocketCallBackTypeFlag; cffi.ulong]
 
 StreamStatus :: enum cffi.long {
 	NotOpen = 0,
@@ -4531,8 +4670,8 @@ StreamEventTypeFlag :: enum cffi.ulong {
 	ErrorOccurred     = 3,
 	EndEncountered    = 4,
 }
+
 StreamEventType :: bit_set[StreamEventTypeFlag; cffi.ulong]
-StreamEventType_None :: StreamEventType{}
 
 StreamErrorDomain :: enum cffi.long {
 	Custom      = -1,
@@ -4706,8 +4845,8 @@ URLEnumeratorOption :: enum cffi.ulong {
 	IncludeDirectoriesPostOrder = 5,
 	GenerateRelativePathURLs    = 6,
 }
+
 URLEnumeratorOptions :: bit_set[URLEnumeratorOption; cffi.ulong]
-URLEnumeratorOptions_DefaultBehavior :: URLEnumeratorOptions{}
 
 URLEnumeratorResult :: enum cffi.long {
 	Success                   = 1,
@@ -4724,6 +4863,7 @@ FileSecurityClearOption :: enum cffi.ulong {
 	GroupUUID         = 4,
 	AccessControlList = 5,
 }
+
 FileSecurityClearOptions :: bit_set[FileSecurityClearOption; cffi.ulong]
 
 StringTokenizerTokenTypeFlag :: enum cffi.ulong {
@@ -4734,8 +4874,8 @@ StringTokenizerTokenTypeFlag :: enum cffi.ulong {
 	HasNonLettersMask       = 4,
 	IsCJWordMask            = 5,
 }
+
 StringTokenizerTokenType :: bit_set[StringTokenizerTokenTypeFlag; cffi.ulong]
-StringTokenizerTokenType_None :: StringTokenizerTokenType{}
 
 when ODIN_PLATFORM_SUBTARGET == .Default {
 	XMLNodeTypeCode :: enum cffi.long {
@@ -4772,9 +4912,8 @@ when ODIN_PLATFORM_SUBTARGET == .Default {
 		ResolveExternalEntities = 4,
 		AddImpliedAttributes    = 5,
 	}
+
 	XMLParserOptions :: bit_set[XMLParserOption; cffi.ulong]
-	XMLParserOptions_AllOptions :: transmute(XMLParserOptions)cffi.ulong(0xffffff)
-	XMLParserOptions_NoOptions :: XMLParserOptions{}
 
 	XMLParserStatusCode :: enum cffi.long {
 		ParseNotBegun                    = -2,

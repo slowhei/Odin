@@ -91,6 +91,18 @@ foreign lib {
 	@(objc_type=DragInteraction, objc_selector="setAllowsSimultaneousRecognitionDuringLift:", objc_name="setAllowsSimultaneousRecognitionDuringLift")
 	DragInteraction_setAllowsSimultaneousRecognitionDuringLift :: proc(self: ^DragInteraction, allowsSimultaneousRecognitionDuringLift: bool) ---
 
+	@(objc_type=DragInteraction, objc_selector="allowsPointerDragBeforeLiftDelay", objc_name="allowsPointerDragBeforeLiftDelay")
+	DragInteraction_allowsPointerDragBeforeLiftDelay :: proc(self: ^DragInteraction) -> bool ---
+
+	@(objc_type=DragInteraction, objc_selector="setAllowsPointerDragBeforeLiftDelay:", objc_name="setAllowsPointerDragBeforeLiftDelay")
+	DragInteraction_setAllowsPointerDragBeforeLiftDelay :: proc(self: ^DragInteraction, allowsPointerDragBeforeLiftDelay: bool) ---
+
+	@(objc_type=DragInteraction, objc_selector="liftBehavior", objc_name="liftBehavior")
+	DragInteraction_liftBehavior :: proc(self: ^DragInteraction) -> DragLiftBehavior ---
+
+	@(objc_type=DragInteraction, objc_selector="setLiftBehavior:", objc_name="setLiftBehavior")
+	DragInteraction_setLiftBehavior :: proc(self: ^DragInteraction, liftBehavior: DragLiftBehavior) ---
+
 	@(objc_type=DragInteraction, objc_selector="isEnabled", objc_name="isEnabled")
 	DragInteraction_isEnabled :: proc(self: ^DragInteraction) -> bool ---
 
@@ -405,6 +417,25 @@ foreign lib {
 LargeContentViewerInteractionDelegate_largeContentViewerInteraction :: proc {
 	LargeContentViewerInteractionDelegate_largeContentViewerInteraction_didEndOnItem_atPoint,
 	LargeContentViewerInteractionDelegate_largeContentViewerInteraction_itemAtPoint,
+}
+
+
+@(objc_class="UILookToScrollInteraction", objc_superclass=NS.Object)
+LookToScrollInteraction :: struct {
+	using _: NS.Object,
+	using _: Interaction,
+}
+
+@(default_calling_convention="c")
+foreign lib {
+	@(objc_type=LookToScrollInteraction, objc_selector="exclusionRegionInteraction", objc_name="exclusionRegionInteraction", objc_is_class_method=true)
+	LookToScrollInteraction_exclusionRegionInteraction :: proc() -> instancetype ---
+
+	@(objc_type=LookToScrollInteraction, objc_selector="init", objc_name="init")
+	LookToScrollInteraction_init :: proc(self: ^LookToScrollInteraction) -> instancetype ---
+
+	@(objc_type=LookToScrollInteraction, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	LookToScrollInteraction_new :: proc() -> ^LookToScrollInteraction ---
 }
 
 

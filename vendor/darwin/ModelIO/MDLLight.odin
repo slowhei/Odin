@@ -12,10 +12,10 @@ Light :: struct { using _: Object}
 
 foreign lib {
 	@(objc_type=Light, objc_selector="irradianceAtPoint:", objc_name="irradianceAtPoint_")
-	Light_irradianceAtPoint_ :: proc(self: ^Light, point: ^vector_float3) -> CG.ColorRef ---
+	Light_irradianceAtPoint_ :: proc(self: ^Light, point: simd_float4) -> CG.ColorRef ---
 
 	@(objc_type=Light, objc_selector="irradianceAtPoint:colorSpace:", objc_name="irradianceAtPoint_colorSpace")
-	Light_irradianceAtPoint_colorSpace :: proc(self: ^Light, point: ^vector_float3, colorSpace: CG.ColorSpaceRef) -> CG.ColorRef ---
+	Light_irradianceAtPoint_colorSpace :: proc(self: ^Light, point: simd_float4, colorSpace: CG.ColorSpaceRef) -> CG.ColorRef ---
 
 	@(objc_type=Light, objc_selector="lightType", objc_name="lightType")
 	Light_lightType :: proc(self: ^Light) -> LightType ---
@@ -74,7 +74,7 @@ LightProbeIrradianceDataSource :: struct {
 
 foreign lib {
 	@(objc_type=LightProbeIrradianceDataSource, objc_selector="sphericalHarmonicsCoefficientsAtPosition:", objc_name="sphericalHarmonicsCoefficientsAtPosition")
-	LightProbeIrradianceDataSource_sphericalHarmonicsCoefficientsAtPosition :: proc(self: ^LightProbeIrradianceDataSource, position: ^vector_float3) -> ^NS.Data ---
+	LightProbeIrradianceDataSource_sphericalHarmonicsCoefficientsAtPosition :: proc(self: ^LightProbeIrradianceDataSource, position: simd_float4) -> ^NS.Data ---
 
 	@(objc_type=LightProbeIrradianceDataSource, objc_selector="boundingBox", objc_name="boundingBox")
 	LightProbeIrradianceDataSource_boundingBox :: proc(self: ^LightProbeIrradianceDataSource) -> AxisAlignedBoundingBox ---
@@ -149,7 +149,7 @@ foreign lib {
 	AreaLight_superEllipticPower :: proc(self: ^AreaLight) -> vector_float2 ---
 
 	@(objc_type=AreaLight, objc_selector="setSuperEllipticPower:", objc_name="setSuperEllipticPower")
-	AreaLight_setSuperEllipticPower :: proc(self: ^AreaLight, superEllipticPower: ^vector_float2) ---
+	AreaLight_setSuperEllipticPower :: proc(self: ^AreaLight, superEllipticPower: vector_float2) ---
 
 	@(objc_type=AreaLight, objc_selector="aspect", objc_name="aspect")
 	AreaLight_aspect :: proc(self: ^AreaLight) -> cffi.float ---

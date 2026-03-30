@@ -188,15 +188,6 @@ foreign lib {
 	@(objc_type=ControllerElement, objc_selector="isAnalog", objc_name="isAnalog")
 	ControllerElement_isAnalog :: proc(self: ^ControllerElement) -> bool ---
 
-	@(objc_type=ControllerElement, objc_selector="isBoundToSystemGesture", objc_name="isBoundToSystemGesture")
-	ControllerElement_isBoundToSystemGesture :: proc(self: ^ControllerElement) -> bool ---
-
-	@(objc_type=ControllerElement, objc_selector="preferredSystemGestureState", objc_name="preferredSystemGestureState")
-	ControllerElement_preferredSystemGestureState :: proc(self: ^ControllerElement) -> SystemGestureState ---
-
-	@(objc_type=ControllerElement, objc_selector="setPreferredSystemGestureState:", objc_name="setPreferredSystemGestureState")
-	ControllerElement_setPreferredSystemGestureState :: proc(self: ^ControllerElement, preferredSystemGestureState: SystemGestureState) ---
-
 	@(objc_type=ControllerElement, objc_selector="sfSymbolsName", objc_name="sfSymbolsName")
 	ControllerElement_sfSymbolsName :: proc(self: ^ControllerElement) -> ^NS.String ---
 
@@ -223,6 +214,81 @@ foreign lib {
 
 	@(objc_type=ControllerElement, objc_selector="aliases", objc_name="aliases")
 	ControllerElement_aliases :: proc(self: ^ControllerElement) -> ^NS.Set ---
+
+	@(objc_type=ControllerElement, objc_selector="isBoundToSystemGesture", objc_name="isBoundToSystemGesture")
+	ControllerElement_isBoundToSystemGesture :: proc(self: ^ControllerElement) -> bool ---
+
+	@(objc_type=ControllerElement, objc_selector="preferredSystemGestureState", objc_name="preferredSystemGestureState")
+	ControllerElement_preferredSystemGestureState :: proc(self: ^ControllerElement) -> SystemGestureState ---
+
+	@(objc_type=ControllerElement, objc_selector="setPreferredSystemGestureState:", objc_name="setPreferredSystemGestureState")
+	ControllerElement_setPreferredSystemGestureState :: proc(self: ^ControllerElement, preferredSystemGestureState: SystemGestureState) ---
+}
+
+
+@(objc_class="GCControllerHomeButtonSettingsManager", objc_superclass=NS.Object)
+ControllerHomeButtonSettingsManager :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="initWithQueue:", objc_name="initWithQueue")
+	ControllerHomeButtonSettingsManager_initWithQueue :: proc(self: ^ControllerHomeButtonSettingsManager, queue: ^NS.Object) -> instancetype ---
+
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="init", objc_name="init")
+	ControllerHomeButtonSettingsManager_init :: proc(self: ^ControllerHomeButtonSettingsManager) -> instancetype ---
+
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="openControllerHomeButtonSettingsForActivity:error:", objc_name="openControllerHomeButtonSettingsForActivity_error")
+	ControllerHomeButtonSettingsManager_openControllerHomeButtonSettingsForActivity_error :: proc(self: ^ControllerHomeButtonSettingsManager, activity: ControllerHomeButtonSettingsCustomizationActivity, error: ^^NS.Error) -> bool ---
+
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="readControllerHomeButtonSystemAction:withError:", objc_name="readControllerHomeButtonSystemAction_error")
+	ControllerHomeButtonSettingsManager_readControllerHomeButtonSystemAction_error :: proc(self: ^ControllerHomeButtonSettingsManager, customization: ^ControllerHomeButtonSettingCustomizationStatus, error: ^^NS.Error) -> ControllerHomeButtonSettingSystemAction ---
+
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="readControllerHomeButtonSystemActionWithError:", objc_name="readControllerHomeButtonSystemActionWithError_error")
+	ControllerHomeButtonSettingsManager_readControllerHomeButtonSystemActionWithError_error :: proc(self: ^ControllerHomeButtonSettingsManager, error: ^^NS.Error) -> ControllerHomeButtonSettingSystemAction ---
+
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="readControllerHomeButtonInAppAction:withError:", objc_name="readControllerHomeButtonInAppAction_error")
+	ControllerHomeButtonSettingsManager_readControllerHomeButtonInAppAction_error :: proc(self: ^ControllerHomeButtonSettingsManager, customization: ^ControllerHomeButtonSettingCustomizationStatus, error: ^^NS.Error) -> ControllerHomeButtonSettingInAppAction ---
+
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="readControllerHomeButtonInAppActionWithError:", objc_name="readControllerHomeButtonInAppActionWithError_error")
+	ControllerHomeButtonSettingsManager_readControllerHomeButtonInAppActionWithError_error :: proc(self: ^ControllerHomeButtonSettingsManager, error: ^^NS.Error) -> ControllerHomeButtonSettingInAppAction ---
+
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="settingsDidChangeHandler", objc_name="settingsDidChangeHandler")
+	ControllerHomeButtonSettingsManager_settingsDidChangeHandler :: proc(self: ^ControllerHomeButtonSettingsManager) -> ControllerHomeButtonSettingsDidChangeHandler ---
+
+	@(objc_type=ControllerHomeButtonSettingsManager, objc_selector="setSettingsDidChangeHandler:", objc_name="setSettingsDidChangeHandler")
+	ControllerHomeButtonSettingsManager_setSettingsDidChangeHandler :: proc(self: ^ControllerHomeButtonSettingsManager, settingsDidChangeHandler: ControllerHomeButtonSettingsDidChangeHandler) ---
+}
+
+
+// Odin-style wrappers for methods with a trailing `^^Error` out-parameter
+
+@(objc_type=ControllerHomeButtonSettingsManager, objc_name="openControllerHomeButtonSettingsForActivity")
+ControllerHomeButtonSettingsManager_openControllerHomeButtonSettingsForActivity :: #force_inline proc "c" (self: ^ControllerHomeButtonSettingsManager, activity: ControllerHomeButtonSettingsCustomizationActivity) -> (ok: bool, err: ^NS.Error) {
+	ok = ControllerHomeButtonSettingsManager_openControllerHomeButtonSettingsForActivity_error(self, activity, &err)
+	return
+}
+
+@(objc_type=ControllerHomeButtonSettingsManager, objc_name="readControllerHomeButtonSystemAction")
+ControllerHomeButtonSettingsManager_readControllerHomeButtonSystemAction :: #force_inline proc "c" (self: ^ControllerHomeButtonSettingsManager, customization: ^ControllerHomeButtonSettingCustomizationStatus) -> (res: ControllerHomeButtonSettingSystemAction, err: ^NS.Error) {
+	res = ControllerHomeButtonSettingsManager_readControllerHomeButtonSystemAction_error(self, customization, &err)
+	return
+}
+
+@(objc_type=ControllerHomeButtonSettingsManager, objc_name="readControllerHomeButtonSystemActionWithError")
+ControllerHomeButtonSettingsManager_readControllerHomeButtonSystemActionWithError :: #force_inline proc "c" (self: ^ControllerHomeButtonSettingsManager) -> (res: ControllerHomeButtonSettingSystemAction, err: ^NS.Error) {
+	res = ControllerHomeButtonSettingsManager_readControllerHomeButtonSystemActionWithError_error(self, &err)
+	return
+}
+
+@(objc_type=ControllerHomeButtonSettingsManager, objc_name="readControllerHomeButtonInAppAction")
+ControllerHomeButtonSettingsManager_readControllerHomeButtonInAppAction :: #force_inline proc "c" (self: ^ControllerHomeButtonSettingsManager, customization: ^ControllerHomeButtonSettingCustomizationStatus) -> (res: ControllerHomeButtonSettingInAppAction, err: ^NS.Error) {
+	res = ControllerHomeButtonSettingsManager_readControllerHomeButtonInAppAction_error(self, customization, &err)
+	return
+}
+
+@(objc_type=ControllerHomeButtonSettingsManager, objc_name="readControllerHomeButtonInAppActionWithError")
+ControllerHomeButtonSettingsManager_readControllerHomeButtonInAppActionWithError :: #force_inline proc "c" (self: ^ControllerHomeButtonSettingsManager) -> (res: ControllerHomeButtonSettingInAppAction, err: ^NS.Error) {
+	res = ControllerHomeButtonSettingsManager_readControllerHomeButtonInAppActionWithError_error(self, &err)
+	return
 }
 
 

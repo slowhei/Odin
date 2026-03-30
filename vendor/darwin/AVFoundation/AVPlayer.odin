@@ -9,6 +9,7 @@ import NS "core:sys/darwin/Foundation"
 import AT "vendor:darwin/AudioToolbox"
 import "base:intrinsics"
 import CG "core:sys/darwin/CoreGraphics"
+import CV "vendor:darwin/CoreVideo"
 import CA "vendor:darwin/QuartzCore"
 
 @(objc_class="AVPlayer", objc_superclass=NS.Object)
@@ -137,6 +138,12 @@ foreign lib {
 
 	@(objc_type=Player, objc_selector="setMuted:", objc_name="setMuted")
 	Player_setMuted :: proc(self: ^Player, muted: bool) ---
+
+	@(objc_type=Player, objc_selector="setDisconnectedFromSystemAudio:completionHandler:", objc_name="setDisconnectedFromSystemAudio")
+	Player_setDisconnectedFromSystemAudio :: proc(self: ^Player, disconnected: bool, completionHandler: ^Objc_Block(proc "c" ())) ---
+
+	@(objc_type=Player, objc_selector="disconnectedFromSystemAudio", objc_name="disconnectedFromSystemAudio")
+	Player_disconnectedFromSystemAudio :: proc(self: ^Player) -> bool ---
 
 	@(objc_type=Player, objc_selector="setMediaSelectionCriteria:forMediaCharacteristic:", objc_name="setMediaSelectionCriteria")
 	Player_setMediaSelectionCriteria :: proc(self: ^Player, criteria: ^PlayerMediaSelectionCriteria, mediaCharacteristic: ^NS.String) ---
@@ -797,6 +804,9 @@ foreign lib {
 	@(objc_type=PlayerItem, objc_selector="selectMediaOptionAutomaticallyInMediaSelectionGroup:", objc_name="selectMediaOptionAutomaticallyInMediaSelectionGroup")
 	PlayerItem_selectMediaOptionAutomaticallyInMediaSelectionGroup :: proc(self: ^PlayerItem, mediaSelectionGroup: ^MediaSelectionGroup) ---
 
+	@(objc_type=PlayerItem, objc_selector="selectableMediaSelectionOptionsInMediaSelectionGroup:", objc_name="selectableMediaSelectionOptionsInMediaSelectionGroup")
+	PlayerItem_selectableMediaSelectionOptionsInMediaSelectionGroup :: proc(self: ^PlayerItem, mediaSelectionGroup: ^MediaSelectionGroup) -> ^NS.Array ---
+
 	@(objc_type=PlayerItem, objc_selector="currentMediaSelection", objc_name="currentMediaSelection")
 	PlayerItem_currentMediaSelection :: proc(self: ^PlayerItem) -> ^MediaSelection ---
 
@@ -826,6 +836,12 @@ foreign lib {
 
 	@(objc_type=PlayerItem, objc_selector="errorLog", objc_name="errorLog")
 	PlayerItem_errorLog :: proc(self: ^PlayerItem) -> ^PlayerItemErrorLog ---
+
+	@(objc_type=PlayerItem, objc_selector="fetchAccessLogWithCompletionHandler:", objc_name="fetchAccessLogWithCompletionHandler")
+	PlayerItem_fetchAccessLogWithCompletionHandler :: proc(self: ^PlayerItem, completionHandler: ^Objc_Block(proc "c" ( accessLog: ^PlayerItemAccessLog ))) ---
+
+	@(objc_type=PlayerItem, objc_selector="fetchErrorLogWithCompletionHandler:", objc_name="fetchErrorLogWithCompletionHandler")
+	PlayerItem_fetchErrorLogWithCompletionHandler :: proc(self: ^PlayerItem, completionHandler: ^Objc_Block(proc "c" ( errorLog: ^PlayerItemErrorLog ))) ---
 
 	@(objc_type=PlayerItem, objc_selector="addOutput:", objc_name="addOutput")
 	PlayerItem_addOutput :: proc(self: ^PlayerItem, output: ^PlayerItemOutput) ---
@@ -1338,7 +1354,7 @@ foreign lib {
 
 	when ODIN_PLATFORM_SUBTARGET == .Default {
 		@(objc_type=PlayerItemOutput, objc_selector="itemTimeForCVTimeStamp:", objc_name="itemTimeForCVTimeStamp")
-		PlayerItemOutput_itemTimeForCVTimeStamp :: proc(self: ^PlayerItemOutput, timestamp: CVTimeStamp) -> CM.Time ---
+		PlayerItemOutput_itemTimeForCVTimeStamp :: proc(self: ^PlayerItemOutput, timestamp: CV.TimeStamp) -> CM.Time ---
 	}
 
 	@(objc_type=PlayerItemOutput, objc_selector="suppressesPlayerRendering", objc_name="suppressesPlayerRendering")
@@ -1428,6 +1444,58 @@ foreign lib {
 }
 
 
+@(objc_class="AVPlayerItemSampleBufferOutput", objc_superclass=PlayerItemOutput)
+PlayerItemSampleBufferOutput :: struct { using _: PlayerItemOutput}
+
+foreign lib {
+	@(objc_type=PlayerItemSampleBufferOutput, objc_selector="initWithConfiguration:", objc_name="initWithConfiguration")
+	PlayerItemSampleBufferOutput_initWithConfiguration :: proc(self: ^PlayerItemSampleBufferOutput, configuration: ^PlayerItemSampleBufferOutputConfiguration) -> instancetype ---
+
+	@(objc_type=PlayerItemSampleBufferOutput, objc_selector="copyNextSampleBuffer", objc_name="copyNextSampleBuffer")
+	PlayerItemSampleBufferOutput_copyNextSampleBuffer :: proc(self: ^PlayerItemSampleBufferOutput) -> CM.SampleBufferRef ---
+
+	@(objc_type=PlayerItemSampleBufferOutput, objc_selector="setDelegate:queue:", objc_name="setDelegate")
+	PlayerItemSampleBufferOutput_setDelegate :: proc(self: ^PlayerItemSampleBufferOutput, delegate: ^PlayerItemSampleBufferOutputDelegate, delegateQueue: CF.dispatch_queue_t) ---
+
+	@(objc_type=PlayerItemSampleBufferOutput, objc_selector="delegate", objc_name="delegate")
+	PlayerItemSampleBufferOutput_delegate :: proc(self: ^PlayerItemSampleBufferOutput) -> ^PlayerItemSampleBufferOutputDelegate ---
+
+	@(objc_type=PlayerItemSampleBufferOutput, objc_selector="delegateQueue", objc_name="delegateQueue")
+	PlayerItemSampleBufferOutput_delegateQueue :: proc(self: ^PlayerItemSampleBufferOutput) -> CF.dispatch_queue_t ---
+}
+
+
+@(objc_class="AVPlayerItemSampleBufferOutputDelegate")
+PlayerItemSampleBufferOutputDelegate :: struct {
+	using _: intrinsics.objc_object,
+	using _: NS.ObjectProtocol,
+}
+
+foreign lib {
+	@(objc_type=PlayerItemSampleBufferOutputDelegate, objc_selector="outputMediaDataAvailable:", objc_name="outputMediaDataAvailable")
+	PlayerItemSampleBufferOutputDelegate_outputMediaDataAvailable :: proc(self: ^PlayerItemSampleBufferOutputDelegate, output: ^PlayerItemSampleBufferOutput) ---
+
+	@(objc_type=PlayerItemSampleBufferOutputDelegate, objc_selector="outputSequenceWasRestarted:", objc_name="outputSequenceWasRestarted")
+	PlayerItemSampleBufferOutputDelegate_outputSequenceWasRestarted :: proc(self: ^PlayerItemSampleBufferOutputDelegate, output: ^PlayerItemSampleBufferOutput) ---
+}
+
+
+@(objc_class="AVPlayerItemSampleBufferOutputConfiguration", objc_superclass=NS.Object)
+PlayerItemSampleBufferOutputConfiguration :: struct { using _: NS.Object}
+
+
+@(objc_class="AVPlayerItemSampleBufferOutputAudioConfiguration", objc_superclass=PlayerItemSampleBufferOutputConfiguration)
+PlayerItemSampleBufferOutputAudioConfiguration :: struct { using _: PlayerItemSampleBufferOutputConfiguration}
+
+foreign lib {
+	@(objc_type=PlayerItemSampleBufferOutputAudioConfiguration, objc_selector="requestedAudioFormat", objc_name="requestedAudioFormat")
+	PlayerItemSampleBufferOutputAudioConfiguration_requestedAudioFormat :: proc(self: ^PlayerItemSampleBufferOutputAudioConfiguration) -> CM.FormatDescriptionRef ---
+
+	@(objc_type=PlayerItemSampleBufferOutputAudioConfiguration, objc_selector="setRequestedAudioFormat:", objc_name="setRequestedAudioFormat")
+	PlayerItemSampleBufferOutputAudioConfiguration_setRequestedAudioFormat :: proc(self: ^PlayerItemSampleBufferOutputAudioConfiguration, requestedAudioFormat: CM.FormatDescriptionRef) ---
+}
+
+
 @(objc_class="AVPlayerItemSegment", objc_superclass=NS.Object)
 PlayerItemSegment :: struct { using _: NS.Object}
 
@@ -1499,7 +1567,7 @@ foreign lib {
 	PlayerItemVideoOutput_hasNewPixelBufferForItemTime :: proc(self: ^PlayerItemVideoOutput, itemTime: CM.Time) -> bool ---
 
 	@(objc_type=PlayerItemVideoOutput, objc_selector="copyPixelBufferForItemTime:itemTimeForDisplay:", objc_name="copyPixelBufferForItemTime")
-	PlayerItemVideoOutput_copyPixelBufferForItemTime :: proc(self: ^PlayerItemVideoOutput, itemTime: CM.Time, outItemTimeForDisplay: ^CM.Time) -> CVPixelBufferRef ---
+	PlayerItemVideoOutput_copyPixelBufferForItemTime :: proc(self: ^PlayerItemVideoOutput, itemTime: CM.Time, outItemTimeForDisplay: ^CM.Time) -> CV.PixelBufferRef ---
 
 	@(objc_type=PlayerItemVideoOutput, objc_selector="setDelegate:queue:", objc_name="setDelegate")
 	PlayerItemVideoOutput_setDelegate :: proc(self: ^PlayerItemVideoOutput, delegate: ^PlayerItemOutputPullDelegate, delegateQueue: CF.dispatch_queue_t) ---
@@ -1527,7 +1595,7 @@ foreign lib {
 	PlayerLayer_playerLayerWithPlayer :: proc(player: ^Player) -> ^PlayerLayer ---
 
 	@(objc_type=PlayerLayer, objc_selector="copyDisplayedPixelBuffer", objc_name="copyDisplayedPixelBuffer")
-	PlayerLayer_copyDisplayedPixelBuffer :: proc(self: ^PlayerLayer) -> CVPixelBufferRef ---
+	PlayerLayer_copyDisplayedPixelBuffer :: proc(self: ^PlayerLayer) -> CV.PixelBufferRef ---
 
 	@(objc_type=PlayerLayer, objc_selector="setCaptionPreviewProfileID:position:text:", objc_name="setCaptionPreviewProfileID")
 	PlayerLayer_setCaptionPreviewProfileID :: proc(self: ^PlayerLayer, profileID: ^NS.String, position: CG.Point, text: ^NS.String) ---

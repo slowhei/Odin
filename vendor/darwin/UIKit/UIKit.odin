@@ -17,7 +17,7 @@ IMP           :: rawptr
 Protocol      :: distinct id
 instancetype  :: intrinsics.objc_instancetype
 
-@(export, require)
+@(export)
 foreign import lib {
 	"system:UIKit.framework",
 }
@@ -37,16 +37,32 @@ AVAudioSession :: NS.Object
 UTType :: struct {}
 CTTextAlignment :: distinct cffi.uint8_t
 
+NSLineBreakStrategy_Standard :: transmute(NSLineBreakStrategy)cffi.ulong(65535)
+NSUnderlineStyle_Double :: transmute(NSUnderlineStyle)cffi.long(9)
+RectCorner_AllCorners :: transmute(RectCorner)max(cffi.ulong)
+NSLayoutFormatOptions_AlignmentMask :: transmute(NSLayoutFormatOptions)cffi.ulong(65535)
+ViewAnimationOptions_PreferredFramesPerSecond60 :: transmute(ViewAnimationOptions)cffi.ulong(50331648)
+ViewAnimationOptions_PreferredFramesPerSecond30 :: transmute(ViewAnimationOptions)cffi.ulong(117440512)
+ControlEvents_AllTouchEvents :: transmute(ControlEvents)cffi.ulong(4095)
+ControlEvents_ApplicationReserved :: transmute(ControlEvents)cffi.ulong(251658240)
+ControlEvents_SystemReserved :: transmute(ControlEvents)cffi.ulong(4026531840)
+ControlEvents_AllEvents :: transmute(ControlEvents)cffi.ulong(4294967295)
+ControlState_Application :: transmute(ControlState)cffi.ulong(16711680)
+ControlState_Reserved :: transmute(ControlState)cffi.ulong(4278190080)
+DataDetectorTypes_All :: transmute(DataDetectorTypes)max(cffi.ulong)
+PopoverArrowDirection_Unknown :: transmute(PopoverArrowDirection)max(cffi.ulong)
+CollisionBehaviorMode_Everything :: transmute(CollisionBehaviorMode)max(cffi.ulong)
+
 
 
 NSAttachmentCharacter                   :: 65532
-SegmentedControlNoSegment               :: -1
 NSControlCharacterZeroAdvancementAction :: 1
 NSControlCharacterWhitespaceAction      :: 2
 NSControlCharacterHorizontalTabAction   :: 4
 NSControlCharacterLineBreakAction       :: 8
 NSControlCharacterParagraphBreakAction  :: 16
 NSControlCharacterContainerBreakAction  :: 32
+SegmentedControlNoSegment               :: -1
 NSUnderlinePatternSolid                 :: 0
 NSUnderlinePatternDot                   :: 256
 NSUnderlinePatternDash                  :: 512
@@ -71,113 +87,25 @@ StackViewSpacingUseDefault              :: 3402823466385288598117041834845169254
 StackViewSpacingUseSystem               :: 0.000000
 
 foreign lib {
-	@(link_name="UIAccessibilityTraitNone") AccessibilityTraitNone: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitButton") AccessibilityTraitButton: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitLink") AccessibilityTraitLink: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitHeader") AccessibilityTraitHeader: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitSearchField") AccessibilityTraitSearchField: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitImage") AccessibilityTraitImage: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitSelected") AccessibilityTraitSelected: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitPlaysSound") AccessibilityTraitPlaysSound: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitKeyboardKey") AccessibilityTraitKeyboardKey: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitStaticText") AccessibilityTraitStaticText: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitSummaryElement") AccessibilityTraitSummaryElement: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitNotEnabled") AccessibilityTraitNotEnabled: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitUpdatesFrequently") AccessibilityTraitUpdatesFrequently: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitStartsMediaSession") AccessibilityTraitStartsMediaSession: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitAdjustable") AccessibilityTraitAdjustable: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitAllowsDirectInteraction") AccessibilityTraitAllowsDirectInteraction: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitCausesPageTurn") AccessibilityTraitCausesPageTurn: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitTabBar") AccessibilityTraitTabBar: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitToggleButton") AccessibilityTraitToggleButton: AccessibilityTraits
-	@(link_name="UIAccessibilityTraitSupportsZoom") AccessibilityTraitSupportsZoom: AccessibilityTraits
-	@(link_name="UIAccessibilityScreenChangedNotification") AccessibilityScreenChangedNotification: AccessibilityNotifications
-	@(link_name="UIAccessibilityLayoutChangedNotification") AccessibilityLayoutChangedNotification: AccessibilityNotifications
-	@(link_name="UIAccessibilityAnnouncementNotification") AccessibilityAnnouncementNotification: AccessibilityNotifications
-	@(link_name="UIAccessibilityPageScrolledNotification") AccessibilityPageScrolledNotification: AccessibilityNotifications
-	@(link_name="UIAccessibilityPauseAssistiveTechnologyNotification") AccessibilityPauseAssistiveTechnologyNotification: AccessibilityNotifications
-	@(link_name="UIAccessibilityResumeAssistiveTechnologyNotification") AccessibilityResumeAssistiveTechnologyNotification: AccessibilityNotifications
-	@(link_name="UIAccessibilityAnnouncementDidFinishNotification") AccessibilityAnnouncementDidFinishNotification: ^NS.String
-	@(link_name="UIAccessibilityAnnouncementKeyStringValue") AccessibilityAnnouncementKeyStringValue: ^NS.String
-	@(link_name="UIAccessibilityAnnouncementKeyWasSuccessful") AccessibilityAnnouncementKeyWasSuccessful: ^NS.String
-	@(link_name="UIAccessibilityElementFocusedNotification") AccessibilityElementFocusedNotification: ^NS.String
-	@(link_name="UIAccessibilityFocusedElementKey") AccessibilityFocusedElementKey: ^NS.String
-	@(link_name="UIAccessibilityUnfocusedElementKey") AccessibilityUnfocusedElementKey: ^NS.String
-	@(link_name="UIAccessibilityAssistiveTechnologyKey") AccessibilityAssistiveTechnologyKey: ^NS.String
-	@(link_name="UIAccessibilityNotificationSwitchControlIdentifier") AccessibilityNotificationSwitchControlIdentifier: ^NS.String
-	@(link_name="UIAccessibilityNotificationVoiceOverIdentifier") AccessibilityNotificationVoiceOverIdentifier: ^NS.String
-	@(link_name="UIAccessibilityTextualContextWordProcessing") AccessibilityTextualContextWordProcessing: ^NS.String
-	@(link_name="UIAccessibilityTextualContextNarrative") AccessibilityTextualContextNarrative: ^NS.String
-	@(link_name="UIAccessibilityTextualContextMessaging") AccessibilityTextualContextMessaging: ^NS.String
-	@(link_name="UIAccessibilityTextualContextSpreadsheet") AccessibilityTextualContextSpreadsheet: ^NS.String
-	@(link_name="UIAccessibilityTextualContextFileSystem") AccessibilityTextualContextFileSystem: ^NS.String
-	@(link_name="UIAccessibilityTextualContextSourceCode") AccessibilityTextualContextSourceCode: ^NS.String
-	@(link_name="UIAccessibilityTextualContextConsole") AccessibilityTextualContextConsole: ^NS.String
-	@(link_name="UIAccessibilityPriorityHigh") AccessibilityPriorityHigh: ^NS.String
-	@(link_name="UIAccessibilityPriorityDefault") AccessibilityPriorityDefault: ^NS.String
-	@(link_name="UIAccessibilityPriorityLow") AccessibilityPriorityLow: ^NS.String
-	@(link_name="UIAccessibilitySpeechAttributePunctuation") AccessibilitySpeechAttributePunctuation: ^NS.String
-	@(link_name="UIAccessibilitySpeechAttributeLanguage") AccessibilitySpeechAttributeLanguage: ^NS.String
-	@(link_name="UIAccessibilitySpeechAttributePitch") AccessibilitySpeechAttributePitch: ^NS.String
-	@(link_name="UIAccessibilitySpeechAttributeQueueAnnouncement") AccessibilitySpeechAttributeQueueAnnouncement: ^NS.String
-	@(link_name="UIAccessibilitySpeechAttributeAnnouncementPriority") AccessibilitySpeechAttributeAnnouncementPriority: ^NS.String
-	@(link_name="UIAccessibilitySpeechAttributeIPANotation") AccessibilitySpeechAttributeIPANotation: ^NS.String
-	@(link_name="UIAccessibilitySpeechAttributeSpellOut") AccessibilitySpeechAttributeSpellOut: ^NS.String
-	@(link_name="UIAccessibilityTextAttributeHeadingLevel") AccessibilityTextAttributeHeadingLevel: ^NS.String
-	@(link_name="UIAccessibilityTextAttributeCustom") AccessibilityTextAttributeCustom: ^NS.String
-	@(link_name="UIAccessibilityTextAttributeContext") AccessibilityTextAttributeContext: ^NS.String
-	@(link_name="UIEdgeInsetsZero") EdgeInsetsZero: EdgeInsets
-	@(link_name="NSDirectionalEdgeInsetsZero") NSDirectionalEdgeInsetsZero: NSDirectionalEdgeInsets
-	@(link_name="UIOffsetZero") OffsetZero: Offset
-	@(link_name="UIFontDescriptorSystemDesignDefault") FontDescriptorSystemDesignDefault: ^NS.String
-	@(link_name="UIFontDescriptorSystemDesignRounded") FontDescriptorSystemDesignRounded: ^NS.String
-	@(link_name="UIFontDescriptorSystemDesignSerif") FontDescriptorSystemDesignSerif: ^NS.String
-	@(link_name="UIFontDescriptorSystemDesignMonospaced") FontDescriptorSystemDesignMonospaced: ^NS.String
-	@(link_name="UIFontDescriptorFamilyAttribute") FontDescriptorFamilyAttribute: ^NS.String
-	@(link_name="UIFontDescriptorNameAttribute") FontDescriptorNameAttribute: ^NS.String
-	@(link_name="UIFontDescriptorFaceAttribute") FontDescriptorFaceAttribute: ^NS.String
-	@(link_name="UIFontDescriptorSizeAttribute") FontDescriptorSizeAttribute: ^NS.String
-	@(link_name="UIFontDescriptorVisibleNameAttribute") FontDescriptorVisibleNameAttribute: ^NS.String
-	@(link_name="UIFontDescriptorMatrixAttribute") FontDescriptorMatrixAttribute: ^NS.String
-	@(link_name="UIFontDescriptorCharacterSetAttribute") FontDescriptorCharacterSetAttribute: ^NS.String
-	@(link_name="UIFontDescriptorCascadeListAttribute") FontDescriptorCascadeListAttribute: ^NS.String
-	@(link_name="UIFontDescriptorTraitsAttribute") FontDescriptorTraitsAttribute: ^NS.String
-	@(link_name="UIFontDescriptorFixedAdvanceAttribute") FontDescriptorFixedAdvanceAttribute: ^NS.String
-	@(link_name="UIFontDescriptorFeatureSettingsAttribute") FontDescriptorFeatureSettingsAttribute: ^NS.String
-	@(link_name="UIFontDescriptorTextStyleAttribute") FontDescriptorTextStyleAttribute: ^NS.String
-	@(link_name="UIFontSymbolicTrait") FontSymbolicTrait: ^NS.String
-	@(link_name="UIFontWeightTrait") FontWeightTrait: ^NS.String
-	@(link_name="UIFontWidthTrait") FontWidthTrait: ^NS.String
-	@(link_name="UIFontSlantTrait") FontSlantTrait: ^NS.String
-	@(link_name="UIFontWeightUltraLight") FontWeightUltraLight: FontWeight
-	@(link_name="UIFontWeightThin") FontWeightThin: FontWeight
-	@(link_name="UIFontWeightLight") FontWeightLight: FontWeight
-	@(link_name="UIFontWeightRegular") FontWeightRegular: FontWeight
-	@(link_name="UIFontWeightMedium") FontWeightMedium: FontWeight
-	@(link_name="UIFontWeightSemibold") FontWeightSemibold: FontWeight
-	@(link_name="UIFontWeightBold") FontWeightBold: FontWeight
-	@(link_name="UIFontWeightHeavy") FontWeightHeavy: FontWeight
-	@(link_name="UIFontWeightBlack") FontWeightBlack: FontWeight
-	@(link_name="UIFontWidthCondensed") FontWidthCondensed: FontWidth
-	@(link_name="UIFontWidthStandard") FontWidthStandard: FontWidth
-	@(link_name="UIFontWidthExpanded") FontWidthExpanded: FontWidth
-	@(link_name="UIFontWidthCompressed") FontWidthCompressed: FontWidth
-	@(link_name="UIFontFeatureTypeIdentifierKey") FontFeatureTypeIdentifierKey: ^NS.String
-	@(link_name="UIFontFeatureSelectorIdentifierKey") FontFeatureSelectorIdentifierKey: ^NS.String
-	@(link_name="UIFontTextStyleLargeTitle") FontTextStyleLargeTitle: ^NS.String
-	@(link_name="UIFontTextStyleExtraLargeTitle") FontTextStyleExtraLargeTitle: ^NS.String
-	@(link_name="UIFontTextStyleExtraLargeTitle2") FontTextStyleExtraLargeTitle2: ^NS.String
-	@(link_name="UIFontTextStyleTitle1") FontTextStyleTitle1: ^NS.String
-	@(link_name="UIFontTextStyleTitle2") FontTextStyleTitle2: ^NS.String
-	@(link_name="UIFontTextStyleTitle3") FontTextStyleTitle3: ^NS.String
-	@(link_name="UIFontTextStyleHeadline") FontTextStyleHeadline: ^NS.String
-	@(link_name="UIFontTextStyleSubheadline") FontTextStyleSubheadline: ^NS.String
-	@(link_name="UIFontTextStyleBody") FontTextStyleBody: ^NS.String
-	@(link_name="UIFontTextStyleCallout") FontTextStyleCallout: ^NS.String
-	@(link_name="UIFontTextStyleFootnote") FontTextStyleFootnote: ^NS.String
-	@(link_name="UIFontTextStyleCaption1") FontTextStyleCaption1: ^NS.String
-	@(link_name="UIFontTextStyleCaption2") FontTextStyleCaption2: ^NS.String
-	@(link_name="UILocalNotificationDefaultSoundName") LocalNotificationDefaultSoundName: ^NS.String
+	@(link_name="NSTextListMarkerBox") NSTextListMarkerBox: ^NS.String
+	@(link_name="NSTextListMarkerCheck") NSTextListMarkerCheck: ^NS.String
+	@(link_name="NSTextListMarkerCircle") NSTextListMarkerCircle: ^NS.String
+	@(link_name="NSTextListMarkerDiamond") NSTextListMarkerDiamond: ^NS.String
+	@(link_name="NSTextListMarkerDisc") NSTextListMarkerDisc: ^NS.String
+	@(link_name="NSTextListMarkerHyphen") NSTextListMarkerHyphen: ^NS.String
+	@(link_name="NSTextListMarkerSquare") NSTextListMarkerSquare: ^NS.String
+	@(link_name="NSTextListMarkerLowercaseHexadecimal") NSTextListMarkerLowercaseHexadecimal: ^NS.String
+	@(link_name="NSTextListMarkerUppercaseHexadecimal") NSTextListMarkerUppercaseHexadecimal: ^NS.String
+	@(link_name="NSTextListMarkerOctal") NSTextListMarkerOctal: ^NS.String
+	@(link_name="NSTextListMarkerLowercaseAlpha") NSTextListMarkerLowercaseAlpha: ^NS.String
+	@(link_name="NSTextListMarkerUppercaseAlpha") NSTextListMarkerUppercaseAlpha: ^NS.String
+	@(link_name="NSTextListMarkerLowercaseLatin") NSTextListMarkerLowercaseLatin: ^NS.String
+	@(link_name="NSTextListMarkerUppercaseLatin") NSTextListMarkerUppercaseLatin: ^NS.String
+	@(link_name="NSTextListMarkerLowercaseRoman") NSTextListMarkerLowercaseRoman: ^NS.String
+	@(link_name="NSTextListMarkerUppercaseRoman") NSTextListMarkerUppercaseRoman: ^NS.String
+	@(link_name="NSTextListMarkerDecimal") NSTextListMarkerDecimal: ^NS.String
+	@(link_name="NSTextContentStorageUnsupportedAttributeAddedNotification") NSTextContentStorageUnsupportedAttributeAddedNotification: ^NS.String
+	@(link_name="NSTabColumnTerminatorsAttributeName") NSTabColumnTerminatorsAttributeName: ^NS.String
 	@(link_name="NSFontAttributeName") NSFontAttributeName: ^NS.String
 	@(link_name="NSParagraphStyleAttributeName") NSParagraphStyleAttributeName: ^NS.String
 	@(link_name="NSForegroundColorAttributeName") NSForegroundColorAttributeName: ^NS.String
@@ -241,7 +169,115 @@ foreign lib {
 	@(link_name="NSObliquenessAttributeName") NSObliquenessAttributeName: ^NS.String
 	@(link_name="NSExpansionAttributeName") NSExpansionAttributeName: ^NS.String
 	@(link_name="NSVerticalGlyphFormAttributeName") NSVerticalGlyphFormAttributeName: ^NS.String
-	@(link_name="NSTabColumnTerminatorsAttributeName") NSTabColumnTerminatorsAttributeName: ^NS.String
+	@(link_name="NSTextStorageWillProcessEditingNotification") NSTextStorageWillProcessEditingNotification: ^NS.String
+	@(link_name="NSTextStorageDidProcessEditingNotification") NSTextStorageDidProcessEditingNotification: ^NS.String
+	@(link_name="UIFontDescriptorSystemDesignDefault") FontDescriptorSystemDesignDefault: ^NS.String
+	@(link_name="UIFontDescriptorSystemDesignRounded") FontDescriptorSystemDesignRounded: ^NS.String
+	@(link_name="UIFontDescriptorSystemDesignSerif") FontDescriptorSystemDesignSerif: ^NS.String
+	@(link_name="UIFontDescriptorSystemDesignMonospaced") FontDescriptorSystemDesignMonospaced: ^NS.String
+	@(link_name="UIFontDescriptorFamilyAttribute") FontDescriptorFamilyAttribute: ^NS.String
+	@(link_name="UIFontDescriptorNameAttribute") FontDescriptorNameAttribute: ^NS.String
+	@(link_name="UIFontDescriptorFaceAttribute") FontDescriptorFaceAttribute: ^NS.String
+	@(link_name="UIFontDescriptorSizeAttribute") FontDescriptorSizeAttribute: ^NS.String
+	@(link_name="UIFontDescriptorVisibleNameAttribute") FontDescriptorVisibleNameAttribute: ^NS.String
+	@(link_name="UIFontDescriptorMatrixAttribute") FontDescriptorMatrixAttribute: ^NS.String
+	@(link_name="UIFontDescriptorCharacterSetAttribute") FontDescriptorCharacterSetAttribute: ^NS.String
+	@(link_name="UIFontDescriptorCascadeListAttribute") FontDescriptorCascadeListAttribute: ^NS.String
+	@(link_name="UIFontDescriptorTraitsAttribute") FontDescriptorTraitsAttribute: ^NS.String
+	@(link_name="UIFontDescriptorFixedAdvanceAttribute") FontDescriptorFixedAdvanceAttribute: ^NS.String
+	@(link_name="UIFontDescriptorFeatureSettingsAttribute") FontDescriptorFeatureSettingsAttribute: ^NS.String
+	@(link_name="UIFontDescriptorTextStyleAttribute") FontDescriptorTextStyleAttribute: ^NS.String
+	@(link_name="UIFontSymbolicTrait") FontSymbolicTrait: ^NS.String
+	@(link_name="UIFontWeightTrait") FontWeightTrait: ^NS.String
+	@(link_name="UIFontWidthTrait") FontWidthTrait: ^NS.String
+	@(link_name="UIFontSlantTrait") FontSlantTrait: ^NS.String
+	@(link_name="UIFontWeightUltraLight") FontWeightUltraLight: FontWeight
+	@(link_name="UIFontWeightThin") FontWeightThin: FontWeight
+	@(link_name="UIFontWeightLight") FontWeightLight: FontWeight
+	@(link_name="UIFontWeightRegular") FontWeightRegular: FontWeight
+	@(link_name="UIFontWeightMedium") FontWeightMedium: FontWeight
+	@(link_name="UIFontWeightSemibold") FontWeightSemibold: FontWeight
+	@(link_name="UIFontWeightBold") FontWeightBold: FontWeight
+	@(link_name="UIFontWeightHeavy") FontWeightHeavy: FontWeight
+	@(link_name="UIFontWeightBlack") FontWeightBlack: FontWeight
+	@(link_name="UIFontWidthCondensed") FontWidthCondensed: FontWidth
+	@(link_name="UIFontWidthStandard") FontWidthStandard: FontWidth
+	@(link_name="UIFontWidthExpanded") FontWidthExpanded: FontWidth
+	@(link_name="UIFontWidthCompressed") FontWidthCompressed: FontWidth
+	@(link_name="UIFontFeatureTypeIdentifierKey") FontFeatureTypeIdentifierKey: ^NS.String
+	@(link_name="UIFontFeatureSelectorIdentifierKey") FontFeatureSelectorIdentifierKey: ^NS.String
+	@(link_name="UIFontTextStyleLargeTitle") FontTextStyleLargeTitle: ^NS.String
+	@(link_name="UIFontTextStyleExtraLargeTitle") FontTextStyleExtraLargeTitle: ^NS.String
+	@(link_name="UIFontTextStyleExtraLargeTitle2") FontTextStyleExtraLargeTitle2: ^NS.String
+	@(link_name="UIFontTextStyleTitle1") FontTextStyleTitle1: ^NS.String
+	@(link_name="UIFontTextStyleTitle2") FontTextStyleTitle2: ^NS.String
+	@(link_name="UIFontTextStyleTitle3") FontTextStyleTitle3: ^NS.String
+	@(link_name="UIFontTextStyleHeadline") FontTextStyleHeadline: ^NS.String
+	@(link_name="UIFontTextStyleSubheadline") FontTextStyleSubheadline: ^NS.String
+	@(link_name="UIFontTextStyleBody") FontTextStyleBody: ^NS.String
+	@(link_name="UIFontTextStyleCallout") FontTextStyleCallout: ^NS.String
+	@(link_name="UIFontTextStyleFootnote") FontTextStyleFootnote: ^NS.String
+	@(link_name="UIFontTextStyleCaption1") FontTextStyleCaption1: ^NS.String
+	@(link_name="UIFontTextStyleCaption2") FontTextStyleCaption2: ^NS.String
+	@(link_name="UIAccessibilityTraitNone") AccessibilityTraitNone: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitButton") AccessibilityTraitButton: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitLink") AccessibilityTraitLink: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitHeader") AccessibilityTraitHeader: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitSearchField") AccessibilityTraitSearchField: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitImage") AccessibilityTraitImage: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitSelected") AccessibilityTraitSelected: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitPlaysSound") AccessibilityTraitPlaysSound: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitKeyboardKey") AccessibilityTraitKeyboardKey: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitStaticText") AccessibilityTraitStaticText: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitSummaryElement") AccessibilityTraitSummaryElement: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitNotEnabled") AccessibilityTraitNotEnabled: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitUpdatesFrequently") AccessibilityTraitUpdatesFrequently: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitStartsMediaSession") AccessibilityTraitStartsMediaSession: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitAdjustable") AccessibilityTraitAdjustable: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitAllowsDirectInteraction") AccessibilityTraitAllowsDirectInteraction: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitCausesPageTurn") AccessibilityTraitCausesPageTurn: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitTabBar") AccessibilityTraitTabBar: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitToggleButton") AccessibilityTraitToggleButton: AccessibilityTraits
+	@(link_name="UIAccessibilityTraitSupportsZoom") AccessibilityTraitSupportsZoom: AccessibilityTraits
+	@(link_name="UIAccessibilityScreenChangedNotification") AccessibilityScreenChangedNotification: AccessibilityNotifications
+	@(link_name="UIAccessibilityLayoutChangedNotification") AccessibilityLayoutChangedNotification: AccessibilityNotifications
+	@(link_name="UIAccessibilityAnnouncementNotification") AccessibilityAnnouncementNotification: AccessibilityNotifications
+	@(link_name="UIAccessibilityPageScrolledNotification") AccessibilityPageScrolledNotification: AccessibilityNotifications
+	@(link_name="UIAccessibilityPauseAssistiveTechnologyNotification") AccessibilityPauseAssistiveTechnologyNotification: AccessibilityNotifications
+	@(link_name="UIAccessibilityResumeAssistiveTechnologyNotification") AccessibilityResumeAssistiveTechnologyNotification: AccessibilityNotifications
+	@(link_name="UIAccessibilityAnnouncementDidFinishNotification") AccessibilityAnnouncementDidFinishNotification: ^NS.String
+	@(link_name="UIAccessibilityAnnouncementKeyStringValue") AccessibilityAnnouncementKeyStringValue: ^NS.String
+	@(link_name="UIAccessibilityAnnouncementKeyWasSuccessful") AccessibilityAnnouncementKeyWasSuccessful: ^NS.String
+	@(link_name="UIAccessibilityElementFocusedNotification") AccessibilityElementFocusedNotification: ^NS.String
+	@(link_name="UIAccessibilityFocusedElementKey") AccessibilityFocusedElementKey: ^NS.String
+	@(link_name="UIAccessibilityUnfocusedElementKey") AccessibilityUnfocusedElementKey: ^NS.String
+	@(link_name="UIAccessibilityAssistiveTechnologyKey") AccessibilityAssistiveTechnologyKey: ^NS.String
+	@(link_name="UIAccessibilityNotificationSwitchControlIdentifier") AccessibilityNotificationSwitchControlIdentifier: ^NS.String
+	@(link_name="UIAccessibilityNotificationVoiceOverIdentifier") AccessibilityNotificationVoiceOverIdentifier: ^NS.String
+	@(link_name="UIAccessibilityTextualContextWordProcessing") AccessibilityTextualContextWordProcessing: ^NS.String
+	@(link_name="UIAccessibilityTextualContextNarrative") AccessibilityTextualContextNarrative: ^NS.String
+	@(link_name="UIAccessibilityTextualContextMessaging") AccessibilityTextualContextMessaging: ^NS.String
+	@(link_name="UIAccessibilityTextualContextSpreadsheet") AccessibilityTextualContextSpreadsheet: ^NS.String
+	@(link_name="UIAccessibilityTextualContextFileSystem") AccessibilityTextualContextFileSystem: ^NS.String
+	@(link_name="UIAccessibilityTextualContextSourceCode") AccessibilityTextualContextSourceCode: ^NS.String
+	@(link_name="UIAccessibilityTextualContextConsole") AccessibilityTextualContextConsole: ^NS.String
+	@(link_name="UIAccessibilityPriorityHigh") AccessibilityPriorityHigh: ^NS.String
+	@(link_name="UIAccessibilityPriorityDefault") AccessibilityPriorityDefault: ^NS.String
+	@(link_name="UIAccessibilityPriorityLow") AccessibilityPriorityLow: ^NS.String
+	@(link_name="UIAccessibilitySpeechAttributePunctuation") AccessibilitySpeechAttributePunctuation: ^NS.String
+	@(link_name="UIAccessibilitySpeechAttributeLanguage") AccessibilitySpeechAttributeLanguage: ^NS.String
+	@(link_name="UIAccessibilitySpeechAttributePitch") AccessibilitySpeechAttributePitch: ^NS.String
+	@(link_name="UIAccessibilitySpeechAttributeQueueAnnouncement") AccessibilitySpeechAttributeQueueAnnouncement: ^NS.String
+	@(link_name="UIAccessibilitySpeechAttributeAnnouncementPriority") AccessibilitySpeechAttributeAnnouncementPriority: ^NS.String
+	@(link_name="UIAccessibilitySpeechAttributeIPANotation") AccessibilitySpeechAttributeIPANotation: ^NS.String
+	@(link_name="UIAccessibilitySpeechAttributeSpellOut") AccessibilitySpeechAttributeSpellOut: ^NS.String
+	@(link_name="UIAccessibilityTextAttributeHeadingLevel") AccessibilityTextAttributeHeadingLevel: ^NS.String
+	@(link_name="UIAccessibilityTextAttributeCustom") AccessibilityTextAttributeCustom: ^NS.String
+	@(link_name="UIAccessibilityTextAttributeContext") AccessibilityTextAttributeContext: ^NS.String
+	@(link_name="UIEdgeInsetsZero") EdgeInsetsZero: EdgeInsets
+	@(link_name="NSDirectionalEdgeInsetsZero") NSDirectionalEdgeInsetsZero: NSDirectionalEdgeInsets
+	@(link_name="UIOffsetZero") OffsetZero: Offset
+	@(link_name="UILocalNotificationDefaultSoundName") LocalNotificationDefaultSoundName: ^NS.String
 	@(link_name="UIMenuApplication") MenuApplication: ^NS.String
 	@(link_name="UIMenuFile") MenuFile: ^NS.String
 	@(link_name="UIMenuEdit") MenuEdit: ^NS.String
@@ -397,6 +433,9 @@ foreign lib {
 	@(link_name="UITextContentTypeCreditCardType") TextContentTypeCreditCardType: ^NS.String
 	@(link_name="UITextContentTypeCellularEID") TextContentTypeCellularEID: ^NS.String
 	@(link_name="UITextContentTypeCellularIMEI") TextContentTypeCellularIMEI: ^NS.String
+	@(link_name="UITextContentTypeCellularIMEI1") TextContentTypeCellularIMEI1: ^NS.String
+	@(link_name="UITextContentTypeCellularIMEI2") TextContentTypeCellularIMEI2: ^NS.String
+	@(link_name="UITextContentTypeCellularNAL") TextContentTypeCellularNAL: ^NS.String
 	@(link_name="UITextInputTextBackgroundColorKey") TextInputTextBackgroundColorKey: ^NS.String
 	@(link_name="UITextInputTextColorKey") TextInputTextColorKey: ^NS.String
 	@(link_name="UITextInputTextFontKey") TextInputTextFontKey: ^NS.String
@@ -435,6 +474,7 @@ foreign lib {
 	@(link_name="UIApplicationBackgroundRefreshStatusDidChangeNotification") ApplicationBackgroundRefreshStatusDidChangeNotification: ^NS.String
 	@(link_name="UIApplicationProtectedDataWillBecomeUnavailable") ApplicationProtectedDataWillBecomeUnavailable: ^NS.String
 	@(link_name="UIApplicationProtectedDataDidBecomeAvailable") ApplicationProtectedDataDidBecomeAvailable: ^NS.String
+	@(link_name="UIApplicationSystemPrefersReducedResourceUsageDidChangeNotification") ApplicationSystemPrefersReducedResourceUsageDidChangeNotification: ^NS.String
 	@(link_name="UIApplicationLaunchOptionsURLKey") ApplicationLaunchOptionsURLKey: ^NS.String
 	@(link_name="UIApplicationLaunchOptionsSourceApplicationKey") ApplicationLaunchOptionsSourceApplicationKey: ^NS.String
 	@(link_name="UIApplicationLaunchOptionsRemoteNotificationKey") ApplicationLaunchOptionsRemoteNotificationKey: ^NS.String
@@ -502,6 +542,9 @@ foreign lib {
 	@(link_name="UIConfigurationColorTransformerGrayscale") ConfigurationColorTransformerGrayscale: ConfigurationColorTransformer
 	@(link_name="UIConfigurationColorTransformerPreferredTint") ConfigurationColorTransformerPreferredTint: ConfigurationColorTransformer
 	@(link_name="UIConfigurationColorTransformerMonochromeTint") ConfigurationColorTransformerMonochromeTint: ConfigurationColorTransformer
+	@(link_name="UIBarButtonItemVisibilityPriorityStandard") BarButtonItemVisibilityPriorityStandard: BarButtonItemVisibilityPriority
+	@(link_name="UIBarButtonItemVisibilityPriorityLow") BarButtonItemVisibilityPriorityLow: BarButtonItemVisibilityPriority
+	@(link_name="UIBarButtonItemVisibilityPriorityHigh") BarButtonItemVisibilityPriorityHigh: BarButtonItemVisibilityPriority
 	@(link_name="UICollectionViewLayoutAutomaticDimension") CollectionViewLayoutAutomaticDimension: CG.Float
 	@(link_name="UICollectionElementKindSectionHeader") CollectionElementKindSectionHeader: ^NS.String
 	@(link_name="UICollectionElementKindSectionFooter") CollectionElementKindSectionFooter: ^NS.String
@@ -618,8 +661,6 @@ foreign lib {
 	@(link_name="UIActivityItemsConfigurationPreviewIntentThumbnail") ActivityItemsConfigurationPreviewIntentThumbnail: ^NS.String
 	@(link_name="UIActivityItemsConfigurationInteractionShare") ActivityItemsConfigurationInteractionShare: ^NS.String
 	@(link_name="UIActivityItemsConfigurationInteractionCopy") ActivityItemsConfigurationInteractionCopy: ^NS.String
-	@(link_name="NSTextStorageWillProcessEditingNotification") NSTextStorageWillProcessEditingNotification: ^NS.String
-	@(link_name="NSTextStorageDidProcessEditingNotification") NSTextStorageDidProcessEditingNotification: ^NS.String
 	@(link_name="UISheetPresentationControllerDetentIdentifierMedium") SheetPresentationControllerDetentIdentifierMedium: ^NS.String
 	@(link_name="UISheetPresentationControllerDetentIdentifierLarge") SheetPresentationControllerDetentIdentifierLarge: ^NS.String
 	@(link_name="UISheetPresentationControllerDetentInactive") SheetPresentationControllerDetentInactive: CG.Float
@@ -686,24 +727,6 @@ foreign lib {
 	@(link_name="UITextFormattingViewControllerTextColorComponentKey") TextFormattingViewControllerTextColorComponentKey: ^NS.String
 	@(link_name="UITextFormattingViewControllerHighlightComponentKey") TextFormattingViewControllerHighlightComponentKey: ^NS.String
 	@(link_name="UITextFormattingViewControllerHighlightPickerComponentKey") TextFormattingViewControllerHighlightPickerComponentKey: ^NS.String
-	@(link_name="NSTextListMarkerBox") NSTextListMarkerBox: ^NS.String
-	@(link_name="NSTextListMarkerCheck") NSTextListMarkerCheck: ^NS.String
-	@(link_name="NSTextListMarkerCircle") NSTextListMarkerCircle: ^NS.String
-	@(link_name="NSTextListMarkerDiamond") NSTextListMarkerDiamond: ^NS.String
-	@(link_name="NSTextListMarkerDisc") NSTextListMarkerDisc: ^NS.String
-	@(link_name="NSTextListMarkerHyphen") NSTextListMarkerHyphen: ^NS.String
-	@(link_name="NSTextListMarkerSquare") NSTextListMarkerSquare: ^NS.String
-	@(link_name="NSTextListMarkerLowercaseHexadecimal") NSTextListMarkerLowercaseHexadecimal: ^NS.String
-	@(link_name="NSTextListMarkerUppercaseHexadecimal") NSTextListMarkerUppercaseHexadecimal: ^NS.String
-	@(link_name="NSTextListMarkerOctal") NSTextListMarkerOctal: ^NS.String
-	@(link_name="NSTextListMarkerLowercaseAlpha") NSTextListMarkerLowercaseAlpha: ^NS.String
-	@(link_name="NSTextListMarkerUppercaseAlpha") NSTextListMarkerUppercaseAlpha: ^NS.String
-	@(link_name="NSTextListMarkerLowercaseLatin") NSTextListMarkerLowercaseLatin: ^NS.String
-	@(link_name="NSTextListMarkerUppercaseLatin") NSTextListMarkerUppercaseLatin: ^NS.String
-	@(link_name="NSTextListMarkerLowercaseRoman") NSTextListMarkerLowercaseRoman: ^NS.String
-	@(link_name="NSTextListMarkerUppercaseRoman") NSTextListMarkerUppercaseRoman: ^NS.String
-	@(link_name="NSTextListMarkerDecimal") NSTextListMarkerDecimal: ^NS.String
-	@(link_name="NSTextContentStorageUnsupportedAttributeAddedNotification") NSTextContentStorageUnsupportedAttributeAddedNotification: ^NS.String
 	@(link_name="UIDocumentBrowserErrorDomain") DocumentBrowserErrorDomain: ^NS.String
 	@(link_name="UIActivityTypePostToFacebook") ActivityTypePostToFacebook: ^NS.String
 	@(link_name="UIActivityTypePostToTwitter") ActivityTypePostToTwitter: ^NS.String
@@ -732,6 +755,10 @@ foreign lib {
 
 @(default_calling_convention="c")
 foreign lib {
+	NSTextAlignmentToCTTextAlignment :: proc(nsTextAlignment: NSTextAlignment) -> CTTextAlignment ---
+
+	NSTextAlignmentFromCTTextAlignment :: proc(ctTextAlignment: CTTextAlignment) -> NSTextAlignment ---
+
 	NSStringFromCGPoint :: proc(point: CG.Point) -> ^NS.String ---
 
 	NSStringFromCGVector :: proc(vector: CG.Vector) -> ^NS.String ---
@@ -833,10 +860,6 @@ foreign lib {
 
 	@(link_name="UIImageSymbolWeightForFontWeight")
 	ImageSymbolWeightForFontWeight :: proc(fontWeight: FontWeight) -> ImageSymbolWeight ---
-
-	NSTextAlignmentToCTTextAlignment :: proc(nsTextAlignment: NSTextAlignment) -> CTTextAlignment ---
-
-	NSTextAlignmentFromCTTextAlignment :: proc(ctTextAlignment: CTTextAlignment) -> NSTextAlignment ---
 
 	@(link_name="UIEventButtonMaskForButtonNumber")
 	EventButtonMaskForButtonNumber :: proc(buttonNumber: NS.Integer) -> EventButtonMask ---
@@ -963,15 +986,23 @@ foreign lib {
 
 }
 
-AccessibilityTraits :: distinct cffi.uint64_t
+NSTextListMarkerFormat :: distinct ^NS.String
 
-AccessibilityNotifications :: distinct cffi.uint32_t
+NSTextTabOptionKey :: distinct ^NS.String
 
-AccessibilityAssistiveTechnologyIdentifier :: distinct ^NS.String
+NSTextEffectStyle :: distinct ^NS.String
 
-AccessibilityTextualContext :: distinct ^NS.String
+NSTextHighlightStyle :: distinct ^NS.String
 
-AccessibilityPriority :: distinct ^NS.String
+NSTextHighlightColorScheme :: distinct ^NS.String
+
+NSAttributedStringDocumentType :: distinct ^NS.String
+
+NSTextLayoutSectionKey :: distinct ^NS.String
+
+NSAttributedStringDocumentAttributeKey :: distinct ^NS.String
+
+NSAttributedStringDocumentReadingOptionKey :: distinct ^NS.String
 
 FontDescriptorClass :: distinct NS.UInteger
 
@@ -989,23 +1020,17 @@ FontWidth :: distinct CG.Float
 
 FontDescriptorSystemDesign :: distinct ^NS.String
 
+AccessibilityTraits :: distinct cffi.uint64_t
+
+AccessibilityNotifications :: distinct cffi.uint32_t
+
+AccessibilityAssistiveTechnologyIdentifier :: distinct ^NS.String
+
+AccessibilityTextualContext :: distinct ^NS.String
+
+AccessibilityPriority :: distinct ^NS.String
+
 NSDataAssetName :: distinct ^NS.String
-
-NSTextEffectStyle :: distinct ^NS.String
-
-NSTextHighlightStyle :: distinct ^NS.String
-
-NSTextHighlightColorScheme :: distinct ^NS.String
-
-NSAttributedStringDocumentType :: distinct ^NS.String
-
-NSTextLayoutSectionKey :: distinct ^NS.String
-
-NSAttributedStringDocumentAttributeKey :: distinct ^NS.String
-
-NSAttributedStringDocumentReadingOptionKey :: distinct ^NS.String
-
-NSTextTabOptionKey :: distinct ^NS.String
 
 AccelerationValue :: distinct cffi.double
 
@@ -1070,6 +1095,8 @@ ConfigurationColorTransformer :: ^Objc_Block(proc "c" ( color: ^Color ) -> ^Colo
 ConfigurationTextAttributesTransformer :: ^Objc_Block(proc "c" ( textAttributes: ^NS.Dictionary ) -> ^NS.Dictionary)
 
 ButtonConfigurationUpdateHandler :: ^Objc_Block(proc "c" ( button: ^Button ))
+
+BarButtonItemVisibilityPriority :: distinct NS.Integer
 
 CollectionViewLayoutInteractiveTransitionCompletion :: ^Objc_Block(proc "c" ( completed: bool, finished: bool ))
 
@@ -1165,13 +1192,257 @@ TextFormattingViewControllerChangeType :: distinct ^NS.String
 
 TextFormattingViewControllerComponentKey :: distinct ^NS.String
 
-NSTextListMarkerFormat :: distinct ^NS.String
-
 ActivityType :: distinct ^NS.String
 
 ActivityViewControllerCompletionHandler :: ^Objc_Block(proc "c" ( activityType: ^NS.String, completed: bool ))
 
 ActivityViewControllerCompletionWithItemsHandler :: ^Objc_Block(proc "c" ( activityType: ^NS.String, completed: bool, returnedItems: ^NS.Array, activityError: ^NS.Error ))
+
+NSTextListOption :: enum cffi.ulong {
+	PrependEnclosingMarker = 0,
+}
+NSTextListOptions :: bit_set[NSTextListOption; cffi.ulong]
+
+NSTextSelectionGranularity :: enum cffi.long {
+	Character = 0,
+	Word      = 1,
+	Paragraph = 2,
+	Line      = 3,
+	Sentence  = 4,
+}
+
+NSTextSelectionAffinity :: enum cffi.long {
+	Upstream   = 0,
+	Downstream = 1,
+}
+
+NSTextSelectionNavigationDirection :: enum cffi.long {
+	Forward  = 0,
+	Backward = 1,
+	Right    = 2,
+	Left     = 3,
+	Up       = 4,
+	Down     = 5,
+}
+
+NSTextSelectionNavigationDestination :: enum cffi.long {
+	Character = 0,
+	Word      = 1,
+	Line      = 2,
+	Sentence  = 3,
+	Paragraph = 4,
+	Container = 5,
+	Document  = 6,
+}
+
+NSTextSelectionNavigationModifierFlag :: enum cffi.ulong {
+	Extend   = 0,
+	Visual   = 1,
+	Multiple = 2,
+}
+NSTextSelectionNavigationModifier :: bit_set[NSTextSelectionNavigationModifierFlag; cffi.ulong]
+
+NSTextSelectionNavigationWritingDirection :: enum cffi.long {
+	LeftToRight = 0,
+	RightToLeft = 1,
+}
+
+NSTextSelectionNavigationLayoutOrientation :: enum cffi.long {
+	Horizontal = 0,
+	Vertical   = 1,
+}
+
+NSTextContentManagerEnumerationOption :: enum cffi.ulong {
+	Reverse = 0,
+}
+NSTextContentManagerEnumerationOptions :: bit_set[NSTextContentManagerEnumerationOption; cffi.ulong]
+
+NSTextLayoutFragmentEnumerationOption :: enum cffi.ulong {
+	Reverse                  = 0,
+	EstimatesSize            = 1,
+	EnsuresLayout            = 2,
+	EnsuresExtraLineFragment = 3,
+}
+NSTextLayoutFragmentEnumerationOptions :: bit_set[NSTextLayoutFragmentEnumerationOption; cffi.ulong]
+
+NSTextLayoutFragmentState :: enum cffi.ulong {
+	None                  = 0,
+	EstimatedUsageBounds  = 1,
+	CalculatedUsageBounds = 2,
+	LayoutAvailable       = 3,
+}
+
+NSTextLayoutManagerSegmentType :: enum cffi.long {
+	Standard  = 0,
+	Selection = 1,
+	Highlight = 2,
+}
+
+NSTextLayoutManagerSegmentOption :: enum cffi.ulong {
+	RangeNotRequired        = 0,
+	MiddleFragmentsExcluded = 1,
+	HeadSegmentExtended     = 2,
+	TailSegmentExtended     = 3,
+	UpstreamAffinity        = 4,
+}
+NSTextLayoutManagerSegmentOptions :: bit_set[NSTextLayoutManagerSegmentOption; cffi.ulong]
+
+NSWritingDirection :: enum cffi.long {
+	Natural     = -1,
+	LeftToRight = 0,
+	RightToLeft = 1,
+}
+
+NSTextAlignment :: enum cffi.long {
+	Left      = 0,
+	Center    = 1,
+	Right     = 2,
+	Justified = 3,
+	Natural   = 4,
+}
+
+NSLineBreakMode :: enum cffi.long {
+	ByWordWrapping     = 0,
+	ByCharWrapping     = 1,
+	ByClipping         = 2,
+	ByTruncatingHead   = 3,
+	ByTruncatingTail   = 4,
+	ByTruncatingMiddle = 5,
+}
+
+NSLineBreakStrategyFlag :: enum cffi.ulong {
+	PushOut            = 0,
+	HangulWordPriority = 1,
+}
+NSLineBreakStrategy :: bit_set[NSLineBreakStrategyFlag; cffi.ulong]
+
+NSUnderlineStyleFlag :: enum cffi.long {
+	Single            = 0,
+	Thick             = 1,
+	PatternDot        = 8,
+	PatternDash       = 9,
+	PatternDashDotDot = 10,
+	ByWord            = 15,
+}
+NSUnderlineStyle :: bit_set[NSUnderlineStyleFlag; cffi.long]
+
+NSUnderlineStyle_PatternDashDot :: NSUnderlineStyle { .PatternDot, .PatternDash, }
+
+NSWritingDirectionFormatType :: enum cffi.long {
+	Embedding = 0,
+	Override  = 2,
+}
+
+NSTextScalingType :: enum cffi.long {
+	Standard   = 0,
+	ScalingiOS = 1,
+}
+
+NSTextWritingDirection :: enum cffi.long {
+	Embedding = 0,
+	Override  = 2,
+}
+
+NSStringDrawingOption :: enum cffi.long {
+	UsesLineFragmentOrigin           = 0,
+	UsesFontLeading                  = 1,
+	UsesDeviceMetrics                = 3,
+	TruncatesLastVisibleLine         = 5,
+	ResolvesNaturalAlignmentWithBaseWritingDirection = 9,
+}
+NSStringDrawingOptions :: bit_set[NSStringDrawingOption; cffi.long]
+
+NSTextStorageEditAction :: enum cffi.ulong {
+	EditedAttributes = 0,
+	EditedCharacters = 1,
+}
+NSTextStorageEditActions :: bit_set[NSTextStorageEditAction; cffi.ulong]
+
+FontDescriptorSymbolicTrait :: enum cffi.uint {
+	Italic                  = 0,
+	Bold                    = 1,
+	Expanded                = 5,
+	Condensed               = 6,
+	MonoSpace               = 10,
+	Vertical                = 11,
+	UIOptimized             = 12,
+	TightLeading            = 15,
+	LooseLeading            = 16,
+	ClassOldStyleSerifs     = 28,
+	ClassTransitionalSerifs = 29,
+	ClassClarendonSerifs    = 30,
+	ClassSansSerif          = 31,
+}
+FontDescriptorSymbolicTraits :: bit_set[FontDescriptorSymbolicTrait; cffi.uint]
+
+FontDescriptorSymbolicTraits_ClassMask :: FontDescriptorSymbolicTraits { .ClassOldStyleSerifs, .ClassTransitionalSerifs, .ClassClarendonSerifs, .ClassSansSerif, }
+
+FontDescriptorSymbolicTraits_ClassModernSerifs :: FontDescriptorSymbolicTraits { .ClassOldStyleSerifs, .ClassTransitionalSerifs, }
+
+FontDescriptorSymbolicTraits_ClassSlabSerifs :: FontDescriptorSymbolicTraits { .ClassOldStyleSerifs, .ClassClarendonSerifs, }
+
+FontDescriptorSymbolicTraits_ClassFreeformSerifs :: FontDescriptorSymbolicTraits { .ClassOldStyleSerifs, .ClassTransitionalSerifs, .ClassClarendonSerifs, }
+
+FontDescriptorSymbolicTraits_ClassOrnamentals :: FontDescriptorSymbolicTraits { .ClassOldStyleSerifs, .ClassSansSerif, }
+
+FontDescriptorSymbolicTraits_ClassScripts :: FontDescriptorSymbolicTraits { .ClassTransitionalSerifs, .ClassSansSerif, }
+
+FontDescriptorSymbolicTraits_ClassSymbolic :: FontDescriptorSymbolicTraits { .ClassClarendonSerifs, .ClassSansSerif, }
+
+NSTextLayoutOrientation :: enum cffi.long {
+	Horizontal = 0,
+	Vertical   = 1,
+}
+
+NSGlyphPropertyFlag :: enum cffi.long {
+	Null             = 0,
+	ControlCharacter = 1,
+	Elastic          = 2,
+	NonBaseCharacter = 3,
+}
+NSGlyphProperty :: bit_set[NSGlyphPropertyFlag; cffi.long]
+
+NSControlCharacterActionFlag :: enum cffi.long {
+	ZeroAdvancement = 0,
+	Whitespace      = 1,
+	HorizontalTab   = 2,
+	LineBreak       = 3,
+	ParagraphBreak  = 4,
+	ContainerBreak  = 5,
+}
+NSControlCharacterAction :: bit_set[NSControlCharacterActionFlag; cffi.long]
+
+NSTextBlockValueType :: enum cffi.long {
+	Absolute   = 0,
+	Percentage = 1,
+}
+
+NSTextBlockDimension :: enum cffi.long {
+	Width         = 0,
+	MinimumWidth  = 1,
+	MaximumWidth  = 2,
+	Height        = 4,
+	MinimumHeight = 5,
+	MaximumHeight = 6,
+}
+
+NSTextBlockLayer :: enum cffi.long {
+	Padding = -1,
+	Border  = 0,
+	Margin  = 1,
+}
+
+NSTextBlockVerticalAlignment :: enum cffi.long {
+	Top      = 0,
+	Middle   = 1,
+	Bottom   = 2,
+	Baseline = 3,
+}
+
+NSTextTableLayoutAlgorithm :: enum cffi.long {
+	Automatic = 0,
+	Fixed     = 1,
+}
 
 AccessibilityNavigationStyle :: enum cffi.long {
 	Automatic = 0,
@@ -1192,7 +1463,6 @@ AccessibilityDirectTouchOption :: enum cffi.ulong {
 	RequiresActivation = 1,
 }
 AccessibilityDirectTouchOptions :: bit_set[AccessibilityDirectTouchOption; cffi.ulong]
-AccessibilityDirectTouchOptions_None :: AccessibilityDirectTouchOptions{}
 
 AccessibilityExpandedStatus :: enum cffi.long {
 	Unsupported = 0,
@@ -1207,15 +1477,16 @@ RectEdgeFlag :: enum cffi.ulong {
 	Right  = 3,
 }
 RectEdge :: bit_set[RectEdgeFlag; cffi.ulong]
-RectEdge_None :: RectEdge{}
-RectEdge_All :: RectEdge{.Top, .Left, .Bottom, .Right}
 
-Axis :: enum cffi.ulong {
-	Neither    = 0,
-	Horizontal = 1,
-	Vertical   = 2,
-	Both       = 3,
+RectEdge_All :: RectEdge { .Top, .Left, .Bottom, .Right, }
+
+AxisFlag :: enum cffi.ulong {
+	Horizontal = 0,
+	Vertical   = 1,
 }
+Axis :: bit_set[AxisFlag; cffi.ulong]
+
+Axis_Both :: Axis { .Horizontal, .Vertical, }
 
 RectCornerFlag :: enum cffi.ulong {
 	TopLeft     = 0,
@@ -1224,7 +1495,6 @@ RectCornerFlag :: enum cffi.ulong {
 	BottomRight = 3,
 }
 RectCorner :: bit_set[RectCornerFlag; cffi.ulong]
-RectCorner_AllCorners :: transmute(RectCorner)cffi.ulong(0xffffffffffffffff)
 
 NSDirectionalRectEdgeFlag :: enum cffi.ulong {
 	Top      = 0,
@@ -1233,8 +1503,8 @@ NSDirectionalRectEdgeFlag :: enum cffi.ulong {
 	Trailing = 3,
 }
 NSDirectionalRectEdge :: bit_set[NSDirectionalRectEdgeFlag; cffi.ulong]
-NSDirectionalRectEdge_None :: NSDirectionalRectEdge{}
-NSDirectionalRectEdge_All :: NSDirectionalRectEdge{.Top, .Leading, .Bottom, .Trailing}
+
+NSDirectionalRectEdge_All :: NSDirectionalRectEdge { .Top, .Leading, .Bottom, .Trailing, }
 
 DirectionalRectEdgeFlag :: enum cffi.ulong {
 	Top      = 0,
@@ -1243,8 +1513,8 @@ DirectionalRectEdgeFlag :: enum cffi.ulong {
 	Trailing = 3,
 }
 DirectionalRectEdge :: bit_set[DirectionalRectEdgeFlag; cffi.ulong]
-DirectionalRectEdge_None :: DirectionalRectEdge{}
-DirectionalRectEdge_All :: DirectionalRectEdge{.Top, .Leading, .Bottom, .Trailing}
+
+DirectionalRectEdge_All :: DirectionalRectEdge { .Top, .Leading, .Bottom, .Trailing, }
 
 NSRectAlignment :: enum cffi.long {
 	None           = 0,
@@ -1264,35 +1534,6 @@ ColorProminence :: enum cffi.long {
 	Tertiary   = 2,
 	Quaternary = 3,
 }
-
-FontDescriptorSymbolicTrait :: enum cffi.uint {
-	TraitItalic       = 0,
-	TraitBold         = 1,
-	TraitExpanded     = 5,
-	TraitCondensed    = 6,
-	TraitMonoSpace    = 10,
-	TraitVertical     = 11,
-	TraitUIOptimized  = 12,
-	TraitTightLeading = 15,
-	TraitLooseLeading = 16,
-	_Bit28            = 28,
-	_Bit29            = 29,
-	_Bit30            = 30,
-	_Bit31            = 31,
-}
-FontDescriptorSymbolicTraits :: bit_set[FontDescriptorSymbolicTrait; cffi.uint]
-FontDescriptorSymbolicTraits_ClassMask :: FontDescriptorSymbolicTraits{._Bit28, ._Bit29, ._Bit30, ._Bit31}
-FontDescriptorSymbolicTraits_ClassUnknown :: FontDescriptorSymbolicTraits{}
-FontDescriptorSymbolicTraits_ClassOldStyleSerifs :: FontDescriptorSymbolicTraits{._Bit28}
-FontDescriptorSymbolicTraits_ClassTransitionalSerifs :: FontDescriptorSymbolicTraits{._Bit29}
-FontDescriptorSymbolicTraits_ClassModernSerifs :: FontDescriptorSymbolicTraits{._Bit28, ._Bit29}
-FontDescriptorSymbolicTraits_ClassClarendonSerifs :: FontDescriptorSymbolicTraits{._Bit30}
-FontDescriptorSymbolicTraits_ClassSlabSerifs :: FontDescriptorSymbolicTraits{._Bit28, ._Bit30}
-FontDescriptorSymbolicTraits_ClassFreeformSerifs :: FontDescriptorSymbolicTraits{._Bit28, ._Bit29, ._Bit30}
-FontDescriptorSymbolicTraits_ClassSansSerif :: FontDescriptorSymbolicTraits{._Bit31}
-FontDescriptorSymbolicTraits_ClassOrnamentals :: FontDescriptorSymbolicTraits{._Bit28, ._Bit31}
-FontDescriptorSymbolicTraits_ClassScripts :: FontDescriptorSymbolicTraits{._Bit29, ._Bit31}
-FontDescriptorSymbolicTraits_ClassSymbolic :: FontDescriptorSymbolicTraits{._Bit30, ._Bit31}
 
 PreferredPresentationStyle :: enum cffi.long {
 	Unspecified = 0,
@@ -1355,74 +1596,6 @@ ImageSymbolColorRenderingMode :: enum cffi.long {
 	Gradient  = 2,
 }
 
-NSUnderlineStyle :: enum cffi.long {
-	None              = 0,
-	Single            = 1,
-	Thick             = 2,
-	Double            = 9,
-	PatternSolid      = 0,
-	PatternDot        = 256,
-	PatternDash       = 512,
-	PatternDashDot    = 768,
-	PatternDashDotDot = 1024,
-	ByWord            = 32768,
-}
-
-NSWritingDirectionFormatType :: enum cffi.long {
-	Embedding = 0,
-	Override  = 2,
-}
-
-NSTextScalingType :: enum cffi.long {
-	Standard = 0,
-	iOS      = 1,
-}
-
-NSTextWritingDirection :: enum cffi.long {
-	Embedding = 0,
-	Override  = 2,
-}
-
-NSWritingDirection :: enum cffi.long {
-	Natural     = -1,
-	LeftToRight = 0,
-	RightToLeft = 1,
-}
-
-NSTextAlignment :: enum cffi.long {
-	Left      = 0,
-	Center    = 1,
-	Right     = 2,
-	Justified = 3,
-	Natural   = 4,
-}
-
-NSLineBreakMode :: enum cffi.long {
-	ByWordWrapping     = 0,
-	ByCharWrapping     = 1,
-	ByClipping         = 2,
-	ByTruncatingHead   = 3,
-	ByTruncatingTail   = 4,
-	ByTruncatingMiddle = 5,
-}
-
-NSLineBreakStrategyFlag :: enum cffi.ulong {
-	PushOut            = 0,
-	HangulWordPriority = 1,
-}
-NSLineBreakStrategy :: bit_set[NSLineBreakStrategyFlag; cffi.ulong]
-NSLineBreakStrategy_None :: NSLineBreakStrategy{}
-NSLineBreakStrategy_Standard :: transmute(NSLineBreakStrategy)cffi.ulong(0xffff)
-
-NSStringDrawingOption :: enum cffi.long {
-	UsesLineFragmentOrigin                           = 0,
-	UsesFontLeading                                  = 1,
-	UsesDeviceMetrics                                = 3,
-	TruncatesLastVisibleLine                         = 5,
-	ResolvesNaturalAlignmentWithBaseWritingDirection = 9,
-}
-NSStringDrawingOptions :: bit_set[NSStringDrawingOption; cffi.long]
-
 MenuElementState :: enum cffi.long {
 	Off   = 0,
 	On    = 1,
@@ -1441,6 +1614,12 @@ MenuElementRepeatBehavior :: enum cffi.long {
 	Automatic     = 0,
 	Repeatable    = 1,
 	NonRepeatable = 2,
+}
+
+MenuElementImageVisibility :: enum cffi.long {
+	Automatic = 0,
+	Visible   = 1,
+	Hidden    = 2,
 }
 
 MenuOption :: enum cffi.ulong {
@@ -1622,36 +1801,25 @@ NSLayoutAttribute :: enum cffi.long {
 }
 
 NSLayoutFormatOption :: enum cffi.ulong {
-	AlignAllLeft          = 1,
-	AlignAllRight         = 2,
-	AlignAllTop           = 3,
-	AlignAllBottom        = 4,
-	AlignAllLeading       = 5,
-	AlignAllTrailing      = 6,
-	AlignAllCenterX       = 9,
-	AlignAllCenterY       = 10,
-	AlignAllLastBaseline  = 11,
-	AlignAllFirstBaseline = 12,
-	AlignAllBaseline      = 11,
-	_Bit0                 = 0,
-	_Bit7                 = 7,
-	_Bit8                 = 8,
-	_Bit13                = 13,
-	_Bit14                = 14,
-	_Bit15                = 15,
-	_Bit16                = 16,
-	_Bit17                = 17,
-	_Bit19                = 19,
+	AlignAllLeft              = 1,
+	AlignAllRight             = 2,
+	AlignAllTop               = 3,
+	AlignAllBottom            = 4,
+	AlignAllLeading           = 5,
+	AlignAllTrailing          = 6,
+	AlignAllCenterX           = 9,
+	AlignAllCenterY           = 10,
+	AlignAllLastBaseline      = 11,
+	AlignAllFirstBaseline     = 12,
+	AlignAllBaseline          = 11,
+	DirectionLeftToRight      = 16,
+	DirectionRightToLeft      = 17,
+	SpacingBaselineToBaseline = 19,
+	SpacingMask               = 19,
 }
 NSLayoutFormatOptions :: bit_set[NSLayoutFormatOption; cffi.ulong]
-NSLayoutFormatOptions_AlignmentMask :: NSLayoutFormatOptions{.AlignAllLeft, .AlignAllRight, .AlignAllTop, .AlignAllBottom, .AlignAllLeading, .AlignAllTrailing, .AlignAllCenterX, .AlignAllCenterY, .AlignAllLastBaseline, .AlignAllFirstBaseline, ._Bit0, ._Bit7, ._Bit8, ._Bit13, ._Bit14, ._Bit15}
-NSLayoutFormatOptions_DirectionLeadingToTrailing :: NSLayoutFormatOptions{}
-NSLayoutFormatOptions_DirectionLeftToRight :: NSLayoutFormatOptions{._Bit16}
-NSLayoutFormatOptions_DirectionRightToLeft :: NSLayoutFormatOptions{._Bit17}
-NSLayoutFormatOptions_DirectionMask :: NSLayoutFormatOptions{._Bit16, ._Bit17}
-NSLayoutFormatOptions_SpacingEdgeToEdge :: NSLayoutFormatOptions{}
-NSLayoutFormatOptions_SpacingBaselineToBaseline :: NSLayoutFormatOptions{._Bit19}
-NSLayoutFormatOptions_SpacingMask :: NSLayoutFormatOptions{._Bit19}
+
+NSLayoutFormatOptions_DirectionMask :: NSLayoutFormatOptions { .DirectionLeftToRight, .DirectionRightToLeft, }
 
 DeviceOrientation :: enum cffi.long {
 	Unknown            = 0,
@@ -1790,7 +1958,6 @@ FocusHeadingFlag :: enum cffi.ulong {
 	Last     = 9,
 }
 FocusHeading :: bit_set[FocusHeadingFlag; cffi.ulong]
-FocusHeading_None :: FocusHeading{}
 
 FocusItemDeferralMode :: enum cffi.long {
 	Automatic = 0,
@@ -1850,7 +2017,6 @@ ViewAutoresizingFlag :: enum cffi.ulong {
 	FlexibleBottomMargin = 5,
 }
 ViewAutoresizing :: bit_set[ViewAutoresizingFlag; cffi.ulong]
-ViewAutoresizing_None :: ViewAutoresizing{}
 
 ViewAnimationOption :: enum cffi.ulong {
 	LayoutSubviews            = 0,
@@ -1863,33 +2029,24 @@ ViewAnimationOption :: enum cffi.ulong {
 	AllowAnimatedContent      = 7,
 	ShowHideTransitionViews   = 8,
 	OverrideInheritedOptions  = 9,
+	CurveEaseIn               = 16,
+	CurveEaseOut              = 17,
+	TransitionFlipFromLeft    = 20,
+	TransitionFlipFromRight   = 21,
+	TransitionCurlDown        = 22,
 	FlushUpdates              = 28,
-	_Bit16                    = 16,
-	_Bit17                    = 17,
-	_Bit20                    = 20,
-	_Bit21                    = 21,
-	_Bit22                    = 22,
-	_Bit24                    = 24,
-	_Bit25                    = 25,
-	_Bit26                    = 26,
-	_Bit27                    = 27,
 }
 ViewAnimationOptions :: bit_set[ViewAnimationOption; cffi.ulong]
-ViewAnimationOptions_CurveEaseInOut :: ViewAnimationOptions{}
-ViewAnimationOptions_CurveEaseIn :: ViewAnimationOptions{._Bit16}
-ViewAnimationOptions_CurveEaseOut :: ViewAnimationOptions{._Bit17}
-ViewAnimationOptions_CurveLinear :: ViewAnimationOptions{._Bit16, ._Bit17}
-ViewAnimationOptions_TransitionNone :: ViewAnimationOptions{}
-ViewAnimationOptions_TransitionFlipFromLeft :: ViewAnimationOptions{._Bit20}
-ViewAnimationOptions_TransitionFlipFromRight :: ViewAnimationOptions{._Bit21}
-ViewAnimationOptions_TransitionCurlUp :: ViewAnimationOptions{._Bit20, ._Bit21}
-ViewAnimationOptions_TransitionCurlDown :: ViewAnimationOptions{._Bit22}
-ViewAnimationOptions_TransitionCrossDissolve :: ViewAnimationOptions{._Bit20, ._Bit22}
-ViewAnimationOptions_TransitionFlipFromTop :: ViewAnimationOptions{._Bit21, ._Bit22}
-ViewAnimationOptions_TransitionFlipFromBottom :: ViewAnimationOptions{._Bit20, ._Bit21, ._Bit22}
-ViewAnimationOptions_PreferredFramesPerSecondDefault :: ViewAnimationOptions{}
-ViewAnimationOptions_PreferredFramesPerSecond60 :: ViewAnimationOptions{._Bit24, ._Bit25}
-ViewAnimationOptions_PreferredFramesPerSecond30 :: ViewAnimationOptions{._Bit24, ._Bit25, ._Bit26}
+
+ViewAnimationOptions_CurveLinear :: ViewAnimationOptions { .CurveEaseIn, .CurveEaseOut, }
+
+ViewAnimationOptions_TransitionCurlUp :: ViewAnimationOptions { .TransitionFlipFromLeft, .TransitionFlipFromRight, }
+
+ViewAnimationOptions_TransitionCrossDissolve :: ViewAnimationOptions { .TransitionFlipFromLeft, .TransitionCurlDown, }
+
+ViewAnimationOptions_TransitionFlipFromTop :: ViewAnimationOptions { .TransitionFlipFromRight, .TransitionCurlDown, }
+
+ViewAnimationOptions_TransitionFlipFromBottom :: ViewAnimationOptions { .TransitionFlipFromLeft, .TransitionFlipFromRight, .TransitionCurlDown, }
 
 ViewKeyframeAnimationOption :: enum cffi.ulong {
 	LayoutSubviews            = 0,
@@ -1899,16 +2056,13 @@ ViewKeyframeAnimationOption :: enum cffi.ulong {
 	Autoreverse               = 4,
 	OverrideInheritedDuration = 5,
 	OverrideInheritedOptions  = 9,
-	_Bit10                    = 10,
-	_Bit11                    = 11,
-	_Bit12                    = 12,
+	CalculationModeDiscrete   = 10,
+	CalculationModePaced      = 11,
+	CalculationModeCubicPaced = 12,
 }
 ViewKeyframeAnimationOptions :: bit_set[ViewKeyframeAnimationOption; cffi.ulong]
-ViewKeyframeAnimationOptions_CalculationModeLinear :: ViewKeyframeAnimationOptions{}
-ViewKeyframeAnimationOptions_CalculationModeDiscrete :: ViewKeyframeAnimationOptions{._Bit10}
-ViewKeyframeAnimationOptions_CalculationModePaced :: ViewKeyframeAnimationOptions{._Bit11}
-ViewKeyframeAnimationOptions_CalculationModeCubic :: ViewKeyframeAnimationOptions{._Bit10, ._Bit11}
-ViewKeyframeAnimationOptions_CalculationModeCubicPaced :: ViewKeyframeAnimationOptions{._Bit12}
+
+ViewKeyframeAnimationOptions_CalculationModeCubic :: ViewKeyframeAnimationOptions { .CalculationModeDiscrete, .CalculationModePaced, }
 
 SystemAnimation :: enum cffi.ulong {
 	Delete = 0,
@@ -1969,11 +2123,8 @@ ControlEvent :: enum cffi.ulong {
 	EditingDidEndOnExit    = 19,
 }
 ControlEvents :: bit_set[ControlEvent; cffi.ulong]
-ControlEvents_AllTouchEvents :: transmute(ControlEvents)cffi.ulong(0xfff)
-ControlEvents_AllEditingEvents :: ControlEvents{.EditingDidBegin, .EditingChanged, .EditingDidEnd, .EditingDidEndOnExit}
-ControlEvents_ApplicationReserved :: transmute(ControlEvents)cffi.ulong(0xf000000)
-ControlEvents_SystemReserved :: transmute(ControlEvents)cffi.ulong(0xf0000000)
-ControlEvents_AllEvents :: transmute(ControlEvents)cffi.ulong(0xffffffff)
+
+ControlEvents_AllEditingEvents :: ControlEvents { .EditingDidBegin, .EditingChanged, .EditingDidEnd, .EditingDidEndOnExit, }
 
 ControlContentVerticalAlignment :: enum cffi.long {
 	Center = 0,
@@ -1991,15 +2142,13 @@ ControlContentHorizontalAlignment :: enum cffi.long {
 	Trailing = 5,
 }
 
-ControlState :: enum cffi.ulong {
-	Normal      = 0,
-	Highlighted = 1,
-	Disabled    = 2,
-	Selected    = 4,
-	Focused     = 8,
-	Application = 16711680,
-	Reserved    = 4278190080,
+ControlStateFlag :: enum cffi.ulong {
+	Highlighted = 0,
+	Disabled    = 1,
+	Selected    = 2,
+	Focused     = 3,
 }
+ControlState :: bit_set[ControlStateFlag; cffi.ulong]
 
 ScrollViewIndicatorStyle :: enum cffi.long {
 	Default = 0,
@@ -2076,6 +2225,12 @@ TextMathExpressionCompletionType :: enum cffi.long {
 	Yes     = 2,
 }
 
+TextGrammarCheckingType :: enum cffi.long {
+	Default = 0,
+	No      = 1,
+	Yes     = 2,
+}
+
 KeyboardType :: enum cffi.long {
 	Default               = 0,
 	ASCIICapable          = 1,
@@ -2129,7 +2284,6 @@ WritingToolsResultOption :: enum cffi.ulong {
 	PresentationIntent = 4,
 }
 WritingToolsResultOptions :: bit_set[WritingToolsResultOption; cffi.ulong]
-WritingToolsResultOptions_Default :: WritingToolsResultOptions{}
 
 TextStorageDirection :: enum cffi.long {
 	Forward  = 0,
@@ -2224,11 +2378,15 @@ ViewAnimatingPosition :: enum cffi.long {
 	Current = 2,
 }
 
+DragLiftBehavior :: enum cffi.ulong {
+	Default  = 0,
+	Extended = 1,
+}
+
 TextDragOption :: enum cffi.long {
 	StripTextColorFromPreviews = 0,
 }
 TextDragOptions :: bit_set[TextDragOption; cffi.long]
-TextDragOptions_None :: TextDragOptions{}
 
 TextDropAction :: enum cffi.ulong {
 	Insert           = 0,
@@ -2311,7 +2469,6 @@ RemoteNotificationTypeFlag :: enum cffi.ulong {
 	NewsstandContentAvailability = 3,
 }
 RemoteNotificationType :: bit_set[RemoteNotificationTypeFlag; cffi.ulong]
-RemoteNotificationType_None :: RemoteNotificationType{}
 
 BackgroundFetchResult :: enum cffi.ulong {
 	NewData = 0,
@@ -2431,8 +2588,8 @@ AccessibilityHearingDeviceEarFlag :: enum cffi.ulong {
 	Right = 2,
 }
 AccessibilityHearingDeviceEar :: bit_set[AccessibilityHearingDeviceEarFlag; cffi.ulong]
-AccessibilityHearingDeviceEar_None :: AccessibilityHearingDeviceEar{}
-AccessibilityHearingDeviceEar_Both :: AccessibilityHearingDeviceEar{.Left, .Right}
+
+AccessibilityHearingDeviceEar_Both :: AccessibilityHearingDeviceEar { .Left, .Right, }
 
 ButtonConfigurationSize :: enum cffi.long {
 	Medium = 0,
@@ -2549,6 +2706,24 @@ BarButtonSystemItem :: enum cffi.long {
 	WritingTools  = 25,
 }
 
+BarMinimizationBehavior :: enum cffi.long {
+	Automatic    = 0,
+	Never        = 1,
+	OnScrollDown = 2,
+	OnScrollUp   = 3,
+}
+
+BarMinimizationSafeAreaAdjustment :: enum cffi.long {
+	Automatic = 0,
+	Enabled   = 1,
+	Disabled  = 2,
+}
+
+BarMinimizationRestorationBehavior :: enum cffi.long {
+	Automatic    = 0,
+	AtScrollEdge = 1,
+}
+
 CollectionViewScrollPositionFlag :: enum cffi.ulong {
 	Top                  = 0,
 	CenteredVertically   = 1,
@@ -2558,7 +2733,6 @@ CollectionViewScrollPositionFlag :: enum cffi.ulong {
 	Right                = 5,
 }
 CollectionViewScrollPosition :: bit_set[CollectionViewScrollPositionFlag; cffi.ulong]
-CollectionViewScrollPosition_None :: CollectionViewScrollPosition{}
 
 CollectionViewReorderingCadence :: enum cffi.long {
 	Immediate = 0,
@@ -2747,10 +2921,10 @@ TableViewRowAnimation :: enum cffi.long {
 	Automatic = 100,
 }
 
-TableViewContentHuggingElements :: enum cffi.long {
-	None           = 0,
-	SectionHeaders = 1,
+TableViewContentHuggingElement :: enum cffi.long {
+	SectionHeaders = 0,
 }
+TableViewContentHuggingElements :: bit_set[TableViewContentHuggingElement; cffi.long]
 
 TableViewRowActionStyle :: enum cffi.long {
 	Default     = 0,
@@ -2795,10 +2969,10 @@ CollectionLayoutListFooterMode :: enum cffi.long {
 	Supplementary = 1,
 }
 
-CollectionLayoutListContentHuggingElements :: enum cffi.ulong {
-	None                = 0,
-	SupplementaryHeader = 1,
+CollectionLayoutListContentHuggingElement :: enum cffi.ulong {
+	SupplementaryHeader = 0,
 }
+CollectionLayoutListContentHuggingElements :: bit_set[CollectionLayoutListContentHuggingElement; cffi.ulong]
 
 ListSeparatorVisibility :: enum cffi.long {
 	Automatic = 0,
@@ -3026,8 +3200,6 @@ DataDetectorType :: enum cffi.ulong {
 	PhysicalValue          = 8,
 }
 DataDetectorTypes :: bit_set[DataDetectorType; cffi.ulong]
-DataDetectorTypes_None :: DataDetectorTypes{}
-DataDetectorTypes_All :: transmute(DataDetectorTypes)cffi.ulong(0xffffffffffffffff)
 
 DatePickerMode :: enum cffi.long {
 	Time           = 0,
@@ -3092,7 +3264,6 @@ DocumentStateFlag :: enum cffi.ulong {
 	ProgressAvailable = 4,
 }
 DocumentState :: bit_set[DocumentStateFlag; cffi.ulong]
-DocumentState_Normal :: DocumentState{}
 
 DocumentPickerMode :: enum cffi.ulong {
 	Import          = 0,
@@ -3113,7 +3284,6 @@ CloudSharingPermissionOption :: enum cffi.ulong {
 	AllowReadWrite = 3,
 }
 CloudSharingPermissionOptions :: bit_set[CloudSharingPermissionOption; cffi.ulong]
-CloudSharingPermissionOptions_Standard :: CloudSharingPermissionOptions{}
 
 NSFileProviderItemCapability :: enum cffi.ulong {
 	AllowsReading            = 0,
@@ -3128,7 +3298,8 @@ NSFileProviderItemCapability :: enum cffi.ulong {
 	AllowsContentEnumerating = 0,
 }
 NSFileProviderItemCapabilities :: bit_set[NSFileProviderItemCapability; cffi.ulong]
-NSFileProviderItemCapabilities_AllowsAll :: NSFileProviderItemCapabilities{.AllowsReading, .AllowsWriting, .AllowsReparenting, .AllowsRenaming, .AllowsTrashing, .AllowsDeleting}
+
+NSFileProviderItemCapabilities_AllowsAll :: NSFileProviderItemCapabilities { .AllowsContentEnumerating, .AllowsAddingSubItems, .AllowsReparenting, .AllowsRenaming, .AllowsTrashing, .AllowsDeleting, }
 
 NSFileProviderItemField :: enum cffi.ulong {
 	Contents                = 0,
@@ -3159,6 +3330,12 @@ NSFileProviderContentPolicy :: enum cffi.long {
 	DownloadLazily                   = 1,
 	DownloadLazilyAndEvictOnRemoteUpdate = 2,
 	DownloadEagerlyAndKeepDownloaded = 3,
+}
+
+NSFileProviderNamespacePolicy :: enum cffi.long {
+	Inherited          = 0,
+	MaterializeLazily  = 1,
+	MaterializeEagerly = 2,
 }
 
 BlurEffectStyle :: enum cffi.long {
@@ -3311,7 +3488,6 @@ UserNotificationTypeFlag :: enum cffi.ulong {
 	Alert = 2,
 }
 UserNotificationType :: bit_set[UserNotificationTypeFlag; cffi.ulong]
-UserNotificationType_None :: UserNotificationType{}
 
 UserNotificationActionBehavior :: enum cffi.ulong {
 	Default   = 0,
@@ -3434,8 +3610,8 @@ PopoverArrowDirectionFlag :: enum cffi.ulong {
 	Right = 3,
 }
 PopoverArrowDirection :: bit_set[PopoverArrowDirectionFlag; cffi.ulong]
-PopoverArrowDirection_Any :: PopoverArrowDirection{.Up, .Down, .Left, .Right}
-PopoverArrowDirection_Unknown :: transmute(PopoverArrowDirection)cffi.ulong(0xffffffffffffffff)
+
+PopoverArrowDirection_Any :: PopoverArrowDirection { .Up, .Down, .Left, .Right, }
 
 PressPhase :: enum cffi.long {
 	Began      = 0,
@@ -3634,6 +3810,12 @@ TextItemInteraction :: enum cffi.long {
 	Preview             = 2,
 }
 
+TextAttachmentViewProviderReusePolicyFlag :: enum cffi.ulong {
+	OnScrollingOutOfViewport  = 0,
+	OnEditingInlineParagraphs = 1,
+}
+TextAttachmentViewProviderReusePolicy :: bit_set[TextAttachmentViewProviderReusePolicyFlag; cffi.ulong]
+
 TextViewBorderStyle :: enum cffi.long {
 	None        = 0,
 	RoundedRect = 1,
@@ -3698,34 +3880,12 @@ StackViewAlignment :: enum cffi.long {
 	LastBaseline  = 5,
 }
 
-NSTextStorageEditAction :: enum cffi.ulong {
-	EditedAttributes = 0,
-	EditedCharacters = 1,
+SheetPresentationControllerPlacement :: enum cffi.long {
+	Automatic = 0,
+	Leading   = 1,
+	Center    = 2,
+	Trailing  = 3,
 }
-NSTextStorageEditActions :: bit_set[NSTextStorageEditAction; cffi.ulong]
-
-NSTextLayoutOrientation :: enum cffi.long {
-	Horizontal = 0,
-	Vertical   = 1,
-}
-
-NSGlyphPropertyFlag :: enum cffi.long {
-	Null             = 0,
-	ControlCharacter = 1,
-	Elastic          = 2,
-	NonBaseCharacter = 3,
-}
-NSGlyphProperty :: bit_set[NSGlyphPropertyFlag; cffi.long]
-
-NSControlCharacterActionFlag :: enum cffi.long {
-	ZeroAdvancement = 0,
-	Whitespace      = 1,
-	HorizontalTab   = 2,
-	LineBreak       = 3,
-	ParagraphBreak  = 4,
-	ContainerBreak  = 5,
-}
-NSControlCharacterAction :: bit_set[NSControlCharacterActionFlag; cffi.long]
 
 PushBehaviorMode :: enum cffi.long {
 	Continuous    = 0,
@@ -3742,7 +3902,6 @@ CollisionBehaviorModeFlag :: enum cffi.ulong {
 	Boundaries = 1,
 }
 CollisionBehaviorMode :: bit_set[CollisionBehaviorModeFlag; cffi.ulong]
-CollisionBehaviorMode_Everything :: transmute(CollisionBehaviorMode)cffi.ulong(0xffffffffffffffff)
 
 ImpactFeedbackStyle :: enum cffi.long {
 	Light  = 0,
@@ -3866,6 +4025,12 @@ TabBarControllerSidebarLayout :: enum cffi.long {
 	Tile      = 2,
 }
 
+TabBarControllerSidebarPlacement :: enum cffi.long {
+	Automatic = 0,
+	Sidebar   = 1,
+	TabBar    = 2,
+}
+
 TextFormattingViewControllerComponentSize :: enum cffi.long {
 	Automatic  = 0,
 	Mini       = 1,
@@ -3890,6 +4055,9 @@ WritingToolsCoordinatorState :: enum cffi.long {
 WritingToolsCoordinatorTextReplacementReason :: enum cffi.long {
 	Interactive    = 0,
 	Noninteractive = 1,
+	Accepted       = 2,
+	Rejected       = 3,
+	Temporary      = 4,
 }
 
 WritingToolsCoordinatorContextScope :: enum cffi.long {
@@ -3899,9 +4067,15 @@ WritingToolsCoordinatorContextScope :: enum cffi.long {
 }
 
 WritingToolsCoordinatorTextAnimation :: enum cffi.long {
-	Anticipate = 0,
-	Remove     = 1,
-	Insert     = 2,
+	Anticipate      = 0,
+	Remove          = 1,
+	Insert          = 2,
+	IndicateGrammar = 10,
+}
+
+WritingToolsCoordinatorTextDecoration :: enum cffi.long {
+	None             = 0,
+	GrammarUnderline = 1,
 }
 
 MailConversationEntryKind :: enum cffi.long {
@@ -3918,98 +4092,6 @@ MessageConversationEntryDataKind :: enum cffi.long {
 	Attachment = 1,
 	Other      = 2,
 }
-
-NSTextListOption :: enum cffi.ulong {
-	PrependEnclosingMarker = 0,
-}
-NSTextListOptions :: bit_set[NSTextListOption; cffi.ulong]
-
-NSTextSelectionGranularity :: enum cffi.long {
-	Character = 0,
-	Word      = 1,
-	Paragraph = 2,
-	Line      = 3,
-	Sentence  = 4,
-}
-
-NSTextSelectionAffinity :: enum cffi.long {
-	Upstream   = 0,
-	Downstream = 1,
-}
-
-NSTextSelectionNavigationDirection :: enum cffi.long {
-	Forward  = 0,
-	Backward = 1,
-	Right    = 2,
-	Left     = 3,
-	Up       = 4,
-	Down     = 5,
-}
-
-NSTextSelectionNavigationDestination :: enum cffi.long {
-	Character = 0,
-	Word      = 1,
-	Line      = 2,
-	Sentence  = 3,
-	Paragraph = 4,
-	Container = 5,
-	Document  = 6,
-}
-
-NSTextSelectionNavigationModifierFlag :: enum cffi.ulong {
-	Extend   = 0,
-	Visual   = 1,
-	Multiple = 2,
-}
-NSTextSelectionNavigationModifier :: bit_set[NSTextSelectionNavigationModifierFlag; cffi.ulong]
-
-NSTextSelectionNavigationWritingDirection :: enum cffi.long {
-	LeftToRight = 0,
-	RightToLeft = 1,
-}
-
-NSTextSelectionNavigationLayoutOrientation :: enum cffi.long {
-	Horizontal = 0,
-	Vertical   = 1,
-}
-
-NSTextContentManagerEnumerationOption :: enum cffi.ulong {
-	Reverse = 0,
-}
-NSTextContentManagerEnumerationOptions :: bit_set[NSTextContentManagerEnumerationOption; cffi.ulong]
-NSTextContentManagerEnumerationOptions_None :: NSTextContentManagerEnumerationOptions{}
-
-NSTextLayoutFragmentEnumerationOption :: enum cffi.ulong {
-	Reverse                  = 0,
-	EstimatesSize            = 1,
-	EnsuresLayout            = 2,
-	EnsuresExtraLineFragment = 3,
-}
-NSTextLayoutFragmentEnumerationOptions :: bit_set[NSTextLayoutFragmentEnumerationOption; cffi.ulong]
-NSTextLayoutFragmentEnumerationOptions_None :: NSTextLayoutFragmentEnumerationOptions{}
-
-NSTextLayoutFragmentState :: enum cffi.ulong {
-	None                  = 0,
-	EstimatedUsageBounds  = 1,
-	CalculatedUsageBounds = 2,
-	LayoutAvailable       = 3,
-}
-
-NSTextLayoutManagerSegmentType :: enum cffi.long {
-	Standard  = 0,
-	Selection = 1,
-	Highlight = 2,
-}
-
-NSTextLayoutManagerSegmentOption :: enum cffi.ulong {
-	RangeNotRequired        = 0,
-	MiddleFragmentsExcluded = 1,
-	HeadSegmentExtended     = 2,
-	TailSegmentExtended     = 3,
-	UpstreamAffinity        = 4,
-}
-NSTextLayoutManagerSegmentOptions :: bit_set[NSTextLayoutManagerSegmentOption; cffi.ulong]
-NSTextLayoutManagerSegmentOptions_None :: NSTextLayoutManagerSegmentOptions{}
 
 DocumentBrowserErrorCode :: enum cffi.long {
 	Generic             = 1,
@@ -4028,10 +4110,11 @@ DocumentBrowserUserInterfaceStyle :: enum cffi.ulong {
 	Dark  = 2,
 }
 
-DocumentBrowserActionAvailability :: enum cffi.long {
-	Menu          = 1,
-	NavigationBar = 2,
+DocumentBrowserActionAvailabilityFlag :: enum cffi.long {
+	Menu          = 0,
+	NavigationBar = 1,
 }
+DocumentBrowserActionAvailability :: bit_set[DocumentBrowserActionAvailabilityFlag; cffi.long]
 
 ActivityCategory :: enum cffi.long {
 	Action = 0,
@@ -4047,7 +4130,6 @@ ActivitySectionType :: enum cffi.ulong {
 	PeopleSuggestions = 0,
 }
 ActivitySectionTypes :: bit_set[ActivitySectionType; cffi.ulong]
-ActivitySectionTypes_None :: ActivitySectionTypes{}
 
 PrinterJobType :: enum cffi.long {
 	Document    = 0,
@@ -4060,7 +4142,6 @@ PrinterJobType :: enum cffi.long {
 	Postcard    = 7,
 }
 PrinterJobTypes :: bit_set[PrinterJobType; cffi.long]
-PrinterJobTypes_Unknown :: PrinterJobTypes{}
 
 PrintErrorCode :: enum cffi.long {
 	PrintingNotAvailableError = 1,

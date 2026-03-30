@@ -8,6 +8,7 @@ import CM "vendor:darwin/CoreMedia"
 import NS "core:sys/darwin/Foundation"
 import "base:intrinsics"
 import CF "core:sys/darwin/CoreFoundation"
+import CV "vendor:darwin/CoreVideo"
 
 @(objc_class="AVAsset", objc_superclass=NS.Object)
 Asset :: struct {
@@ -40,6 +41,9 @@ foreign lib {
 
 	@(objc_type=Asset, objc_selector="minimumTimeOffsetFromLive", objc_name="minimumTimeOffsetFromLive")
 	Asset_minimumTimeOffsetFromLive :: proc(self: ^Asset) -> CM.Time ---
+
+	@(objc_type=Asset, objc_selector="constituentFileURLs", objc_name="constituentFileURLs")
+	Asset_constituentFileURLs :: proc(self: ^Asset) -> ^NS.Array ---
 
 	@(objc_type=Asset, objc_selector="cancelLoading", objc_name="cancelLoading")
 	Asset_cancelLoading :: proc(self: ^Asset) ---
@@ -663,11 +667,29 @@ foreign lib {
 
 	@(objc_type=AssetExportSession, objc_selector="setDirectoryForTemporaryFiles:", objc_name="setDirectoryForTemporaryFiles")
 	AssetExportSession_setDirectoryForTemporaryFiles :: proc(self: ^AssetExportSession, directoryForTemporaryFiles: ^NS.URL) ---
+
+	@(objc_type=AssetExportSession, objc_selector="configureForResumableExportWithCompletionHandler:", objc_name="configureForResumableExportWithCompletionHandler")
+	AssetExportSession_configureForResumableExportWithCompletionHandler :: proc(self: ^AssetExportSession, handler: ^Objc_Block(proc "c" ( resumptionState: ^AssetExportSessionResumptionState ))) ---
 }
 
 
 @(objc_class="AVAssetExportSessionInternal")
 AssetExportSessionInternal :: struct { using _: intrinsics.objc_object}
+
+
+@(objc_class="AVAssetExportSessionResumptionState", objc_superclass=NS.Object)
+AssetExportSessionResumptionState :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=AssetExportSessionResumptionState, objc_selector="isResumptionConfigured", objc_name="isResumptionConfigured")
+	AssetExportSessionResumptionState_isResumptionConfigured :: proc(self: ^AssetExportSessionResumptionState) -> bool ---
+
+	@(objc_type=AssetExportSessionResumptionState, objc_selector="isResumingFromPreviousState", objc_name="isResumingFromPreviousState")
+	AssetExportSessionResumptionState_isResumingFromPreviousState :: proc(self: ^AssetExportSessionResumptionState) -> bool ---
+
+	@(objc_type=AssetExportSessionResumptionState, objc_selector="configurationFailureReason", objc_name="configurationFailureReason")
+	AssetExportSessionResumptionState_configurationFailureReason :: proc(self: ^AssetExportSessionResumptionState) -> ^NS.String ---
+}
 
 
 @(objc_class="AVAssetImageGenerator", objc_superclass=NS.Object)
@@ -1555,6 +1577,30 @@ foreign lib {
 AssetTrackGroupInternal :: struct { using _: intrinsics.objc_object}
 
 
+@(objc_class="AVAssetTrackPlan", objc_superclass=NS.Object)
+AssetTrackPlan :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=AssetTrackPlan, objc_selector="initWithMediaType:segmentConfigurations:assemblyTrackID:", objc_name="initWithMediaType")
+	AssetTrackPlan_initWithMediaType :: proc(self: ^AssetTrackPlan, mediaType: ^NS.String, segmentConfigurations: ^NS.Array, trackID: CM.PersistentTrackID) -> instancetype ---
+
+	@(objc_type=AssetTrackPlan, objc_selector="init", objc_name="init")
+	AssetTrackPlan_init :: proc(self: ^AssetTrackPlan) -> instancetype ---
+
+	@(objc_type=AssetTrackPlan, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	AssetTrackPlan_new :: proc() -> ^AssetTrackPlan ---
+
+	@(objc_type=AssetTrackPlan, objc_selector="assemblyTrackID", objc_name="assemblyTrackID")
+	AssetTrackPlan_assemblyTrackID :: proc(self: ^AssetTrackPlan) -> CM.PersistentTrackID ---
+
+	@(objc_type=AssetTrackPlan, objc_selector="mediaType", objc_name="mediaType")
+	AssetTrackPlan_mediaType :: proc(self: ^AssetTrackPlan) -> ^NS.String ---
+
+	@(objc_type=AssetTrackPlan, objc_selector="segmentConfigurations", objc_name="segmentConfigurations")
+	AssetTrackPlan_segmentConfigurations :: proc(self: ^AssetTrackPlan) -> ^NS.Array ---
+}
+
+
 @(objc_class="AVAssetTrackSegment", objc_superclass=NS.Object)
 AssetTrackSegment :: struct { using _: NS.Object}
 
@@ -1776,6 +1822,24 @@ foreign lib {
 }
 
 
+@(objc_class="AVAssetVideoTrackPlan", objc_superclass=AssetTrackPlan)
+AssetVideoTrackPlan :: struct { using _: AssetTrackPlan}
+
+foreign lib {
+	@(objc_type=AssetVideoTrackPlan, objc_selector="initWithVideoCodecType:encoderSpecification:mediaType:segmentConfigurations:assemblyTrackID:", objc_name="initWithVideoCodecType")
+	AssetVideoTrackPlan_initWithVideoCodecType :: proc(self: ^AssetVideoTrackPlan, videoCodecType: ^NS.String, encoderSpecification: ^NS.Dictionary, mediaType: ^NS.String, segmentConfigurations: ^NS.Array, trackID: CM.PersistentTrackID) -> instancetype ---
+
+	@(objc_type=AssetVideoTrackPlan, objc_selector="init", objc_name="init")
+	AssetVideoTrackPlan_init :: proc(self: ^AssetVideoTrackPlan) -> instancetype ---
+
+	@(objc_type=AssetVideoTrackPlan, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	AssetVideoTrackPlan_new :: proc() -> ^AssetVideoTrackPlan ---
+
+	@(objc_type=AssetVideoTrackPlan, objc_selector="videoCodecType", objc_name="videoCodecType")
+	AssetVideoTrackPlan_videoCodecType :: proc(self: ^AssetVideoTrackPlan) -> ^NS.String ---
+}
+
+
 @(objc_class="AVAssetWriter", objc_superclass=NS.Object)
 AssetWriter :: struct { using _: NS.Object}
 
@@ -1929,6 +1993,15 @@ foreign lib {
 
 	@(objc_type=AssetWriter, objc_selector="setDelegate:", objc_name="setDelegate")
 	AssetWriter_setDelegate :: proc(self: ^AssetWriter, delegate: ^AssetWriterDelegate) ---
+
+	@(objc_type=AssetWriter, objc_selector="isProVideoStorageSupported", objc_name="isProVideoStorageSupported")
+	AssetWriter_isProVideoStorageSupported :: proc(self: ^AssetWriter) -> bool ---
+
+	@(objc_type=AssetWriter, objc_selector="usesProVideoStorage", objc_name="usesProVideoStorage")
+	AssetWriter_usesProVideoStorage :: proc(self: ^AssetWriter) -> bool ---
+
+	@(objc_type=AssetWriter, objc_selector="setUsesProVideoStorage:", objc_name="setUsesProVideoStorage")
+	AssetWriter_setUsesProVideoStorage :: proc(self: ^AssetWriter, usesProVideoStorage: bool) ---
 }
 
 
@@ -2262,7 +2335,7 @@ foreign lib {
 	AssetWriterInputPixelBufferAdaptor_initWithAssetWriterInput :: proc(self: ^AssetWriterInputPixelBufferAdaptor, input: ^AssetWriterInput, sourcePixelBufferAttributes: ^NS.Dictionary) -> instancetype ---
 
 	@(objc_type=AssetWriterInputPixelBufferAdaptor, objc_selector="appendPixelBuffer:withPresentationTime:", objc_name="appendPixelBuffer")
-	AssetWriterInputPixelBufferAdaptor_appendPixelBuffer :: proc(self: ^AssetWriterInputPixelBufferAdaptor, pixelBuffer: CVPixelBufferRef, presentationTime: CM.Time) -> bool ---
+	AssetWriterInputPixelBufferAdaptor_appendPixelBuffer :: proc(self: ^AssetWriterInputPixelBufferAdaptor, pixelBuffer: CV.PixelBufferRef, presentationTime: CM.Time) -> bool ---
 
 	@(objc_type=AssetWriterInputPixelBufferAdaptor, objc_selector="assetWriterInput", objc_name="assetWriterInput")
 	AssetWriterInputPixelBufferAdaptor_assetWriterInput :: proc(self: ^AssetWriterInputPixelBufferAdaptor) -> ^AssetWriterInput ---
@@ -2271,7 +2344,7 @@ foreign lib {
 	AssetWriterInputPixelBufferAdaptor_sourcePixelBufferAttributes :: proc(self: ^AssetWriterInputPixelBufferAdaptor) -> ^NS.Dictionary ---
 
 	@(objc_type=AssetWriterInputPixelBufferAdaptor, objc_selector="pixelBufferPool", objc_name="pixelBufferPool")
-	AssetWriterInputPixelBufferAdaptor_pixelBufferPool :: proc(self: ^AssetWriterInputPixelBufferAdaptor) -> CVPixelBufferPoolRef ---
+	AssetWriterInputPixelBufferAdaptor_pixelBufferPool :: proc(self: ^AssetWriterInputPixelBufferAdaptor) -> CV.PixelBufferPoolRef ---
 }
 
 
@@ -2305,7 +2378,52 @@ foreign lib {
 	AssetWriterInputTaggedPixelBufferGroupAdaptor_sourcePixelBufferAttributes :: proc(self: ^AssetWriterInputTaggedPixelBufferGroupAdaptor) -> ^NS.Dictionary ---
 
 	@(objc_type=AssetWriterInputTaggedPixelBufferGroupAdaptor, objc_selector="pixelBufferPool", objc_name="pixelBufferPool")
-	AssetWriterInputTaggedPixelBufferGroupAdaptor_pixelBufferPool :: proc(self: ^AssetWriterInputTaggedPixelBufferGroupAdaptor) -> CVPixelBufferPoolRef ---
+	AssetWriterInputTaggedPixelBufferGroupAdaptor_pixelBufferPool :: proc(self: ^AssetWriterInputTaggedPixelBufferGroupAdaptor) -> CV.PixelBufferPoolRef ---
+}
+
+
+@(objc_class="AVAssetWritingPlanner", objc_superclass=NS.Object)
+AssetWritingPlanner :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=AssetWritingPlanner, objc_selector="initWithDirectoryForTemporaryFiles:", objc_name="initWithDirectoryForTemporaryFiles")
+	AssetWritingPlanner_initWithDirectoryForTemporaryFiles :: proc(self: ^AssetWritingPlanner, directoryForTemporaryFiles: ^NS.URL) -> instancetype ---
+
+	@(objc_type=AssetWritingPlanner, objc_selector="segmentBoundaryGuidelinesForVideoCodecType:videoEncoderSpecification:", objc_name="segmentBoundaryGuidelinesForVideoCodecType", objc_is_class_method=true)
+	AssetWritingPlanner_segmentBoundaryGuidelinesForVideoCodecType :: proc(videoCodecType: ^NS.String, videoEncoderSpecification: ^NS.Dictionary) -> PlannedVideoSegmentBoundaryGuidelines ---
+
+	@(objc_type=AssetWritingPlanner, objc_selector="segmentBoundaryRecommendationsForVideoAVAssetTrack:minimumSegmentDuration:minimumSegmentFrameCount:", objc_name="segmentBoundaryRecommendationsForVideoAVAssetTrack", objc_is_class_method=true)
+	AssetWritingPlanner_segmentBoundaryRecommendationsForVideoAVAssetTrack :: proc(videoAssetTrack: ^AssetTrack, minimumSegmentDuration: CM.Time, minimumSegmentFrameCount: NS.Integer) -> ^NS.Array ---
+
+	@(objc_type=AssetWritingPlanner, objc_selector="planTrack:withSegmentsGeneratedBy:", objc_name="planTrack")
+	AssetWritingPlanner_planTrack :: proc(self: ^AssetWritingPlanner, trackPlan: ^AssetTrackPlan, writingSegmentCallbackBlock: ^Objc_Block(proc "c" ( segmentWriteRequest: ^PlannedSegmentWritingRequest ))) ---
+
+	@(objc_type=AssetWritingPlanner, objc_selector="executePlanWithCompletionHandler:", objc_name="executePlanWithCompletionHandler")
+	AssetWritingPlanner_executePlanWithCompletionHandler :: proc(self: ^AssetWritingPlanner, completionHandler: ^Objc_Block(proc "c" ( assemblyComposition: ^Composition, error: ^NS.Error ))) ---
+
+	@(objc_type=AssetWritingPlanner, objc_selector="executePlanOnQueue:withCompletionHandler:", objc_name="executePlanOnQueue")
+	AssetWritingPlanner_executePlanOnQueue :: proc(self: ^AssetWritingPlanner, executionQueue: CF.dispatch_queue_t, completionHandler: ^Objc_Block(proc "c" ( assemblyComposition: ^Composition, error: ^NS.Error ))) ---
+
+	@(objc_type=AssetWritingPlanner, objc_selector="init", objc_name="init")
+	AssetWritingPlanner_init :: proc(self: ^AssetWritingPlanner) -> instancetype ---
+
+	@(objc_type=AssetWritingPlanner, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	AssetWritingPlanner_new :: proc() -> ^AssetWritingPlanner ---
+
+	@(objc_type=AssetWritingPlanner, objc_selector="progress", objc_name="progress")
+	AssetWritingPlanner_progress :: proc(self: ^AssetWritingPlanner) -> ^AssetWritingPlannerProgress ---
+}
+
+
+@(objc_class="AVAssetWritingPlannerProgress", objc_superclass=NS.Object)
+AssetWritingPlannerProgress :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=AssetWritingPlannerProgress, objc_selector="progressForTrack:", objc_name="progressForTrack")
+	AssetWritingPlannerProgress_progressForTrack :: proc(self: ^AssetWritingPlannerProgress, assemblyTrackID: CM.PersistentTrackID) -> cffi.float ---
+
+	@(objc_type=AssetWritingPlannerProgress, objc_selector="overallProgress", objc_name="overallProgress")
+	AssetWritingPlannerProgress_overallProgress :: proc(self: ^AssetWritingPlannerProgress) -> cffi.float ---
 }
 
 

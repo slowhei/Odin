@@ -239,10 +239,10 @@ AnimatedVector2 :: struct { using _: AnimatedValue}
 
 foreign lib {
 	@(objc_type=AnimatedVector2, objc_selector="setFloat2:atTime:", objc_name="setFloat2")
-	AnimatedVector2_setFloat2 :: proc(self: ^AnimatedVector2, value: ^vector_float2, time: NS.TimeInterval) ---
+	AnimatedVector2_setFloat2 :: proc(self: ^AnimatedVector2, value: vector_float2, time: NS.TimeInterval) ---
 
 	@(objc_type=AnimatedVector2, objc_selector="setDouble2:atTime:", objc_name="setDouble2")
-	AnimatedVector2_setDouble2 :: proc(self: ^AnimatedVector2, value: ^vector_double2, time: NS.TimeInterval) ---
+	AnimatedVector2_setDouble2 :: proc(self: ^AnimatedVector2, value: vector_double2, time: NS.TimeInterval) ---
 
 	@(objc_type=AnimatedVector2, objc_selector="float2AtTime:", objc_name="float2AtTime")
 	AnimatedVector2_float2AtTime :: proc(self: ^AnimatedVector2, time: NS.TimeInterval) -> vector_float2 ---
@@ -251,16 +251,16 @@ foreign lib {
 	AnimatedVector2_double2AtTime :: proc(self: ^AnimatedVector2, time: NS.TimeInterval) -> vector_double2 ---
 
 	@(objc_type=AnimatedVector2, objc_selector="resetWithFloat2Array:atTimes:count:", objc_name="resetWithFloat2Array")
-	AnimatedVector2_resetWithFloat2Array :: proc(self: ^AnimatedVector2, valuesArray: ^^vector_float2, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
+	AnimatedVector2_resetWithFloat2Array :: proc(self: ^AnimatedVector2, valuesArray: ^vector_float2, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
 
 	@(objc_type=AnimatedVector2, objc_selector="resetWithDouble2Array:atTimes:count:", objc_name="resetWithDouble2Array")
-	AnimatedVector2_resetWithDouble2Array :: proc(self: ^AnimatedVector2, valuesArray: ^^vector_double2, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
+	AnimatedVector2_resetWithDouble2Array :: proc(self: ^AnimatedVector2, valuesArray: ^vector_double2, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
 
 	@(objc_type=AnimatedVector2, objc_selector="getFloat2Array:maxCount:", objc_name="getFloat2Array")
-	AnimatedVector2_getFloat2Array :: proc(self: ^AnimatedVector2, valuesArray: ^^vector_float2, maxCount: NS.UInteger) -> NS.UInteger ---
+	AnimatedVector2_getFloat2Array :: proc(self: ^AnimatedVector2, valuesArray: ^vector_float2, maxCount: NS.UInteger) -> NS.UInteger ---
 
 	@(objc_type=AnimatedVector2, objc_selector="getDouble2Array:maxCount:", objc_name="getDouble2Array")
-	AnimatedVector2_getDouble2Array :: proc(self: ^AnimatedVector2, valuesArray: ^^vector_double2, maxCount: NS.UInteger) -> NS.UInteger ---
+	AnimatedVector2_getDouble2Array :: proc(self: ^AnimatedVector2, valuesArray: ^vector_double2, maxCount: NS.UInteger) -> NS.UInteger ---
 }
 
 
@@ -269,28 +269,28 @@ AnimatedVector4 :: struct { using _: AnimatedValue}
 
 foreign lib {
 	@(objc_type=AnimatedVector4, objc_selector="setFloat4:atTime:", objc_name="setFloat4")
-	AnimatedVector4_setFloat4 :: proc(self: ^AnimatedVector4, value: ^vector_float4, time: NS.TimeInterval) ---
+	AnimatedVector4_setFloat4 :: proc(self: ^AnimatedVector4, value: simd_float4, time: NS.TimeInterval) ---
 
 	@(objc_type=AnimatedVector4, objc_selector="setDouble4:atTime:", objc_name="setDouble4")
-	AnimatedVector4_setDouble4 :: proc(self: ^AnimatedVector4, value: ^vector_double4, time: NS.TimeInterval) ---
+	AnimatedVector4_setDouble4 :: proc(self: ^AnimatedVector4, value: vector_double4, time: NS.TimeInterval) ---
 
 	@(objc_type=AnimatedVector4, objc_selector="float4AtTime:", objc_name="float4AtTime")
-	AnimatedVector4_float4AtTime :: proc(self: ^AnimatedVector4, time: NS.TimeInterval) -> vector_float4 ---
+	AnimatedVector4_float4AtTime :: proc(self: ^AnimatedVector4, time: NS.TimeInterval) -> simd_float4 ---
 
 	@(objc_type=AnimatedVector4, objc_selector="double4AtTime:", objc_name="double4AtTime")
 	AnimatedVector4_double4AtTime :: proc(self: ^AnimatedVector4, time: NS.TimeInterval) -> vector_double4 ---
 
 	@(objc_type=AnimatedVector4, objc_selector="resetWithFloat4Array:atTimes:count:", objc_name="resetWithFloat4Array")
-	AnimatedVector4_resetWithFloat4Array :: proc(self: ^AnimatedVector4, valuesArray: ^^vector_float4, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
+	AnimatedVector4_resetWithFloat4Array :: proc(self: ^AnimatedVector4, valuesArray: ^simd_float4, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
 
 	@(objc_type=AnimatedVector4, objc_selector="resetWithDouble4Array:atTimes:count:", objc_name="resetWithDouble4Array")
-	AnimatedVector4_resetWithDouble4Array :: proc(self: ^AnimatedVector4, valuesArray: ^^vector_double4, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
+	AnimatedVector4_resetWithDouble4Array :: proc(self: ^AnimatedVector4, valuesArray: ^vector_double4, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
 
 	@(objc_type=AnimatedVector4, objc_selector="getFloat4Array:maxCount:", objc_name="getFloat4Array")
-	AnimatedVector4_getFloat4Array :: proc(self: ^AnimatedVector4, valuesArray: ^^vector_float4, maxCount: NS.UInteger) -> NS.UInteger ---
+	AnimatedVector4_getFloat4Array :: proc(self: ^AnimatedVector4, valuesArray: ^simd_float4, maxCount: NS.UInteger) -> NS.UInteger ---
 
 	@(objc_type=AnimatedVector4, objc_selector="getDouble4Array:maxCount:", objc_name="getDouble4Array")
-	AnimatedVector4_getDouble4Array :: proc(self: ^AnimatedVector4, valuesArray: ^^vector_double4, maxCount: NS.UInteger) -> NS.UInteger ---
+	AnimatedVector4_getDouble4Array :: proc(self: ^AnimatedVector4, valuesArray: ^vector_double4, maxCount: NS.UInteger) -> NS.UInteger ---
 }
 
 
@@ -299,28 +299,28 @@ AnimatedVector3 :: struct { using _: AnimatedValue}
 
 foreign lib {
 	@(objc_type=AnimatedVector3, objc_selector="setFloat3:atTime:", objc_name="setFloat3")
-	AnimatedVector3_setFloat3 :: proc(self: ^AnimatedVector3, value: ^vector_float3, time: NS.TimeInterval) ---
+	AnimatedVector3_setFloat3 :: proc(self: ^AnimatedVector3, value: simd_float4, time: NS.TimeInterval) ---
 
 	@(objc_type=AnimatedVector3, objc_selector="setDouble3:atTime:", objc_name="setDouble3")
-	AnimatedVector3_setDouble3 :: proc(self: ^AnimatedVector3, value: ^vector_double3, time: NS.TimeInterval) ---
+	AnimatedVector3_setDouble3 :: proc(self: ^AnimatedVector3, value: vector_double3, time: NS.TimeInterval) ---
 
 	@(objc_type=AnimatedVector3, objc_selector="float3AtTime:", objc_name="float3AtTime")
-	AnimatedVector3_float3AtTime :: proc(self: ^AnimatedVector3, time: NS.TimeInterval) -> vector_float3 ---
+	AnimatedVector3_float3AtTime :: proc(self: ^AnimatedVector3, time: NS.TimeInterval) -> simd_float4 ---
 
 	@(objc_type=AnimatedVector3, objc_selector="double3AtTime:", objc_name="double3AtTime")
 	AnimatedVector3_double3AtTime :: proc(self: ^AnimatedVector3, time: NS.TimeInterval) -> vector_double3 ---
 
 	@(objc_type=AnimatedVector3, objc_selector="resetWithFloat3Array:atTimes:count:", objc_name="resetWithFloat3Array")
-	AnimatedVector3_resetWithFloat3Array :: proc(self: ^AnimatedVector3, valuesArray: ^^vector_float3, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
+	AnimatedVector3_resetWithFloat3Array :: proc(self: ^AnimatedVector3, valuesArray: ^simd_float4, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
 
 	@(objc_type=AnimatedVector3, objc_selector="resetWithDouble3Array:atTimes:count:", objc_name="resetWithDouble3Array")
-	AnimatedVector3_resetWithDouble3Array :: proc(self: ^AnimatedVector3, valuesArray: ^^vector_double3, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
+	AnimatedVector3_resetWithDouble3Array :: proc(self: ^AnimatedVector3, valuesArray: ^vector_double3, timesArray: ^NS.TimeInterval, count: NS.UInteger) ---
 
 	@(objc_type=AnimatedVector3, objc_selector="getFloat3Array:maxCount:", objc_name="getFloat3Array")
-	AnimatedVector3_getFloat3Array :: proc(self: ^AnimatedVector3, valuesArray: ^^vector_float3, maxCount: NS.UInteger) -> NS.UInteger ---
+	AnimatedVector3_getFloat3Array :: proc(self: ^AnimatedVector3, valuesArray: ^simd_float4, maxCount: NS.UInteger) -> NS.UInteger ---
 
 	@(objc_type=AnimatedVector3, objc_selector="getDouble3Array:maxCount:", objc_name="getDouble3Array")
-	AnimatedVector3_getDouble3Array :: proc(self: ^AnimatedVector3, valuesArray: ^^vector_double3, maxCount: NS.UInteger) -> NS.UInteger ---
+	AnimatedVector3_getDouble3Array :: proc(self: ^AnimatedVector3, valuesArray: ^vector_double3, maxCount: NS.UInteger) -> NS.UInteger ---
 }
 
 
@@ -332,28 +332,28 @@ foreign lib {
 	AnimatedVector3Array_initWithElementCount :: proc(self: ^AnimatedVector3Array, arrayElementCount: NS.UInteger) -> id ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="setFloat3Array:count:atTime:", objc_name="setFloat3Array")
-	AnimatedVector3Array_setFloat3Array :: proc(self: ^AnimatedVector3Array, array: ^^vector_float3, count: NS.UInteger, time: NS.TimeInterval) ---
+	AnimatedVector3Array_setFloat3Array :: proc(self: ^AnimatedVector3Array, array: ^simd_float4, count: NS.UInteger, time: NS.TimeInterval) ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="setDouble3Array:count:atTime:", objc_name="setDouble3Array")
-	AnimatedVector3Array_setDouble3Array :: proc(self: ^AnimatedVector3Array, array: ^^vector_double3, count: NS.UInteger, time: NS.TimeInterval) ---
+	AnimatedVector3Array_setDouble3Array :: proc(self: ^AnimatedVector3Array, array: ^vector_double3, count: NS.UInteger, time: NS.TimeInterval) ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="getFloat3Array:maxCount:atTime:", objc_name="getFloat3Array_maxCount_atTime")
-	AnimatedVector3Array_getFloat3Array_maxCount_atTime :: proc(self: ^AnimatedVector3Array, array: ^^vector_float3, maxCount: NS.UInteger, time: NS.TimeInterval) -> NS.UInteger ---
+	AnimatedVector3Array_getFloat3Array_maxCount_atTime :: proc(self: ^AnimatedVector3Array, array: ^simd_float4, maxCount: NS.UInteger, time: NS.TimeInterval) -> NS.UInteger ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="getDouble3Array:maxCount:atTime:", objc_name="getDouble3Array_maxCount_atTime")
-	AnimatedVector3Array_getDouble3Array_maxCount_atTime :: proc(self: ^AnimatedVector3Array, array: ^^vector_double3, maxCount: NS.UInteger, time: NS.TimeInterval) -> NS.UInteger ---
+	AnimatedVector3Array_getDouble3Array_maxCount_atTime :: proc(self: ^AnimatedVector3Array, array: ^vector_double3, maxCount: NS.UInteger, time: NS.TimeInterval) -> NS.UInteger ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="resetWithFloat3Array:count:atTimes:count:", objc_name="resetWithFloat3Array")
-	AnimatedVector3Array_resetWithFloat3Array :: proc(self: ^AnimatedVector3Array, valuesArray: ^^vector_float3, valuesCount: NS.UInteger, timesArray: ^NS.TimeInterval, timesCount: NS.UInteger) ---
+	AnimatedVector3Array_resetWithFloat3Array :: proc(self: ^AnimatedVector3Array, valuesArray: ^simd_float4, valuesCount: NS.UInteger, timesArray: ^NS.TimeInterval, timesCount: NS.UInteger) ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="resetWithDouble3Array:count:atTimes:count:", objc_name="resetWithDouble3Array")
-	AnimatedVector3Array_resetWithDouble3Array :: proc(self: ^AnimatedVector3Array, valuesArray: ^^vector_double3, valuesCount: NS.UInteger, timesArray: ^NS.TimeInterval, timesCount: NS.UInteger) ---
+	AnimatedVector3Array_resetWithDouble3Array :: proc(self: ^AnimatedVector3Array, valuesArray: ^vector_double3, valuesCount: NS.UInteger, timesArray: ^NS.TimeInterval, timesCount: NS.UInteger) ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="getFloat3Array:maxCount:", objc_name="getFloat3Array_maxCount")
-	AnimatedVector3Array_getFloat3Array_maxCount :: proc(self: ^AnimatedVector3Array, valuesArray: ^^vector_float3, maxCount: NS.UInteger) -> NS.UInteger ---
+	AnimatedVector3Array_getFloat3Array_maxCount :: proc(self: ^AnimatedVector3Array, valuesArray: ^simd_float4, maxCount: NS.UInteger) -> NS.UInteger ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="getDouble3Array:maxCount:", objc_name="getDouble3Array_maxCount")
-	AnimatedVector3Array_getDouble3Array_maxCount :: proc(self: ^AnimatedVector3Array, valuesArray: ^^vector_double3, maxCount: NS.UInteger) -> NS.UInteger ---
+	AnimatedVector3Array_getDouble3Array_maxCount :: proc(self: ^AnimatedVector3Array, valuesArray: ^vector_double3, maxCount: NS.UInteger) -> NS.UInteger ---
 
 	@(objc_type=AnimatedVector3Array, objc_selector="elementCount", objc_name="elementCount")
 	AnimatedVector3Array_elementCount :: proc(self: ^AnimatedVector3Array) -> NS.UInteger ---

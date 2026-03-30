@@ -152,6 +152,7 @@ AccountStatus :: enum cffi.long {
 ApplicationPermission :: enum cffi.ulong {
 	UserDiscoverability = 0,
 }
+
 ApplicationPermissions :: bit_set[ApplicationPermission; cffi.ulong]
 
 ApplicationPermissionStatus :: enum cffi.long {
@@ -214,13 +215,14 @@ QueryNotificationReason :: enum cffi.long {
 	RecordDeleted = 3,
 }
 
-RecordZoneCapabilityFlag :: enum cffi.ulong {
+RecordZoneCapability :: enum cffi.ulong {
 	FetchChanges    = 0,
 	Atomic          = 1,
 	Sharing         = 2,
 	ZoneWideSharing = 3,
 }
-RecordZoneCapabilities :: bit_set[RecordZoneCapabilityFlag; cffi.ulong]
+
+RecordZoneCapabilities :: bit_set[RecordZoneCapability; cffi.ulong]
 
 RecordZoneEncryptionScope :: enum cffi.long {
 	PerRecord = 0,

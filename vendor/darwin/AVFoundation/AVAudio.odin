@@ -374,11 +374,20 @@ foreign lib {
 	@(objc_type=AudioEngine, objc_selector="connect:to:fromBus:toBus:format:", objc_name="connect_to_fromBus_toBus_format")
 	AudioEngine_connect_to_fromBus_toBus_format :: proc(self: ^AudioEngine, node1: ^AudioNode, node2: ^AudioNode, bus1: AudioNodeBus, bus2: AudioNodeBus, format: ^AudioFormat) ---
 
+	@(objc_type=AudioEngine, objc_selector="connect:to:fromBus:toBus:format:error:", objc_name="connect_to_fromBus_toBus_format_error")
+	AudioEngine_connect_to_fromBus_toBus_format_error :: proc(self: ^AudioEngine, node1: ^AudioNode, node2: ^AudioNode, bus1: AudioNodeBus, bus2: AudioNodeBus, format: ^AudioFormat, error: ^^NS.Error) -> bool ---
+
 	@(objc_type=AudioEngine, objc_selector="connect:to:format:", objc_name="connect_to_format")
 	AudioEngine_connect_to_format :: proc(self: ^AudioEngine, node1: ^AudioNode, node2: ^AudioNode, format: ^AudioFormat) ---
 
+	@(objc_type=AudioEngine, objc_selector="connect:to:format:error:", objc_name="connect_to_format_error")
+	AudioEngine_connect_to_format_error :: proc(self: ^AudioEngine, node1: ^AudioNode, node2: ^AudioNode, format: ^AudioFormat, error: ^^NS.Error) -> bool ---
+
 	@(objc_type=AudioEngine, objc_selector="connect:toConnectionPoints:fromBus:format:", objc_name="connect_toConnectionPoints_fromBus_format")
 	AudioEngine_connect_toConnectionPoints_fromBus_format :: proc(self: ^AudioEngine, sourceNode: ^AudioNode, destNodes: ^NS.Array, sourceBus: AudioNodeBus, format: ^AudioFormat) ---
+
+	@(objc_type=AudioEngine, objc_selector="connect:toConnectionPoints:fromBus:format:error:", objc_name="connect_toConnectionPoints_fromBus_format_error")
+	AudioEngine_connect_toConnectionPoints_fromBus_format_error :: proc(self: ^AudioEngine, sourceNode: ^AudioNode, destNodes: ^NS.Array, sourceBus: AudioNodeBus, format: ^AudioFormat, error: ^^NS.Error) -> bool ---
 
 	@(objc_type=AudioEngine, objc_selector="disconnectNodeInput:bus:", objc_name="disconnectNodeInput_bus")
 	AudioEngine_disconnectNodeInput_bus :: proc(self: ^AudioEngine, node: ^AudioNode, bus: AudioNodeBus) ---
@@ -428,11 +437,17 @@ foreign lib {
 	@(objc_type=AudioEngine, objc_selector="connectMIDI:to:format:eventListBlock:", objc_name="connectMIDI_to_format_eventListBlock")
 	AudioEngine_connectMIDI_to_format_eventListBlock :: proc(self: ^AudioEngine, sourceNode: ^AudioNode, destinationNode: ^AudioNode, format: ^AudioFormat, tapBlock: AT.AUMIDIEventListBlock) ---
 
+	@(objc_type=AudioEngine, objc_selector="connectMIDI:to:format:eventListProvider:", objc_name="connectMIDI_to_format_eventListProvider")
+	AudioEngine_connectMIDI_to_format_eventListProvider :: proc(self: ^AudioEngine, sourceNode: ^AudioNode, destinationNode: ^AudioNode, format: ^AudioFormat, tapBlock: MIDIEventListBlock) ---
+
 	@(objc_type=AudioEngine, objc_selector="connectMIDI:toNodes:format:block:", objc_name="connectMIDI_toNodes_format_block")
 	AudioEngine_connectMIDI_toNodes_format_block :: proc(self: ^AudioEngine, sourceNode: ^AudioNode, destinationNodes: ^NS.Array, format: ^AudioFormat, tapBlock: AT.AUMIDIOutputEventBlock) ---
 
 	@(objc_type=AudioEngine, objc_selector="connectMIDI:toNodes:format:eventListBlock:", objc_name="connectMIDI_toNodes_format_eventListBlock")
 	AudioEngine_connectMIDI_toNodes_format_eventListBlock :: proc(self: ^AudioEngine, sourceNode: ^AudioNode, destinationNodes: ^NS.Array, format: ^AudioFormat, tapBlock: AT.AUMIDIEventListBlock) ---
+
+	@(objc_type=AudioEngine, objc_selector="connectMIDI:toNodes:format:eventListProvider:", objc_name="connectMIDI_toNodes_format_eventListProvider")
+	AudioEngine_connectMIDI_toNodes_format_eventListProvider :: proc(self: ^AudioEngine, sourceNode: ^AudioNode, destinationNodes: ^NS.Array, format: ^AudioFormat, tapBlock: MIDIEventListBlock) ---
 
 	@(objc_type=AudioEngine, objc_selector="disconnectMIDI:from:", objc_name="disconnectMIDI_from")
 	AudioEngine_disconnectMIDI_from :: proc(self: ^AudioEngine, sourceNode: ^AudioNode, destinationNode: ^AudioNode) ---
@@ -497,8 +512,11 @@ foreign lib {
 @(objc_type=AudioEngine, objc_name="connect")
 AudioEngine_connect :: proc {
 	AudioEngine_connect_to_fromBus_toBus_format,
+	AudioEngine_connect_to_fromBus_toBus_format_error,
 	AudioEngine_connect_to_format,
+	AudioEngine_connect_to_format_error,
 	AudioEngine_connect_toConnectionPoints_fromBus_format,
+	AudioEngine_connect_toConnectionPoints_fromBus_format_error,
 }
 
 @(objc_type=AudioEngine, objc_name="disconnectNodeInput")
@@ -517,8 +535,10 @@ AudioEngine_disconnectNodeOutput :: proc {
 AudioEngine_connectMIDI :: proc {
 	AudioEngine_connectMIDI_to_format_block,
 	AudioEngine_connectMIDI_to_format_eventListBlock,
+	AudioEngine_connectMIDI_to_format_eventListProvider,
 	AudioEngine_connectMIDI_toNodes_format_block,
 	AudioEngine_connectMIDI_toNodes_format_eventListBlock,
+	AudioEngine_connectMIDI_toNodes_format_eventListProvider,
 }
 
 @(objc_type=AudioEngine, objc_name="disconnectMIDI")
@@ -529,6 +549,24 @@ AudioEngine_disconnectMIDI :: proc {
 
 
 // Odin-style wrappers for methods with a trailing `^^Error` out-parameter
+
+@(objc_type=AudioEngine, objc_name="connect_to_fromBus_toBus_format_")
+AudioEngine_connect_to_fromBus_toBus_format_ :: #force_inline proc "c" (self: ^AudioEngine, node1: ^AudioNode, node2: ^AudioNode, bus1: AudioNodeBus, bus2: AudioNodeBus, format: ^AudioFormat) -> (ok: bool, err: ^NS.Error) {
+	ok = AudioEngine_connect_to_fromBus_toBus_format_error(self, node1, node2, bus1, bus2, format, &err)
+	return
+}
+
+@(objc_type=AudioEngine, objc_name="connect_to_format_")
+AudioEngine_connect_to_format_ :: #force_inline proc "c" (self: ^AudioEngine, node1: ^AudioNode, node2: ^AudioNode, format: ^AudioFormat) -> (ok: bool, err: ^NS.Error) {
+	ok = AudioEngine_connect_to_format_error(self, node1, node2, format, &err)
+	return
+}
+
+@(objc_type=AudioEngine, objc_name="connect_toConnectionPoints_fromBus_format_")
+AudioEngine_connect_toConnectionPoints_fromBus_format_ :: #force_inline proc "c" (self: ^AudioEngine, sourceNode: ^AudioNode, destNodes: ^NS.Array, sourceBus: AudioNodeBus, format: ^AudioFormat) -> (ok: bool, err: ^NS.Error) {
+	ok = AudioEngine_connect_toConnectionPoints_fromBus_format_error(self, sourceNode, destNodes, sourceBus, format, &err)
+	return
+}
 
 @(objc_type=AudioEngine, objc_name="startAndReturnError")
 AudioEngine_startAndReturnError :: #force_inline proc "c" (self: ^AudioEngine) -> (ok: bool, err: ^NS.Error) {
@@ -759,6 +797,9 @@ foreign lib {
 	@(objc_type=AudioFormat, objc_selector="initWithCMAudioFormatDescription:", objc_name="initWithCMAudioFormatDescription")
 	AudioFormat_initWithCMAudioFormatDescription :: proc(self: ^AudioFormat, formatDescription: CM.AudioFormatDescriptionRef) -> instancetype ---
 
+	@(objc_type=AudioFormat, objc_selector="initWithFormatDescription:", objc_name="initWithFormatDescription")
+	AudioFormat_initWithFormatDescription :: proc(self: ^AudioFormat, formatDescription: CM.AudioFormatDescriptionRef) -> instancetype ---
+
 	@(objc_type=AudioFormat, objc_selector="isEqual:", objc_name="isEqual")
 	AudioFormat_isEqual :: proc(self: ^AudioFormat, object: id) -> bool ---
 
@@ -972,8 +1013,11 @@ foreign lib {
 	@(objc_type=AudioNode, objc_selector="nameForOutputBus:", objc_name="nameForOutputBus")
 	AudioNode_nameForOutputBus :: proc(self: ^AudioNode, bus: AudioNodeBus) -> ^NS.String ---
 
-	@(objc_type=AudioNode, objc_selector="installTapOnBus:bufferSize:format:block:", objc_name="installTapOnBus")
-	AudioNode_installTapOnBus :: proc(self: ^AudioNode, bus: AudioNodeBus, bufferSize: AudioFrameCount, format: ^AudioFormat, tapBlock: AudioNodeTapBlock) ---
+	@(objc_type=AudioNode, objc_selector="installTapOnBus:bufferSize:format:block:", objc_name="installTapOnBus_bufferSize_format_block")
+	AudioNode_installTapOnBus_bufferSize_format_block :: proc(self: ^AudioNode, bus: AudioNodeBus, bufferSize: AudioFrameCount, format: ^AudioFormat, tapBlock: AudioNodeTapBlock) ---
+
+	@(objc_type=AudioNode, objc_selector="installTapOnBus:bufferSize:format:error:block:", objc_name="installTapOnBus_bufferSize_format_error_block")
+	AudioNode_installTapOnBus_bufferSize_format_error_block :: proc(self: ^AudioNode, bus: AudioNodeBus, bufferSize: AudioFrameCount, format: ^AudioFormat, outError: ^^NS.Error, tapBlock: AudioNodeTapBlock) -> bool ---
 
 	@(objc_type=AudioNode, objc_selector="removeTapOnBus:", objc_name="removeTapOnBus")
 	AudioNode_removeTapOnBus :: proc(self: ^AudioNode, bus: AudioNodeBus) ---
@@ -998,6 +1042,14 @@ foreign lib {
 
 	@(objc_type=AudioNode, objc_selector="outputPresentationLatency", objc_name="outputPresentationLatency")
 	AudioNode_outputPresentationLatency :: proc(self: ^AudioNode) -> NS.TimeInterval ---
+}
+
+
+
+@(objc_type=AudioNode, objc_name="installTapOnBus")
+AudioNode_installTapOnBus :: proc {
+	AudioNode_installTapOnBus_bufferSize_format_block,
+	AudioNode_installTapOnBus_bufferSize_format_error_block,
 }
 
 
@@ -1101,6 +1153,9 @@ foreign lib {
 	@(objc_type=AudioInputNode, objc_selector="setManualRenderingInputPCMFormat:inputBlock:", objc_name="setManualRenderingInputPCMFormat")
 	AudioInputNode_setManualRenderingInputPCMFormat :: proc(self: ^AudioInputNode, format: ^AudioFormat, block: AudioIONodeInputBlock) -> bool ---
 
+	@(objc_type=AudioInputNode, objc_selector="setRealtimeSafeManualRenderingInputPCMFormat:inputBlock:", objc_name="setRealtimeSafeManualRenderingInputPCMFormat")
+	AudioInputNode_setRealtimeSafeManualRenderingInputPCMFormat :: proc(self: ^AudioInputNode, format: ^AudioFormat, block: AudioIONodeInputBlockRealtimeSafe) -> bool ---
+
 	@(objc_type=AudioInputNode, objc_selector="setMutedSpeechActivityEventListener:", objc_name="setMutedSpeechActivityEventListener")
 	AudioInputNode_setMutedSpeechActivityEventListener :: proc(self: ^AudioInputNode, listenerBlock: ^Objc_Block(proc "c" ( event: AudioVoiceProcessingSpeechActivityEvent ))) -> bool ---
 
@@ -1175,6 +1230,9 @@ foreign lib {
 
 	@(objc_type=AudioSinkNode, objc_selector="initWithReceiverBlock:", objc_name="initWithReceiverBlock")
 	AudioSinkNode_initWithReceiverBlock :: proc(self: ^AudioSinkNode, block: AudioSinkNodeReceiverBlock) -> instancetype ---
+
+	@(objc_type=AudioSinkNode, objc_selector="initWithRealtimeSafeReceiverBlock:", objc_name="initWithRealtimeSafeReceiverBlock")
+	AudioSinkNode_initWithRealtimeSafeReceiverBlock :: proc(self: ^AudioSinkNode, block: AudioSinkNodeReceiverBlockRealtimeSafe) -> instancetype ---
 }
 
 
@@ -1191,8 +1249,22 @@ foreign lib {
 	@(objc_type=AudioSourceNode, objc_selector="initWithRenderBlock:", objc_name="initWithRenderBlock")
 	AudioSourceNode_initWithRenderBlock :: proc(self: ^AudioSourceNode, block: AudioSourceNodeRenderBlock) -> instancetype ---
 
-	@(objc_type=AudioSourceNode, objc_selector="initWithFormat:renderBlock:", objc_name="initWithFormat")
-	AudioSourceNode_initWithFormat :: proc(self: ^AudioSourceNode, format: ^AudioFormat, block: AudioSourceNodeRenderBlock) -> instancetype ---
+	@(objc_type=AudioSourceNode, objc_selector="initWithRealtimeSafeRenderBlock:", objc_name="initWithRealtimeSafeRenderBlock")
+	AudioSourceNode_initWithRealtimeSafeRenderBlock :: proc(self: ^AudioSourceNode, block: AudioSourceNodeRenderBlockRealtimeSafe) -> instancetype ---
+
+	@(objc_type=AudioSourceNode, objc_selector="initWithFormat:renderBlock:", objc_name="initWithFormat_renderBlock")
+	AudioSourceNode_initWithFormat_renderBlock :: proc(self: ^AudioSourceNode, format: ^AudioFormat, block: AudioSourceNodeRenderBlock) -> instancetype ---
+
+	@(objc_type=AudioSourceNode, objc_selector="initWithFormat:realtimeSafeRenderBlock:", objc_name="initWithFormat_realtimeSafeRenderBlock")
+	AudioSourceNode_initWithFormat_realtimeSafeRenderBlock :: proc(self: ^AudioSourceNode, format: ^AudioFormat, block: AudioSourceNodeRenderBlockRealtimeSafe) -> instancetype ---
+}
+
+
+
+@(objc_type=AudioSourceNode, objc_name="initWithFormat")
+AudioSourceNode_initWithFormat :: proc {
+	AudioSourceNode_initWithFormat_renderBlock,
+	AudioSourceNode_initWithFormat_realtimeSafeRenderBlock,
 }
 
 
@@ -1450,8 +1522,14 @@ foreign lib {
 	@(objc_type=AudioPlayerNode, objc_selector="play", objc_name="play")
 	AudioPlayerNode_play :: proc(self: ^AudioPlayerNode) ---
 
-	@(objc_type=AudioPlayerNode, objc_selector="playAtTime:", objc_name="playAtTime")
-	AudioPlayerNode_playAtTime :: proc(self: ^AudioPlayerNode, _when: ^AudioTime) ---
+	@(objc_type=AudioPlayerNode, objc_selector="playAndReturnError:", objc_name="playAndReturnError_error")
+	AudioPlayerNode_playAndReturnError_error :: proc(self: ^AudioPlayerNode, outError: ^^NS.Error) -> bool ---
+
+	@(objc_type=AudioPlayerNode, objc_selector="playAtTime:", objc_name="playAtTime_")
+	AudioPlayerNode_playAtTime_ :: proc(self: ^AudioPlayerNode, _when: ^AudioTime) ---
+
+	@(objc_type=AudioPlayerNode, objc_selector="playAtTime:error:", objc_name="playAtTime_error")
+	AudioPlayerNode_playAtTime_error :: proc(self: ^AudioPlayerNode, _when: ^AudioTime, outError: ^^NS.Error) -> bool ---
 
 	@(objc_type=AudioPlayerNode, objc_selector="pause", objc_name="pause")
 	AudioPlayerNode_pause :: proc(self: ^AudioPlayerNode) ---
@@ -1486,6 +1564,21 @@ AudioPlayerNode_scheduleFile :: proc {
 AudioPlayerNode_scheduleSegment :: proc {
 	AudioPlayerNode_scheduleSegment_startingFrame_frameCount_atTime_completionHandler,
 	AudioPlayerNode_scheduleSegment_startingFrame_frameCount_atTime_completionCallbackType_completionHandler,
+}
+
+@(objc_type=AudioPlayerNode, objc_name="playAtTime")
+AudioPlayerNode_playAtTime :: proc {
+	AudioPlayerNode_playAtTime_,
+	AudioPlayerNode_playAtTime_error,
+}
+
+
+// Odin-style wrappers for methods with a trailing `^^Error` out-parameter
+
+@(objc_type=AudioPlayerNode, objc_name="playAndReturnError")
+AudioPlayerNode_playAndReturnError :: #force_inline proc "c" (self: ^AudioPlayerNode) -> (ok: bool, err: ^NS.Error) {
+	ok = AudioPlayerNode_playAndReturnError_error(self, &err)
+	return
 }
 
 
@@ -1877,6 +1970,9 @@ foreign lib {
 
 	@(objc_type=AudioSession, objc_selector="activateWithOptions:completionHandler:", objc_name="activateWithOptions")
 	AudioSession_activateWithOptions :: proc(self: ^AudioSession, options: AudioSessionActivationOptions, handler: ^Objc_Block(proc "c" ( activated: bool, error: ^NS.Error ))) ---
+
+	@(objc_type=AudioSession, objc_selector="deactivateWithOptions:completionHandler:", objc_name="deactivateWithOptions")
+	AudioSession_deactivateWithOptions :: proc(self: ^AudioSession, options: AudioSessionDeactivationOptions, handler: ^Objc_Block(proc "c" ( deactivated: bool, error: ^NS.Error ))) ---
 
 	@(objc_type=AudioSession, objc_selector="setPreferredSampleRate:error:", objc_name="setPreferredSampleRate_error")
 	AudioSession_setPreferredSampleRate_error :: proc(self: ^AudioSession, sampleRate: cffi.double, outError: ^^NS.Error) -> bool ---
@@ -2314,6 +2410,39 @@ AudioSessionDataSourceDescription_setPreferredPolarPattern :: #force_inline proc
 }
 
 
+@(objc_class="AVAudioSessionDeactivationContext", objc_superclass=NS.Object)
+AudioSessionDeactivationContext :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=AudioSessionDeactivationContext, objc_selector="init", objc_name="init")
+	AudioSessionDeactivationContext_init :: proc(self: ^AudioSessionDeactivationContext) -> instancetype ---
+
+	@(objc_type=AudioSessionDeactivationContext, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	AudioSessionDeactivationContext_new :: proc() -> ^AudioSessionDeactivationContext ---
+
+	@(objc_type=AudioSessionDeactivationContext, objc_selector="source", objc_name="source")
+	AudioSessionDeactivationContext_source :: proc(self: ^AudioSessionDeactivationContext) -> AudioSessionDeactivationSource ---
+
+	@(objc_type=AudioSessionDeactivationContext, objc_selector="interruptionContext", objc_name="interruptionContext")
+	AudioSessionDeactivationContext_interruptionContext :: proc(self: ^AudioSessionDeactivationContext) -> ^AudioSessionInterruptionContext ---
+}
+
+
+@(objc_class="AVAudioSessionInterruptionContext", objc_superclass=NS.Object)
+AudioSessionInterruptionContext :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=AudioSessionInterruptionContext, objc_selector="init", objc_name="init")
+	AudioSessionInterruptionContext_init :: proc(self: ^AudioSessionInterruptionContext) -> instancetype ---
+
+	@(objc_type=AudioSessionInterruptionContext, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	AudioSessionInterruptionContext_new :: proc() -> ^AudioSessionInterruptionContext ---
+
+	@(objc_type=AudioSessionInterruptionContext, objc_selector="reason", objc_name="reason")
+	AudioSessionInterruptionContext_reason :: proc(self: ^AudioSessionInterruptionContext) -> AudioSessionInterruptionReason ---
+}
+
+
 @(objc_class="AVAudioSessionPortDescription", objc_superclass=NS.Object)
 AudioSessionPortDescription :: struct { using _: NS.Object}
 
@@ -2371,6 +2500,21 @@ foreign lib {
 
 	@(objc_type=AudioSessionPortExtensionBluetoothMicrophone, objc_selector="farFieldCapture", objc_name="farFieldCapture")
 	AudioSessionPortExtensionBluetoothMicrophone_farFieldCapture :: proc(self: ^AudioSessionPortExtensionBluetoothMicrophone) -> ^AudioSessionCapability ---
+}
+
+
+@(objc_class="AVAudioSessionResumptionContext", objc_superclass=NS.Object)
+AudioSessionResumptionContext :: struct { using _: NS.Object}
+
+foreign lib {
+	@(objc_type=AudioSessionResumptionContext, objc_selector="init", objc_name="init")
+	AudioSessionResumptionContext_init :: proc(self: ^AudioSessionResumptionContext) -> instancetype ---
+
+	@(objc_type=AudioSessionResumptionContext, objc_selector="new", objc_name="new", objc_is_class_method=true)
+	AudioSessionResumptionContext_new :: proc() -> ^AudioSessionResumptionContext ---
+
+	@(objc_type=AudioSessionResumptionContext, objc_selector="recommendation", objc_name="recommendation")
+	AudioSessionResumptionContext_recommendation :: proc(self: ^AudioSessionResumptionContext) -> AudioSessionResumptionRecommendation ---
 }
 
 

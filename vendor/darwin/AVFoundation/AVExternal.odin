@@ -35,6 +35,9 @@ foreign lib {
 	@(objc_type=ExternalStorageDevice, objc_selector="uuid", objc_name="uuid")
 	ExternalStorageDevice_uuid :: proc(self: ^ExternalStorageDevice) -> ^NS.UUID ---
 
+	@(objc_type=ExternalStorageDevice, objc_selector="reasonsNotRecommendedForCaptureUse", objc_name="reasonsNotRecommendedForCaptureUse")
+	ExternalStorageDevice_reasonsNotRecommendedForCaptureUse :: proc(self: ^ExternalStorageDevice) -> ^NS.Set ---
+
 	@(objc_type=ExternalStorageDevice, objc_selector="isNotRecommendedForCaptureUse", objc_name="isNotRecommendedForCaptureUse")
 	ExternalStorageDevice_isNotRecommendedForCaptureUse :: proc(self: ^ExternalStorageDevice) -> bool ---
 
@@ -91,6 +94,9 @@ foreign lib {
 
 	@(objc_type=ExternalSyncDevice, objc_selector="clock", objc_name="clock")
 	ExternalSyncDevice_clock :: proc(self: ^ExternalSyncDevice) -> CM.ClockRef ---
+
+	@(objc_type=ExternalSyncDevice, objc_selector="isSignalCompensationDelaySupported", objc_name="isSignalCompensationDelaySupported")
+	ExternalSyncDevice_isSignalCompensationDelaySupported :: proc(self: ^ExternalSyncDevice) -> bool ---
 
 	@(objc_type=ExternalSyncDevice, objc_selector="signalCompensationDelay", objc_name="signalCompensationDelay")
 	ExternalSyncDevice_signalCompensationDelay :: proc(self: ^ExternalSyncDevice) -> CM.Time ---

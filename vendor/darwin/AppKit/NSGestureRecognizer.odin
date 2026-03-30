@@ -95,6 +95,12 @@ foreign lib {
 	@(objc_type=GestureRecognizer, objc_selector="setDelaysRotationEvents:", objc_name="setDelaysRotationEvents")
 	GestureRecognizer_setDelaysRotationEvents :: proc(self: ^GestureRecognizer, delaysRotationEvents: bool) ---
 
+	@(objc_type=GestureRecognizer, objc_selector="isCancellableByScrollGesture", objc_name="isCancellableByScrollGesture")
+	GestureRecognizer_isCancellableByScrollGesture :: proc(self: ^GestureRecognizer) -> bool ---
+
+	@(objc_type=GestureRecognizer, objc_selector="setCancellableByScrollGesture:", objc_name="setCancellableByScrollGesture")
+	GestureRecognizer_setCancellableByScrollGesture :: proc(self: ^GestureRecognizer, cancellableByScrollGesture: bool) ---
+
 	@(objc_type=GestureRecognizer, objc_selector="name", objc_name="name")
 	GestureRecognizer_name :: proc(self: ^GestureRecognizer) -> ^NS.String ---
 
@@ -290,6 +296,18 @@ foreign lib {
 
 	@(objc_type=PanGestureRecognizer, objc_selector="setNumberOfTouchesRequired:", objc_name="setNumberOfTouchesRequired")
 	PanGestureRecognizer_setNumberOfTouchesRequired :: proc(self: ^PanGestureRecognizer, numberOfTouchesRequired: NS.Integer) ---
+
+	@(objc_type=PanGestureRecognizer, objc_selector="minimumNumberOfTouches", objc_name="minimumNumberOfTouches")
+	PanGestureRecognizer_minimumNumberOfTouches :: proc(self: ^PanGestureRecognizer) -> NS.Integer ---
+
+	@(objc_type=PanGestureRecognizer, objc_selector="setMinimumNumberOfTouches:", objc_name="setMinimumNumberOfTouches")
+	PanGestureRecognizer_setMinimumNumberOfTouches :: proc(self: ^PanGestureRecognizer, minimumNumberOfTouches: NS.Integer) ---
+
+	@(objc_type=PanGestureRecognizer, objc_selector="maximumNumberOfTouches", objc_name="maximumNumberOfTouches")
+	PanGestureRecognizer_maximumNumberOfTouches :: proc(self: ^PanGestureRecognizer) -> NS.Integer ---
+
+	@(objc_type=PanGestureRecognizer, objc_selector="setMaximumNumberOfTouches:", objc_name="setMaximumNumberOfTouches")
+	PanGestureRecognizer_setMaximumNumberOfTouches :: proc(self: ^PanGestureRecognizer, maximumNumberOfTouches: NS.Integer) ---
 }
 
 
