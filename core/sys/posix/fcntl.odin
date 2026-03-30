@@ -171,33 +171,6 @@ when ODIN_OS == .Darwin {
 	F_UNLCK :: 2
 	F_WRLCK :: 3
 
-	O_CLOEXEC   :: 0x01000000
-	O_CREAT     :: 0x00000200
-	O_DIRECTORY :: 0x00100000
-	O_EXCL      :: 0x00000800
-	O_NOCTTY    :: 0x00020000
-	O_NOFOLLOW  :: 0x00000100
-	O_TRUNC     :: 0x00000400
-
-	_O_TTY_INIT :: 0
-	O_TTY_INIT  :: O_Flags{}
-
-	O_APPEND   :: 0x00000008
-	O_DSYNC    :: 0x00400000
-	O_NONBLOCK :: 0x00000004
-	O_SYNC     :: 0x0080
-
-	_O_RSYNC :: 0
-	O_RSYNC  :: O_Flags{}
-
-	O_EXEC   :: 0x40000000
-	O_RDONLY :: 0
-	O_RDWR   :: 0x0002
-	O_WRONLY :: 0x0001
-
-	_O_SEARCH :: O_EXEC | O_DIRECTORY
-	O_SEARCH  :: O_Flags{.EXEC, .DIRECTORY}
-
 	AT_FDCWD: FD: -2
 
 	AT_EACCESS          :: 0x0010
@@ -235,32 +208,6 @@ when ODIN_OS == .Darwin {
 	F_RDLCK :: 1
 	F_UNLCK :: 2
 	F_WRLCK :: 3
-
-	O_CLOEXEC   :: 0x00100000
-	O_CREAT     :: 0x0200
-	O_DIRECTORY :: 0x00020000
-	O_EXCL      :: 0x0800
-	O_NOCTTY    :: 0x8000
-	O_NOFOLLOW  :: 0x0100
-	O_TRUNC     :: 0x0400
-
-	_O_TTY_INIT :: 0x00080000
-	O_TTY_INIT  :: O_Flags{O_Flag_Bits(log2(_O_TTY_INIT))}
-
-	O_APPEND   :: 0x0008
-	O_DSYNC    :: 0x01000000
-	O_NONBLOCK :: 0x0004
-	O_SYNC     :: 0x0080
-	_O_RSYNC   :: 0
-	O_RSYNC    :: O_Flags{} // NOTE: not defined in headers
-
-	O_EXEC   :: 0x00040000
-	O_RDONLY :: 0
-	O_RDWR   :: 0x0002
-	O_WRONLY :: 0x0001
-
-	_O_SEARCH :: O_EXEC
-	O_SEARCH  :: O_Flags{ .EXEC }
 
 	AT_FDCWD: FD: -100
 
@@ -301,34 +248,6 @@ when ODIN_OS == .Darwin {
 	F_UNLCK :: 2
 	F_WRLCK :: 3
 
-	O_CLOEXEC   :: 0x00400000
-	O_CREAT     :: 0x0200
-	O_DIRECTORY :: 0x0020000
-	O_EXCL      :: 0x0800
-	O_NOCTTY    :: 0x8000
-	O_NOFOLLOW  :: 0x0100
-	O_TRUNC     :: 0x0400
-
-	_O_TTY_INIT :: 0
-	O_TTY_INIT  :: O_Flags{} // NOTE: not defined in the headers
-
-	O_APPEND   :: 0x0008
-	O_DSYNC    :: 0x010000
-	O_NONBLOCK :: 0x0004
-	O_SYNC     :: 0x0080
-
-	_O_RSYNC :: 0x0002
-	O_RSYNC  :: O_Flags{O_Flag_Bits(log2(_O_RSYNC))}
-
-
-	O_EXEC   :: 0x04000000
-	O_RDONLY :: 0
-	O_RDWR   :: 0x0002
-	O_WRONLY :: 0x0001
-
-	_O_SEARCH :: 0x00800000
-	O_SEARCH  :: O_Flags{O_Flag_Bits(log2(_O_SEARCH))}
-
 	AT_FDCWD: FD: -100
 
 	AT_EACCESS          :: 0x100
@@ -367,33 +286,6 @@ when ODIN_OS == .Darwin {
 	F_UNLCK :: 2
 	F_WRLCK :: 3
 
-	O_CLOEXEC   :: 0x10000
-	O_CREAT     :: 0x0200
-	O_DIRECTORY :: 0x20000
-	O_EXCL      :: 0x0800
-	O_NOCTTY    :: 0x8000
-	O_NOFOLLOW  :: 0x0100
-	O_TRUNC     :: 0x0400
-
-	_O_TTY_INIT :: 0
-	O_TTY_INIT  :: O_Flags{} // NOTE: not defined in the headers
-
-	O_APPEND   :: 0x0008
-	O_DSYNC    :: 0x010000
-	O_NONBLOCK :: 0x0004
-	O_SYNC     :: 0x0080
-
-	_O_RSYNC :: O_SYNC
-	O_RSYNC  :: O_Flags{.SYNC}
-
-	O_EXEC   :: 0x04000000 // NOTE: not defined in the headers
-	O_RDONLY :: 0
-	O_RDWR   :: 0x0002
-	O_WRONLY :: 0x0001
-
-	_O_SEARCH :: 0
-	O_SEARCH  :: O_Flags{} // NOTE: not defined in the headers
-
 	AT_FDCWD: FD: -100
 
 	AT_EACCESS          :: 0x01
@@ -431,34 +323,6 @@ when ODIN_OS == .Darwin {
 	F_DUPFD_CLOEXEC :: 1030
 
 	FD_CLOEXEC :: 1
-
-	O_CREAT     :: 0o0_000_100
-	O_EXCL      :: 0o0_000_200
-	O_NOCTTY    :: 0o0_000_400
-	O_TRUNC     :: 0o0_001_000
-	O_DIRECTORY :: 0o0_200_000
-	O_NOFOLLOW  :: 0o0_400_000
-	O_CLOEXEC   :: 0o2_000_000
-
-	_O_TTY_INIT :: 0
-	O_TTY_INIT  :: O_Flags{}
-
-	O_APPEND   :: 0o0_002_000
-	O_NONBLOCK :: 0o0_004_000
-	O_DSYNC    :: 0o0_010_000
-	O_SYNC     :: 0o4_010_000
-
-	_O_RSYNC :: 0
-	O_RSYNC  :: O_Flags{}
-
-	O_EXEC   :: 0x04000000 // NOTE: not defined in the headers
-
-	O_RDONLY :: 0
-	O_WRONLY :: 0o1
-	O_RDWR   :: 0o2
-
-	_O_SEARCH :: 0
-	O_SEARCH  :: O_Flags{}
 
 	AT_FDCWD: FD: -100
 
