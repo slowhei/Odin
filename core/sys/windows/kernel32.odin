@@ -151,6 +151,7 @@ foreign kernel32 {
 		lpUserTime: LPFILETIME,
 	) -> BOOL ---
 	GetStdHandle :: proc(which: DWORD) -> HANDLE ---
+	SetStdHandle :: proc(nStdHandle: DWORD, hHandle: HANDLE) -> BOOL ---
 	ExitProcess  :: proc(uExitCode: c_uint) -> ! ---
 	DeviceIoControl :: proc(
 		hDevice: HANDLE,

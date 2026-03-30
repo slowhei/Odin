@@ -78,13 +78,6 @@ foreign lib {
 	lchown :: proc(path: cstring, owner: uid_t, group: gid_t) -> result ---
 
 	/*
-	Deallocates the file descriptor indicated by fildes. 
-
-	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/close.html ]]
-	*/
-	close :: proc(fildes: FD) -> result ---
-
-	/*
 	Return configuration-defined string values.
 	Its use and purpose are similar to sysconf(), but it is used where string values rather than numeric values are returned.
 
@@ -149,36 +142,6 @@ foreign lib {
 	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/encrypt.html ]]
 	*/
 	encrypt :: proc(block: [^]c.char, decode: b32) ---
-
-	/*
-	Returns a new file descriptor referring to the one given, sharing locks, clearing CLOEXEC.
-
-	Returns: -1 (setting errno) on failure, the new file descriptor on success
-
-	Example:
-		// Redirecting stdout to a file:
-		file := posix.open("/tmp/out", { .RDWR })
-		posix.close(1)
-		posix.dup(file)
-		posix.close(file)
-
-	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/dup.html ]] 
-	*/
-	dup :: proc(fildes: FD) -> FD ---
-
-	/*
-	Causes the file descriptor fildes2 to refer to the same open file description as
-	the file descriptor fildes and to share any locks, and shall return fildes2.
-
-	Returns: -1 (setting errno) on failure, fildes2 on success
-
-	Example:
-		// Redirecting stderr to stdout:
-		posix.dup2(1, 2)
-
-	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/dup.html ]] 
-	*/
-	dup2 :: proc(fildes, fildes2: FD) -> FD ---
 
 	/*
 	The exec family of functions shall replace the current process image with a new process image.

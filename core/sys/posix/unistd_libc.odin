@@ -42,6 +42,46 @@ foreign lib {
 	chdir :: proc(path: cstring) -> result ---
 
 	/*
+	Deallocates the file descriptor indicated by fildes. 
+
+	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/close.html ]]
+	*/
+	@(link_name=LCLOSE)
+	close :: proc(fildes: FD) -> result ---
+
+	/*
+	Returns a new file descriptor referring to the one given, sharing locks, clearing CLOEXEC.
+
+	Returns: -1 (setting errno) on failure, the new file descriptor on success
+
+	Example:
+		// Redirecting stdout to a file:
+		file := posix.open("/tmp/out", { .RDWR })
+		posix.close(1)
+		posix.dup(file)
+		posix.close(file)
+
+	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/dup.html ]]
+	*/
+	@(link_name=LDUP)
+	dup :: proc(fildes: FD) -> FD ---
+
+	/*
+	Causes the file descriptor fildes2 to refer to the same open file description as
+	the file descriptor fildes and to share any locks, and shall return fildes2.
+
+	Returns: -1 (setting errno) on failure, fildes2 on success
+
+	Example:
+		// Redirecting stderr to stdout:
+		posix.dup2(1, 2)
+
+	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/dup.html ]]
+	*/
+	@(link_name=LDUP2)
+	dup2 :: proc(fildes, fildes2: FD) -> FD ---
+
+	/*
 	Exits but, shall not call functions registered with atexit() nor any registered signal handlers.
 	Open streams shall not be flushed.
 	Whether open streams are closed (without flushing) is implementation-defined. Finally, the calling process shall be terminated with the consequences described below.
@@ -117,6 +157,9 @@ foreign lib {
 when ODIN_OS == .Windows {
 	@(private) LACCESS :: "_access"
 	@(private) LCHDIR  :: "_chdir"
+	@(private) LCLOSE  :: "_close"
+	@(private) LDUP    :: "_dup"
+	@(private) LDUP2   :: "_dup2"
 	@(private) LGETCWD :: "_getcwd"
 	@(private) LRMDIR  :: "_rmdir"
 	@(private) LSWAB   :: "_swab"
@@ -124,6 +167,9 @@ when ODIN_OS == .Windows {
 } else {
 	@(private) LACCESS :: "access"
 	@(private) LCHDIR  :: "chdir"
+	@(private) LCLOSE  :: "close"
+	@(private) LDUP    :: "dup"
+	@(private) LDUP2   :: "dup2"
 	@(private) LGETCWD :: "getcwd"
 	@(private) LRMDIR  :: "rmdir"
 	@(private) LSWAB   :: "swab"

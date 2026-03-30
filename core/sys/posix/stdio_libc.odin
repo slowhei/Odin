@@ -18,6 +18,7 @@ when ODIN_OS == .Windows {
 // stdio.h - standard buffered input/output
 
 when ODIN_OS == .Windows {
+	@(private) LFILENO           :: "_fileno"
 	@(private) LGETC_UNLOCKED    :: "_getc_nolock"
 	@(private) LGETCHAR_UNLOCKED :: "_getchar_nolock"
 	@(private) LPUTC_UNLOCKED    :: "_putc_nolock"
@@ -26,6 +27,7 @@ when ODIN_OS == .Windows {
 	@(private) LPOPEN            :: "_popen"
 	@(private) LPCLOSE           :: "_pclose"
 } else {
+	@(private) LFILENO           :: "fileno"
 	@(private) LGETC_UNLOCKED    :: "getc_unlocked"
 	@(private) LGETCHAR_UNLOCKED :: "getchar_unlocked"
 	@(private) LPUTC_UNLOCKED    :: "putc_unlocked"
@@ -45,6 +47,16 @@ foreign lib {
 	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/dprintf.html ]]
 	*/
 	sprintf :: proc(s: [^]byte, format: cstring, #c_vararg args: ..any) -> c.int ---
+
+	/*
+	Map a stream pointer to a file descriptor.
+
+	Returns: the file descriptor or -1 (setting errno) on failure
+
+	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/fileno.html ]]
+	*/
+	@(link_name=LFILENO)
+	fileno :: proc(stream: ^FILE) -> FD ---
 
 	/*
 	Equivalent to getc but unaffected by locks.

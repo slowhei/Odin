@@ -42,15 +42,6 @@ foreign lib {
 	fdopen :: proc(fildes: FD, mode: cstring) -> ^FILE ---
 
 	/*
-	Map a stream pointer to a file descriptor.
-
-	Returns: the file descriptor or -1 (setting errno) on failure
-
-	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/fileno.html ]]
-	*/
-	fileno :: proc(stream: ^FILE) -> FD ---
-
-	/*
 	Locks a file.
 
 	[[ More; https://pubs.opengroup.org/onlinepubs/9699919799/functions/flockfile.html ]]
